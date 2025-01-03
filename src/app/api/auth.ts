@@ -1,4 +1,5 @@
 import axios from "axios";
+import ResponseData from "../models/response-data";
 
 const MOCK_SUCCESS_RESPONSE = {
   data: {
@@ -12,7 +13,7 @@ const MOCK_SUCCESS_RESPONSE = {
 };
 
 export const requestAccessTokenReissue = async () => {
-  // const response = await axios.post(
+  // const response = await axios.post<ResponseData>(
   //   "http://localhost:8080/reissue",
   //   {},
   //   { withCredentials: true }
