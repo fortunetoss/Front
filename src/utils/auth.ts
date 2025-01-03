@@ -17,3 +17,14 @@ export const reissueAccessToken = async (redirectTo: string) => {
 
   redirect("/");
 };
+
+// header에 accessToken을 포함한 요청(권한이 필요한 요청)을 보낸 후, 응답 코드 검증할 때 사용
+export const checkAuthResponseCode = (currentPath: string, code: number) => {
+  if (code === 401) {
+    reissueAccessToken(currentPath);
+  }
+
+  if (code === 400) {
+    redirect("/");
+  }
+};
