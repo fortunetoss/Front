@@ -1,5 +1,5 @@
 import axios from "axios";
-import ResponseData from "../models/response-data";
+import ResponseData from "../app/models/response-data";
 
 const MOCK_SUCCESS_RESPONSE = {
   data: {

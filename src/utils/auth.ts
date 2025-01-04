@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import useAccessTokenStore from "@/store/accessToken";
-import { requestAccessTokenReissue } from "@/app/api/auth";
+import { requestAccessTokenReissue } from "@/api/auth";
 
 export const reissueAccessToken = async (redirectTo: string) => {
   const response = await requestAccessTokenReissue();
