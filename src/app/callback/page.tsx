@@ -1,6 +1,6 @@
 "use client";
 
-import { reissueAccessToken } from "@/utils/auth";
+import { reissueAccessToken } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

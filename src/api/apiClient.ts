@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import ResponseData from "@/app/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
-import { reissueAccessToken } from "@/utils/auth";
+import { reissueAccessToken } from "@/api/auth";
 
 // 헤더에 액세스 토큰이 필요한 요청에 사용
 const authApiClient = axios.create({
