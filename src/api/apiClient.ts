@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { redirect } from "next/navigation";
 
-import ResponseData from "@/app/models/response-data";
+import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { reissueAccessToken } from "@/api/auth";
 

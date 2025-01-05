@@ -1,5 +1,5 @@
 import axios from "axios";
-import ResponseData from "../app/models/response-data";
+import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { redirect } from "next/navigation";
 
