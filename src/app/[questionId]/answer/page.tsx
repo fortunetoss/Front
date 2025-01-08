@@ -1,17 +1,17 @@
 "use client";
 
-import Option from "@/components/buttons/option";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import Option from "@/components/buttons/option";
 
 export default function AnswerPage() {
   const question = "길동님이 올해 가장 열심이었던 운동은?";
   const options = ["수영", "테니스", "헬스", "요가"];
-  const [selectedOption, setSelectedOption] = useState<number>();
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const router = useRouter();
   const { questionId } = useParams();
 
-  const handleClick = (idx: number) => {
+  const handleClick = async (idx: number) => {
     setSelectedOption(idx);
     // 백엔드 로직 추가
     router.push(`/${questionId}/answer/result`);
@@ -27,6 +27,7 @@ export default function AnswerPage() {
               text={option}
               id={idx}
               isSelected={idx === selectedOption}
+              disabled={selectedOption !== null}
               onClick={handleClick}
             />
           </li>
