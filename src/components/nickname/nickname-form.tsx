@@ -43,11 +43,7 @@ export default function NicknameForm() {
         onChange={handleChange}
       />
       <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={!isValidName}
-          className="text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg mt-3"
-        >
+        <button type="submit" disabled={!isValidName} className="next-btn">
           다음
         </button>
       </div>
