@@ -13,8 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className="bg-black">
-        <div className="mx-auto max-w-[480px] bg-white">{children}</div>
+      <body className="bg-black text-[#171719]">
+        <div className="mx-auto max-w-[480px] h-screen bg-white">
+          {children}
+        </div>
       </body>
     </html>
   );
