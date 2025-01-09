@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .next-btn {
-  @apply text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg mt-3;
+  @apply text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg;
 }
