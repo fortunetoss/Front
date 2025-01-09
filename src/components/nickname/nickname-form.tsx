@@ -26,22 +26,24 @@ export default function NicknameForm() {
   const isValidName = enteredName.length >= 1 && enteredName.length <= 10;
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-      <div className="flex justify-between text-[13px] px-1 font-medium">
-        <label htmlFor="name" className="text-[#848588]">
-          이름
-        </label>
-        <div className="text-[#C7C8C9]">{enteredName.length}/10</div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between text-[13px] px-1 font-medium">
+          <label htmlFor="name" className="text-[#848588]">
+            이름
+          </label>
+          <div className="text-[#C7C8C9]">{enteredName.length}/10</div>
+        </div>
+        <input
+          type="text"
+          id="name"
+          className={`w-full focus:outline-none border-[1px] px-3 py-4 rounded-lg text-base font-medium placeholder:text-[#C7C8C9] ${
+            isValidName ? "focus:border-blue" : "focus:border-[#C6C6C6]"
+          }`}
+          placeholder="이름을 입력해주세요"
+          onChange={handleChange}
+        />
       </div>
-      <input
-        type="text"
-        id="name"
-        className={`w-full focus:outline-none border-[1px] px-3 py-4 rounded-lg text-base font-medium placeholder:text-[#C7C8C9] ${
-          isValidName ? "focus:border-blue" : "focus:border-[#C6C6C6]"
-        }`}
-        placeholder="이름을 입력해주세요"
-        onChange={handleChange}
-      />
       <div className="flex justify-end">
         <button type="submit" disabled={!isValidName} className="next-btn">
           다음
