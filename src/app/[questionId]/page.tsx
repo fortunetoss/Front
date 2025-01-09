@@ -22,7 +22,7 @@ export default function IntroPage({ params }: IntroPageProps) {
         </div>
         <div className="w-60 h-60 mx-auto bg-disable"></div>
         <Link
-          href={`${params.questionId}/nickname`}
+          href={`/${params.questionId}/nickname`}
           className="block mx-auto w-full bg-blue text-white font-bold px-3 py-4 rounded-lg text-center"
         >
           문제 풀기
