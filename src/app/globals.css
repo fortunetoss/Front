@@ -5,3 +5,6 @@
 .next-btn {
   @apply text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg;
 }
+.broad-btn {
+  @apply block text-center px-3 py-[14px] w-full border-[1.2px] rounded-lg border-[#C6C6C6] bg-white font-medium active:border-blue active:font-bold active:text-blue;
+}
