@@ -2,20 +2,29 @@
 
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import useAnswererStore from "@/store/answerer";
+import { authApiClient } from "@/api/api-client";
 
-export default function NicknameForm() {
+interface NicknameFormProps {
+  initialName?: string;
+}
+
+export default function NicknameForm({ initialName }: NicknameFormProps) {
   const [enteredName, setEnteredName] = useState<string>("");
   const { questionId } = useParams();
   const router = useRouter();
+  const setAnswererName = useAnswererStore((state) => state.setName);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (questionId) {
       // 응답자 화면 => store에 닉네임을 저장하고 다음 페이지로 넘어가기
+      setAnswererName(enteredName);
       router.push(`/${questionId}/answer`);
     } else {
       // 출제자 화면 => 백엔드로 닉네임 보내기
+      await authApiClient.patch("/api/name", { name: enteredName });
     }
   };
 
@@ -41,6 +50,7 @@ export default function NicknameForm() {
             isValidName ? "focus:border-blue" : "focus:border-[#C6C6C6]"
           }`}
           placeholder="이름을 입력해주세요"
+          defaultValue={initialName ?? ""}
           onChange={handleChange}
         />
       </div>
