@@ -21,6 +21,7 @@ export default function ResultPage({ params }: ResultPageProps) {
           alt={isCorrect ? "O" : "X"}
           width={140}
           height={102}
+          priority
         />
         <h1 className="font-bold text-[40px]">
           {isCorrect ? "정답!" : "오답"}
