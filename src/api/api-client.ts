@@ -1,37 +1,37 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import { redirect } from "next/navigation";
 
-import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { reissueAccessToken } from "@/api/auth";
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://fortunetoss.store",
 });
 
-// 헤더에 액세스 토큰이 필요한 요청에 사용
+// 헤더에 액세스 토큰이 필요한 요청에 사용 (클라이언트 컴포넌트에서만 사용 가능)
 export const authApiClient = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://fortunetoss.store",
 });
 
 authApiClient.interceptors.request.use((config) => {
   const accessToken = useAccessTokenStore.getState().accessToken;
-  config.headers["access"] = accessToken;
+  config.headers["authorization"] = accessToken;
   return config;
 });
 
 authApiClient.interceptors.response.use(
-  async (response: AxiosResponse<ResponseData>) => {
-    const originalRequest = response.config;
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
 
-    if (response.data.code === 401 && !originalRequest._retry) {
+    if (error.code === 401 && !originalRequest._retry) {
       await reissueAccessToken();
       originalRequest._retry = true;
       authApiClient(originalRequest);
-    } else if (response.data.code === 400) {
+    } else if (error.code === 400) {
       redirect("/");
     }
-
-    return response;
   }
 );
