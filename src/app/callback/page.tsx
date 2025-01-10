@@ -1,16 +1,22 @@
 "use client";
 
 import { reissueAccessToken } from "@/api/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function CallbackPage() {
   const router = useRouter();
+  const params = useSearchParams();
+  const isNewUser = params.get("newUser");
 
   useEffect(() => {
     const getAccessToken = async () => {
       await reissueAccessToken();
-      router.push("/nickname");
+
+      if (isNewUser) {
+        router.push("/nickname");
+      }
+      router.push("/pockets");
     };
 
     getAccessToken();
