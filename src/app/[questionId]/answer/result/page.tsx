@@ -1,19 +1,27 @@
 import Link from "next/link";
+import OImg from "@/assets/result/O.svg";
+import XImg from "@/assets/result/X.svg";
+import Image from "next/image";
 
 interface ResultPageProps {
   params: { questionId: string };
 }
 
 export default function ResultPage({ params }: ResultPageProps) {
-  const isCorrect = false;
+  const isCorrect = true;
   const question = "길동님이 올해 가장 열심이었던 운동은?";
   const correctAnswer = "요가";
   const message = null;
 
   return (
     <section className="flex flex-col gap-10">
-      <div className="flex flex-col gap-5 items-center">
-        <div className="w-[124px] h-[98px] mx-auto bg-disable"></div>
+      <div className="flex flex-col gap-2 items-center">
+        <Image
+          src={isCorrect ? OImg : XImg}
+          alt={isCorrect ? "O" : "X"}
+          width={140}
+          height={102}
+        />
         <h1 className="font-bold text-[40px]">
           {isCorrect ? "정답!" : "오답"}
         </h1>
