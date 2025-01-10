@@ -8,8 +8,8 @@ interface QuestionStore {
 }
 
 const initialState = {
-  question: "",
-  options: [],
+  question: "질문",
+  options: ["수영", "축구", "테니스", "요가"],
 };
 
 const useQuestionStore = create(
