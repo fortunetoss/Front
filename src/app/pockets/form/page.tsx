@@ -1,23 +1,23 @@
 "use client";
 
-
-
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import usePocketStore from "../../store/usePocket";
 import Notice from "@/app/components/notice";
 import { FaPencilAlt } from "react-icons/fa"; // 아이콘 추가
-import axios from 'axios';
+import {authApiClient} from "@/api/api-client";
 
-// Axios 설정
-const api = axios.create({
-    baseURL: "https://fortunetoss.store",
-});
 
 // 랜덤 질문 가져오기 - GET
 const fetchRandomQuestion = async () => {
-    const response = await api.get("/api/pouch/question");
-    return response.data;
+    try {
+        const response = await authApiClient.get("/api/pouch/question");
+        return response.data.data;
+    } catch (error:any) {
+        console.error("랜덤 질문 가져오기 실패:", error);
+        console.error(error.response?.data);
+        throw new Error("랜덤 질문 가져오기 실패");
+    }
 };
 
 // 문제 제출 - POST
@@ -31,7 +31,7 @@ const submitCustomQuestion = async (
     paper: string | null
 ) => {
     try {
-        const response = await api.post("/api/questionCustom", {
+        const response = await authApiClient.post("/api/questionCustom", {
             title,
             select1: answers[0],
             select2: answers[1],
@@ -45,8 +45,8 @@ const submitCustomQuestion = async (
         });
 
         return response.data; // { questionCustomId, shape }
-    } catch (error: any) {
-        console.error("문제 제출 중 오류 발생:", error.response || error.message);
+    } catch (error) {
+        console.error("문제 제출 중 오류 발생:", error);
         throw new Error("문제 제출에 실패했습니다.");
     }
 };
@@ -57,7 +57,7 @@ const Form = () => {
     const selectOption = searchParams.get("select"); // 쿼리 파라미터로 전달된 select 값 가져오기
 
     // Zustand 상태 관리
-    const { setQuestion, setAnswers, setCorrectAnswer, setContent, resetPocketState } = usePocketStore();
+    const { setQuestion, setAnswers, setCorrectAnswer, setContent } = usePocketStore();
 
     // 폼 상태 관리
     const [title, setTitle] = useState<string>(""); // 질문 상태
@@ -66,13 +66,13 @@ const Form = () => {
     const [editingIndex, setEditingIndex] = useState<number | null>(null); // 현재 수정 중인 답변 인덱스
     const [contentInput, setContentInput] = useState<string>(""); // 덕담 입력 상태
 
+    // 랜덤 질문 가져오기
     useEffect(() => {
-        // 랜덤 문제 가져오기 (주석 처리)
-        /*
         const fetchQuestion = async () => {
             try {
                 const data = await fetchRandomQuestion();
 
+                // 데이터 검증
                 if (
                     data &&
                     typeof data.title === "string" &&
@@ -81,21 +81,22 @@ const Form = () => {
                     typeof data.select3 === "string" &&
                     typeof data.select4 === "string"
                 ) {
+                    // 상태 업데이트
                     setTitle(data.title);
                     updateAnswers([data.select1, data.select2, data.select3, data.select4]);
                 } else {
                     console.error("API 응답 형식이 잘못되었습니다:", data);
-                    alert("랜덤 질문을 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.");
+                    alert("랜덤 질문을 가져오는 중 문제가 발생했습니다.");
                 }
-            } catch (error: any) {
-                console.error("랜덤 질문 가져오기 실패:", error.response || error.message);
-                alert("랜덤 질문을 가져오는 데 실패했습니다. 네트워크를 확인해주세요.");
+            } catch (error) {
+                console.error("랜덤 질문 가져오기 실패:", error);
+                alert("랜덤 질문을 가져오는 데 실패했습니다.");
             }
         };
 
         fetchQuestion();
-        */
     }, []);
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -116,8 +117,11 @@ const Form = () => {
         // POST 요청 데이터 구성
         const postData = {
             title,
-            answers,
-            correctAnswer: selectedAnswerText,
+            select1: answers[0],
+            select2: answers[1],
+            select3: answers[2],
+            select4: answers[3],
+            answer: selectedAnswerText, // 선택된 정답
             content: selectOption === "problem" ? null : contentInput,
             shape: selectOption === "problem" ? null : shape,
             card: selectOption === "problem" ? null : card,
@@ -128,15 +132,15 @@ const Form = () => {
             // POST 요청
             const response = await submitCustomQuestion(
                 postData.title,
-                postData.answers,
-                postData.correctAnswer,
+                [postData.select1, postData.select2, postData.select3, postData.select4],
+                postData.answer,
                 postData.content,
                 postData.shape,
                 postData.card,
                 postData.paper
             );
-
             console.log("POST 성공:", response);
+
 
             // 응답 데이터에서 questionCustomId와 shape 추출
             const { questionCustomId, shape: responseShape } = response;
@@ -165,33 +169,24 @@ const Form = () => {
                     />
                 </div>
 
-                {/* 답변 입력 */}
+                {/* 답변 입력 및 선택 */}
                 {answers.map((answer, index) => (
                     <div
                         key={index}
                         className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full cursor-pointer ${
-                            selectedAnswer === index ? "bg-blue-500 text-white" : "bg-white-100 text-black"
+                            selectedAnswer === index ? "bg-blue-500 text-white" : "bg-gray-100 text-black"
                         }`}
-                        onClick={() => setSelectedAnswer(index)}
+                        onClick={() => setSelectedAnswer(index)} // 클릭 시 정답 선택 및 배경색 변경
                     >
-                        {/* 수정 중인 상태 */}
-                        {editingIndex === index ? (
-                            <input
-                                type="text"
-                                value={answer}
-                                onChange={(e) => {
-                                    const updated = [...answers];
-                                    updated[index] = e.target.value;
-                                    updateAnswers(updated);
-                                }}
-                                onBlur={() => setEditingIndex(null)}
-                                autoFocus
-                                className="flex-grow bg-white border border-gray-300 p-2 rounded"
-                                onClick={(e) => e.stopPropagation()} // 부모 클릭 방지
-                            />
-                        ) : (
-                            <span className="flex-grow">{answer}</span> // 텍스트 상태
-                        )}
+                        {/* 정답 선택 */}
+                        <input
+                            type="text"
+                            value={answer}
+                            readOnly
+                            className="flex-grow bg-transparent border-none outline-none cursor-pointer"
+                        />
+
+                        {/* 수정 버튼 */}
                         <button
                             type="button"
                             onClick={(e) => {

@@ -28,15 +28,16 @@ const Pockets = () => {
     };
 
     return (
+        // <div className="mx-auto  h-screen bg-white">
         <div className="container mx-auto p-10">
-            <Notice text="문제를 내고 복주머니를 전달하세요!" />
-            <div className="grid grid-cols-2 gap-x-10 gap-y-6">
+            <Notice text="문제를 내고 복주머니를 전달하세요!"/>
+            <div className="grid grid-cols-2  gap-y-6">
                 {pocketImages.map((fileName, index) => (
-                    <div key={index} className="relative w-80 h-80 mx-auto">
+                    <div key={index} className="relative max-w-[200px] max-h-screen mx-auto">
                         <img
                             src={`/${fileName}`}
                             alt={`복주머니 ${index + 1}`}
-                            className="w-full h-full object-contain rounded-full"
+                            className="max-w-[200px]  rounded-full"
                         />
                         <button
                             className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 text-gray-600 text-2xl rounded-full z-10"

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Notice from "@/app/components/notice";
 import axios from "axios";
+import {authApiClient} from "@/api/api-client";
 
 const Complete = () => {
     // Zustand 상태 기반 코드 주석 처리 (백엔드 통신으로 대체)
@@ -28,8 +29,8 @@ const Complete = () => {
         // 백엔드에서 questionId 받아오기
         const fetchQuestionId = async () => {
             try {
-                // 예시 API 요청 - 백엔드에서 questionId를 받아옴
-                const response = await axios.get("http://localhost:8080/api/questionId"); // 실제 API 엔드포인트로 변경
+
+                const response = await authApiClient.get("/api/questionId");
                 const { questionId } = response.data;
 
                 if (questionId) {

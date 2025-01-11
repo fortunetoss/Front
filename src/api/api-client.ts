@@ -5,17 +5,18 @@ import useAccessTokenStore from "@/store/accessToken";
 import { reissueAccessToken } from "@/api/auth";
 
 export const apiClient = axios.create({
-  baseURL: "https://fortunetoss.store",
+  baseURL: "http://52.78.174.190:8080",
 });
 
 // 헤더에 액세스 토큰이 필요한 요청에 사용 (클라이언트 컴포넌트에서만 사용 가능)
 export const authApiClient = axios.create({
-  baseURL: "https://fortunetoss.store",
+  baseURL: "http://52.78.174.190:8080",
 });
 
 authApiClient.interceptors.request.use((config) => {
   const accessToken = useAccessTokenStore.getState().accessToken;
   config.headers["authorization"] = "Bearer " + accessToken;
+  config.headers["Access-Control-Allow-Origin"] = "http://localhost:3000/";
   console.log(config.headers);
   return config;
 });

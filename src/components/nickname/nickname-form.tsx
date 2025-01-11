@@ -33,7 +33,9 @@ export default function NicknameForm() {
       router.push(`/${questionId}/answer`);
     } else {
       await authApiClient.patch("/api/name", { name: enteredName });
+      router.push(`/pockets`);
     }
+
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
