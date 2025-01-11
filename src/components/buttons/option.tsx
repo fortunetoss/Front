@@ -2,15 +2,13 @@
 
 interface OptionProps {
   text: string;
-  id: number;
   isSelected: boolean;
-  onClick: (id: number) => void;
+  onClick: (text: string) => void;
   disabled: boolean;
 }
 
 export default function Option({
   text,
-  id,
   isSelected,
   onClick,
   disabled,
@@ -21,7 +19,7 @@ export default function Option({
 
   return (
     <button
-      onClick={() => onClick(id)}
+      onClick={() => onClick(text)}
       disabled={disabled}
       className={`w-full py-[18px] px-4 rounded-full border-[1.2px] text-center text-lg ${classes}`}
     >
