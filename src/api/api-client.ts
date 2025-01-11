@@ -15,23 +15,28 @@ export const authApiClient = axios.create({
 
 authApiClient.interceptors.request.use((config) => {
   const accessToken = useAccessTokenStore.getState().accessToken;
-  config.headers["authorization"] = accessToken;
+  config.headers["authorization"] = "Bearer " + accessToken;
+  console.log(config.headers);
   return config;
 });
 
 authApiClient.interceptors.response.use(
-  (response) => {
+  async (response) => {
+    console.log(response);
     return response;
   },
   async (error) => {
-    const originalRequest = error.config;
+    // 배포 전까지 주석 처리
 
-    if (error.code === 401 && !originalRequest._retry) {
-      await reissueAccessToken();
-      originalRequest._retry = true;
-      authApiClient(originalRequest);
-    } else if (error.code === 400) {
-      redirect("/");
-    }
+    // const originalRequest = error.config;
+
+    // if (error.code === 401 && !originalRequest._retry) {
+    //   await reissueAccessToken();
+    //   originalRequest._retry = true;
+    //   authApiClient(originalRequest);
+    // } else if (error.code === 400) {
+    //   redirect("/");
+    // }
+    redirect("/");
   }
 );
