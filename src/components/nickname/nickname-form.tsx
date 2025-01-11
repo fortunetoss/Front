@@ -1,38 +1,46 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAnswererStore from "@/store/answerer";
 import { authApiClient } from "@/api/api-client";
 
-interface NicknameFormProps {
-  initialName?: string;
-}
-
-export default function NicknameForm({ initialName }: NicknameFormProps) {
+export default function NicknameForm() {
   const [enteredName, setEnteredName] = useState<string>("");
+  const [isValidName, setIsValidName] = useState<boolean>(false);
+  const setAnswererName = useAnswererStore((state) => state.setName);
   const { questionId } = useParams();
   const router = useRouter();
-  const setAnswererName = useAnswererStore((state) => state.setName);
+
+  useEffect(() => {
+    const getDefaultName = async () => {
+      const response = await authApiClient.get("/api/name");
+      const defaultName = response.data.data.name;
+      setEnteredName(defaultName);
+      setIsValidName(defaultName.length >= 1 && defaultName.length <= 10);
+    };
+
+    if (!questionId) {
+      getDefaultName();
+    }
+  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (questionId) {
-      // 응답자 화면 => store에 닉네임을 저장하고 다음 페이지로 넘어가기
       setAnswererName(enteredName);
       router.push(`/${questionId}/answer`);
     } else {
-      // 출제자 화면 => 백엔드로 닉네임 보내기
       await authApiClient.patch("/api/name", { name: enteredName });
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEnteredName(event.currentTarget.value.trim());
+    const input = event.currentTarget.value.trim();
+    setEnteredName(input);
+    setIsValidName(input.length >= 1 && input.length <= 10);
   };
-
-  const isValidName = enteredName.length >= 1 && enteredName.length <= 10;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -50,7 +58,7 @@ export default function NicknameForm({ initialName }: NicknameFormProps) {
             isValidName ? "focus:border-blue" : "focus:border-[#C6C6C6]"
           }`}
           placeholder="이름을 입력해주세요"
-          defaultValue={initialName ?? ""}
+          value={enteredName}
           onChange={handleChange}
         />
       </div>
