@@ -1,42 +1,54 @@
-// 복주머니 선택 페이지
-// 처음엔 8개의 복주머니 선택할 수 있고 각 복주머니 누르면
-// form 페이지로 이동하게끔 한다.
-
-
 "use client";
 
-import React, { useState } from "react";
-import {useRouter} from "next/navigation";
-
+import React from "react";
+import { useRouter } from "next/navigation";
+import usePocketStore from "../store/usePocket";
+import Notice from "@/app/components/notice";
 
 const Pockets = () => {
     const router = useRouter();
-    const POCKETS = 8; // 기본 복주머니 갯수 = 8개
+    const setPocketIndex = usePocketStore((state) => state.setPocketIndex);
+
+    //pocketImage 는 백엔드에서 수정해주시면 수정해야겠다. .
+
+    const pocketImages = [
+        "복주머니-01.png",
+        "복주머니-02.png",
+        "복주머니-03.png",
+        "복주머니-04.png",
+        "복주머니-05.png",
+        "복주머니-06.png",
+        "복주머니-07.png",
+        "복주머니-08.png",
+    ];
 
     const handlePocket = (index: number) => {
-        router.push(`/pockets/${index}/form`);
+        setPocketIndex(index);
+        router.push(`/pockets/select?pocketIndex=${index}`);
     };
 
     return (
         <div className="container mx-auto p-10">
-            <h1 className="text-xl font-bold mb-10">복주머니 선택</h1>
-            <p className="mb-4"> 복주머니 선택해주시오~~~</p>
-            <div className="grid grid-cols-4  gap-6">
-                {Array.from ({length:POCKETS}).map((_, index) => (
-                    <div
-                    key={index}
-                    className="w-24 h-24 bg-red-200 text-black flex items-center justify-center rounded-full text-lg font-bold cursor-pointer hover:bg-red-300 transition"
-                    onClick={() => handlePocket(index+1)}
-                    >
-                        {index+1}
+            <Notice text="문제를 내고 복주머니를 전달하세요!" />
+            <div className="grid grid-cols-2 gap-x-10 gap-y-6">
+                {pocketImages.map((fileName, index) => (
+                    <div key={index} className="relative w-80 h-80 mx-auto">
+                        <img
+                            src={`/${fileName}`}
+                            alt={`복주머니 ${index + 1}`}
+                            className="w-full h-full object-contain rounded-full"
+                        />
+                        <button
+                            className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 text-gray-600 text-2xl rounded-full z-10"
+                            onClick={() => handlePocket(index + 1)}
+                        >
+                            문제내기
+                        </button>
                     </div>
                 ))}
             </div>
         </div>
-
-    )
-
-}
-
+    );
+};
 
 export default Pockets;

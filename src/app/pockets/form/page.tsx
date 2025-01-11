@@ -1,5 +1,7 @@
 "use client";
 
+
+
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import usePocketStore from "../../store/usePocket";
@@ -7,12 +9,10 @@ import Notice from "@/app/components/notice";
 import { FaPencilAlt } from "react-icons/fa"; // 아이콘 추가
 import axios from 'axios';
 
-
 // Axios 설정
 const api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://fortunetoss.store",
 });
-
 
 // 랜덤 질문 가져오기 - GET
 const fetchRandomQuestion = async () => {
@@ -20,17 +20,15 @@ const fetchRandomQuestion = async () => {
     return response.data;
 };
 
-
-
 // 문제 제출 - POST
 const submitCustomQuestion = async (
     title: string,
     answers: string[],
     correctAnswer: string | null,
     content: string | null,
-    shape: string,
-    card: string,
-    paper: string
+    shape: string | null,
+    card: string | null,
+    paper: string | null
 ) => {
     try {
         const response = await api.post("/api/questionCustom", {
@@ -53,28 +51,13 @@ const submitCustomQuestion = async (
     }
 };
 
-
-
-// questionCustomId를 기반으로 데이터 가져오기 - GET
-const fetchGeneratedAnswer = async (questionCustomId: string) => {
-    try {
-        const response = await api.get(`/api/answer/${questionCustomId}`);
-        return response.data;
-    } catch (error: any) {
-        console.error("데이터 가져오기 중 오류 발생:", error.response || error.message);
-        throw new Error("데이터 가져오기에 실패했습니다.");
-    }
-};
-
-
-
 const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터로 전달된 select 값 가져오기
 
     // Zustand 상태 관리
-    const { setQuestion, setAnswers, setCorrectAnswer, setContent } = usePocketStore();
+    const { setQuestion, setAnswers, setCorrectAnswer, setContent, resetPocketState } = usePocketStore();
 
     // 폼 상태 관리
     const [title, setTitle] = useState<string>(""); // 질문 상태
@@ -83,21 +66,35 @@ const Form = () => {
     const [editingIndex, setEditingIndex] = useState<number | null>(null); // 현재 수정 중인 답변 인덱스
     const [contentInput, setContentInput] = useState<string>(""); // 덕담 입력 상태
 
-
-
     useEffect(() => {
-        // 랜덤 문제 가져오기
+        // 랜덤 문제 가져오기 (주석 처리)
+        /*
         const fetchQuestion = async () => {
             try {
                 const data = await fetchRandomQuestion();
-                setTitle(data.title);
-                updateAnswers([data.select1, data.select2, data.select3, data.select4]);
-            } catch (error) {
-                console.error("랜덤 문제 가져오기 실패:", error);
+
+                if (
+                    data &&
+                    typeof data.title === "string" &&
+                    typeof data.select1 === "string" &&
+                    typeof data.select2 === "string" &&
+                    typeof data.select3 === "string" &&
+                    typeof data.select4 === "string"
+                ) {
+                    setTitle(data.title);
+                    updateAnswers([data.select1, data.select2, data.select3, data.select4]);
+                } else {
+                    console.error("API 응답 형식이 잘못되었습니다:", data);
+                    alert("랜덤 질문을 가져오는 중 문제가 발생했습니다. 다시 시도해주세요.");
+                }
+            } catch (error: any) {
+                console.error("랜덤 질문 가져오기 실패:", error.response || error.message);
+                alert("랜덤 질문을 가져오는 데 실패했습니다. 네트워크를 확인해주세요.");
             }
         };
 
         fetchQuestion();
+        */
     }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -116,29 +113,24 @@ const Form = () => {
             setCorrectAnswer(answers[selectedAnswer]);
         }
 
-        // 조건부 상태 업데이트 (select=together일 때만 letter 포함)
-        if (selectOption === "together") {
-            setContent(contentInput); // 사용자가 입력한 덕담을 Zustand에 저장
-        }
-
         // POST 요청 데이터 구성
         const postData = {
-            question: title,
+            title,
             answers,
             correctAnswer: selectedAnswerText,
-            content: selectOption === "together" ? contentInput : null, // 덕담은 선택적으로 포함
-            shape: shape || "",
-            card: card || "",
-            paper: paper || "",
+            content: selectOption === "problem" ? null : contentInput,
+            shape: selectOption === "problem" ? null : shape,
+            card: selectOption === "problem" ? null : card,
+            paper: selectOption === "problem" ? null : paper,
         };
 
         try {
             // POST 요청
             const response = await submitCustomQuestion(
-                postData.question,
+                postData.title,
                 postData.answers,
-                postData.correctAnswer || "",
-                postData.content || "",
+                postData.correctAnswer,
+                postData.content,
                 postData.shape,
                 postData.card,
                 postData.paper
@@ -149,16 +141,11 @@ const Form = () => {
             // 응답 데이터에서 questionCustomId와 shape 추출
             const { questionCustomId, shape: responseShape } = response;
 
-            // GET 요청 (추가 데이터 가져오기)
-            const generatedAnswer = await fetchGeneratedAnswer(questionCustomId);
-            console.log("데이터 받아오기 성공:", generatedAnswer);
-
             // 페이지 이동 (응답 데이터 포함)
             router.push(`/pockets/complete?questionCustomId=${questionCustomId}&shape=${responseShape}`);
         } catch (error) {
             console.error("데이터 전송 중 오류 발생:", error);
 
-            // 사용자에게 오류 알림
             alert("복주머니 만드는 중 문제가 발생했습니다. 다시 시도해주세요.");
         }
     };
