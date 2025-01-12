@@ -15,7 +15,7 @@ const fetchRandomQuestion = async () => {
         return response.data.data;
     } catch (error:any) {
         console.error("랜덤 질문 가져오기 실패:", error);
-        console.error(error.response?.data);
+        console.error(error);
         throw new Error("랜덤 질문 가져오기 실패");
     }
 };
@@ -26,12 +26,11 @@ const submitCustomQuestion = async (
     answers: string[],
     correctAnswer: string | null,
     content: string | null,
-    shape: string | null,
+    domain: string | null,
     card: string | null,
-    paper: string | null
 ) => {
     try {
-        const response = await authApiClient.post("/api/questionCustom", {
+        const response = await authApiClient.post("/api/question", {
             title,
             select1: answers[0],
             select2: answers[1],
@@ -39,23 +38,28 @@ const submitCustomQuestion = async (
             select4: answers[3],
             answer: correctAnswer,
             content,
-            shape,
+            domain,
             card,
-            paper,
         });
+
+        console.log("POST 응답 데이터:", response.data);
 
         return response.data; // { questionCustomId, shape }
     } catch (error) {
+
         console.error("문제 제출 중 오류 발생:", error);
         throw new Error("문제 제출에 실패했습니다.");
     }
 };
 
+
+
 const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터로 전달된 select 값 가져오기
-
+    const [isClicked, setIsClicked] = useState(false);
+    const [isSelected, setIsSelected] = useState(false); // 답변 선택을 했는지 안했는지
     // Zustand 상태 관리
     const { setQuestion, setAnswers, setCorrectAnswer, setContent } = usePocketStore();
 
@@ -65,6 +69,16 @@ const Form = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null); // 선택된 정답
     const [editingIndex, setEditingIndex] = useState<number | null>(null); // 현재 수정 중인 답변 인덱스
     const [contentInput, setContentInput] = useState<string>(""); // 덕담 입력 상태
+
+
+
+    // 답변 선택하면 동작 정의...
+    const handleSelection = (index: number) => {
+        setSelectedAnswer(index); // 선택된 정답 상태 업데이트
+        setIsSelected(true); // 답변이 선택된 상태로 변경
+
+    };
+
 
     // 랜덤 질문 가져오기
     useEffect(() => {
@@ -102,7 +116,7 @@ const Form = () => {
         e.preventDefault();
 
         // Zustand에서 전역 상태 가져오기
-        const { shape, card, paper } = usePocketStore.getState();
+        const { domain, card, paper } = usePocketStore.getState();
 
         // 선택된 정답 텍스트 가져오기
         const selectedAnswerText = selectedAnswer !== null ? answers[selectedAnswer] : null;
@@ -114,19 +128,30 @@ const Form = () => {
             setCorrectAnswer(answers[selectedAnswer]);
         }
 
-        // POST 요청 데이터 구성
+
+        // POST 요청 데이터 구성과 타입 정의
         const postData = {
-            title,
+            title: title,
             select1: answers[0],
             select2: answers[1],
             select3: answers[2],
             select4: answers[3],
-            answer: selectedAnswerText, // 선택된 정답
+            answer: selectedAnswerText,
             content: selectOption === "problem" ? null : contentInput,
-            shape: selectOption === "problem" ? null : shape,
+            domain: "C",
             card: selectOption === "problem" ? null : card,
-            paper: selectOption === "problem" ? null : paper,
+        } satisfies {
+            title: string;
+            select1: string;
+            select2: string;
+            select3: string;
+            select4: string;
+            answer: string | null;
+            content: string | null;
+            domain: string;
+            card: string | null;
         };
+
 
         try {
             // POST 요청
@@ -135,9 +160,8 @@ const Form = () => {
                 [postData.select1, postData.select2, postData.select3, postData.select4],
                 postData.answer,
                 postData.content,
-                postData.shape,
+                postData.domain,
                 postData.card,
-                postData.paper
             );
             console.log("POST 성공:", response);
 
@@ -174,9 +198,9 @@ const Form = () => {
                     <div
                         key={index}
                         className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full cursor-pointer ${
-                            selectedAnswer === index ? "bg-blue-500 text-white" : "bg-gray-100 text-black"
+                            selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
                         }`}
-                        onClick={() => setSelectedAnswer(index)} // 클릭 시 정답 선택 및 배경색 변경
+                        onClick={() => handleSelection(index) }
                     >
                         {/* 정답 선택 */}
                         <input
@@ -202,7 +226,18 @@ const Form = () => {
 
                 {/* 제출 버튼 */}
                 <div className="flex justify-end mt-4">
-                    <button type="submit" className="text-blue-500 px-6 py-2 rounded text-xl">
+                    <button
+                        type="submit"
+                        onClick={(e) => {
+                            if (selectedAnswer === null) {
+                                e.preventDefault();
+                                alert("답변을 선택해주세요!"); // 경고 메시지
+                            }
+                        }}
+                        className={`px-6 py-2 rounded text-xl ${
+                            selectedAnswer !== null ? "text-red-600" : " text-black "
+                        }`}
+                    >
                         다음
                     </button>
                 </div>

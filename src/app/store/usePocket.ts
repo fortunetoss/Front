@@ -9,7 +9,7 @@ export interface PocketState {
     answers: string[]; // 답변 배열
     correctAnswer: string | null; // 정답
     content: string | null; // 덕담
-    shape: string | null; // 복주머니 모양
+    domain: string | null; // 복주머니 모양
     card: string | null; // 카드 모양
     paper: string | null; // 편지지 이미지
     finalUrl: string | null; // 최종 URL 생성
@@ -21,7 +21,7 @@ export interface PocketState {
     setAnswers: (answers: string[]) => void;
     setCorrectAnswer: (answer: string) => void;
     setContent: (letter: string) => void;
-    setShape: (shape: string) => void;
+    setDomain: (domain: string) => void;
     setCard: (card: string) => void;
     setPaper: (paper: string) => void;
     setFinalUrl: (url: string) => void;
@@ -39,7 +39,7 @@ const usePocketStore = create<PocketState>()(
             answers: ["", "", "", ""],
             correctAnswer: null,
             content: null,
-            shape: null,
+            domain: null,
             card: null,
             paper: null,
             finalUrl: null,
@@ -49,7 +49,7 @@ const usePocketStore = create<PocketState>()(
             setAnswers: (answers) => set({ answers }),
             setCorrectAnswer: (answer) => set({ correctAnswer: answer }),
             setContent: (content) => set({ content }),
-            setShape: (shape) => set({ shape }),
+            setDomain: (domain) => set({ domain }),
             setCard: (card) => set({ card }),
             setPaper: (paper) => set({ paper }),
             setFinalUrl: (url) => set({ finalUrl: url }),
@@ -62,7 +62,7 @@ const usePocketStore = create<PocketState>()(
                     answers: ["", "", "", ""],
                     correctAnswer: null,
                     content: null,
-                    shape: null,
+                    domain: null,
                     card: null,
                     paper: null,
                     finalUrl: null,
