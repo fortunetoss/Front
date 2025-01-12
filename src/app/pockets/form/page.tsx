@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import usePocketStore from "../../store/usePocket";
-import Notice from "@/app/components/notice";
+import Notice from "../../../components/notice";
 import { FaPencilAlt } from "react-icons/fa"; // 아이콘 추가
 import {authApiClient} from "@/api/api-client";
 
@@ -228,10 +228,28 @@ const Form = () => {
                 <div className="flex justify-end mt-4">
                     <button
                         type="submit"
-                        onClick={(e) => {
+                        onClick={async (e) => {
+                            // 비동기처리해서 . . 쿼리파라미터 분리랑 post 요청 동시에 일어나게 함
+                            e.preventDefault();
                             if (selectedAnswer === null) {
-                                e.preventDefault();
-                                alert("답변을 선택해주세요!"); // 경고 메시지
+                                // 만약 사용자가 답변 안 고르면 경고창 뜨게 함
+                                alert("답변을 선택해주세요!");
+                                return;
+                            }
+                            if (selectOption === "problem") {
+                                // select=problem일 경우 바로 POST 요청
+                                try {
+                                    await handleSubmit(e);
+                                    console.log("POST 요청 성공!");
+                                } catch (error) {
+                                    console.error("POST 요청 실패:", error);
+                                    alert(" 복주머니를 만드는 중 문제가 발생했습니다. 다시 시도해주세요!");
+                                }
+
+                            } else if (selectOption === "together") {
+                                // select=together일 경우 /letter로 이동
+                                // (덕담페이지로 이동 )
+                                router.push("/pockets/form/letter");
                             }
                         }}
                         className={`px-6 py-2 rounded text-xl ${

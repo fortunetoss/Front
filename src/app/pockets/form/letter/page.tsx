@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "../../../store/usePocket"; // Zustand 가져오기
-import Notice from "@/app/components/notice";
+import Notice from "../../../../components/notice";
 
 const Content = () => {
     const router = useRouter();

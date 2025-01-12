@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "../store/usePocket";
-import Notice from "@/app/components/notice";
+import Notice from "../../components/notice";
 
 const Pockets = () => {
     const router = useRouter();
