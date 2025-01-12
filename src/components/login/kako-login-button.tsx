@@ -1,6 +1,6 @@
 "use client";
 
-const KAKAO_LOGIN_URL = "https://fortunetoss.store/oauth2/authorization/kakao";
+const KAKAO_LOGIN_URL = `${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/kakao`;
 
 export default function KakaoLoginButton() {
   const handleClick = () => {
