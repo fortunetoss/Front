@@ -27,16 +27,13 @@ authApiClient.interceptors.response.use(
   },
   async (error) => {
     // 배포 전까지 주석 처리
-
     // const originalRequest = error.config;
-
     // if (error.code === 401 && !originalRequest._retry) {
     //   await reissueAccessToken();
     //   originalRequest._retry = true;
     //   authApiClient(originalRequest);
-    // } else if (error.code === 400) {
-    //   redirect("/");
     // }
-    redirect("/");
+
+    return Promise.reject(error);
   }
 );
