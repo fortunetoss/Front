@@ -1,29 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAnswererStore from "@/store/answerer";
 import { authApiClient } from "@/api/api-client";
 
 export default function NicknameForm() {
   const [enteredName, setEnteredName] = useState<string>("");
-  const [isValidName, setIsValidName] = useState<boolean>(false);
   const setAnswererName = useAnswererStore((state) => state.setName);
   const { questionId } = useParams();
   const router = useRouter();
 
   useEffect(() => {
-    const getDefaultName = async () => {
-      const response = await authApiClient.get("/api/name");
-      const defaultName = response.data.data.name;
-      setEnteredName(defaultName);
-      setIsValidName(defaultName.length >= 1 && defaultName.length <= 10);
-    };
-
     if (!questionId) {
-      getDefaultName();
+      (async () => {
+        const response = await authApiClient.get("/api/name");
+        const defaultName = response.data.data.name;
+        setEnteredName(defaultName);
+      })();
     }
   }, []);
+
+  const isValidName = useMemo(
+    () => enteredName.length >= 1 && enteredName.length <= 10,
+    [enteredName]
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,14 +33,14 @@ export default function NicknameForm() {
       setAnswererName(enteredName);
       router.push(`/${questionId}/answer`);
     } else {
-      await authApiClient.patch("/api/name", { name: enteredName });
+      await authApiClient.post("/api/name", { name: enteredName });
+      router.push("/pockets");
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.currentTarget.value.trim();
     setEnteredName(input);
-    setIsValidName(input.length >= 1 && input.length <= 10);
   };
 
   return (
