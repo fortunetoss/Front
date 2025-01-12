@@ -8,10 +8,10 @@ export interface PocketState {
     question: string | null; // 문제 제목
     answers: string[]; // 답변 배열
     correctAnswer: string | null; // 정답
-    content: string | null; // 덕담
-    domain: string | null; // 복주머니 모양
-    card: string | null; // 카드 모양
-    paper: string | null; // 편지지 이미지
+    content: string | null; // 복주머니 모양 ( 원래 기존에 shape 였던 것)
+    domain: string | null; // 덕담
+    card: string | null; // 편지지 앞면
+    paper: string | null; // 편지지 뒷면
     finalUrl: string | null; // 최종 URL 생성
 
     // 상태를 설정하는 함수

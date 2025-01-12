@@ -2,83 +2,23 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FaPencilAlt } from "react-icons/fa";
 import usePocketStore from "../../store/usePocket";
 import Notice from "../../../components/notice";
-import { FaPencilAlt } from "react-icons/fa"; // 아이콘 추가
-import {authApiClient} from "@/api/api-client";
-
-
-// 랜덤 질문 가져오기 - GET
-const fetchRandomQuestion = async () => {
-    try {
-        const response = await authApiClient.get("/api/pouch/question");
-        return response.data.data;
-    } catch (error:any) {
-        console.error("랜덤 질문 가져오기 실패:", error);
-        console.error(error);
-        throw new Error("랜덤 질문 가져오기 실패");
-    }
-};
-
-// 문제 제출 - POST
-const submitCustomQuestion = async (
-    title: string,
-    answers: string[],
-    correctAnswer: string | null,
-    content: string | null,
-    domain: string | null,
-    card: string | null,
-) => {
-    try {
-        const response = await authApiClient.post("/api/question", {
-            title,
-            select1: answers[0],
-            select2: answers[1],
-            select3: answers[2],
-            select4: answers[3],
-            answer: correctAnswer,
-            content,
-            domain,
-            card,
-        });
-
-        console.log("POST 응답 데이터:", response.data);
-
-        return response.data; // { questionCustomId, shape }
-    } catch (error) {
-
-        console.error("문제 제출 중 오류 발생:", error);
-        throw new Error("문제 제출에 실패했습니다.");
-    }
-};
-
-
+import { fetchRandomQuestion, submitCustomQuestion } from "@/api/api-form";
 
 const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const selectOption = searchParams.get("select"); // 쿼리 파라미터로 전달된 select 값 가져오기
-    const [isClicked, setIsClicked] = useState(false);
-    const [isSelected, setIsSelected] = useState(false); // 답변 선택을 했는지 안했는지
-    // Zustand 상태 관리
-    const { setQuestion, setAnswers, setCorrectAnswer, setContent } = usePocketStore();
+    const selectOption = searchParams.get("select"); // 쿼리 파라미터
+    const { setQuestion, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
 
-    // 폼 상태 관리
-    const [title, setTitle] = useState<string>(""); // 질문 상태
-    const [answers, updateAnswers] = useState<string[]>(["", "", "", ""]); // 답변 상태
-    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null); // 선택된 정답
-    const [editingIndex, setEditingIndex] = useState<number | null>(null); // 현재 수정 중인 답변 인덱스
-    const [contentInput, setContentInput] = useState<string>(""); // 덕담 입력 상태
-
-
-
-    // 답변 선택하면 동작 정의...
-    const handleSelection = (index: number) => {
-        setSelectedAnswer(index); // 선택된 정답 상태 업데이트
-        setIsSelected(true); // 답변이 선택된 상태로 변경
-
-    };
-
+    // 폼 상태
+    const [title, setTitle] = useState<string>("");
+    const [answers, updateAnswers] = useState<string[]>(["", "", "", ""]);
+    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+    const [editingIndex, setEditingIndex] = useState<number | null>(null); // 수정 중인 답변 인덱스
+    const [editingText, setEditingText] = useState<string>(""); // 수정 중인 텍스트
 
     // 랜덤 질문 가져오기
     useEffect(() => {
@@ -86,7 +26,6 @@ const Form = () => {
             try {
                 const data = await fetchRandomQuestion();
 
-                // 데이터 검증
                 if (
                     data &&
                     typeof data.title === "string" &&
@@ -100,7 +39,6 @@ const Form = () => {
                     updateAnswers([data.select1, data.select2, data.select3, data.select4]);
                 } else {
                     console.error("API 응답 형식이 잘못되었습니다:", data);
-                    alert("랜덤 질문을 가져오는 중 문제가 발생했습니다.");
                 }
             } catch (error) {
                 console.error("랜덤 질문 가져오기 실패:", error);
@@ -111,155 +49,125 @@ const Form = () => {
         fetchQuestion();
     }, []);
 
+    // 답변 수정 저장
+    const handleSaveEdit = (index: number) => {
+        const updatedAnswers = [...answers];
+        updatedAnswers[index] = editingText;
+        updateAnswers(updatedAnswers); // 답변 업데이트
+        setEditingIndex(null); // 수정 모드 종료
+        setEditingText(""); // 수정 텍스트 초기화
+    };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    // 제출 핸들러
+    const handleSubmit = async () => {
+        if (selectedAnswer === null) {
+            alert("답변을 선택해주세요!");
+            return;
+        }
 
-        // Zustand에서 전역 상태 가져오기
-        const { domain, card, paper } = usePocketStore.getState();
-
-        // 선택된 정답 텍스트 가져오기
-        const selectedAnswerText = selectedAnswer !== null ? answers[selectedAnswer] : null;
+        const correctAnswer = answers[selectedAnswer];
 
         // Zustand 상태 업데이트
         setQuestion(title);
         setAnswers(answers);
-        if (selectedAnswer !== null) {
-            setCorrectAnswer(answers[selectedAnswer]);
-        }
+        setCorrectAnswer(correctAnswer);
 
-
-        // POST 요청 데이터 구성과 타입 정의
-        const postData = {
-            title: title,
-            select1: answers[0],
-            select2: answers[1],
-            select3: answers[2],
-            select4: answers[3],
-            answer: selectedAnswerText,
-            content: selectOption === "problem" ? null : contentInput,
-            domain: "C",
-            card: selectOption === "problem" ? null : card,
-        } satisfies {
-            title: string;
-            select1: string;
-            select2: string;
-            select3: string;
-            select4: string;
-            answer: string | null;
-            content: string | null;
-            domain: string;
-            card: string | null;
-        };
-
-
-        try {
-            // POST 요청
-            const response = await submitCustomQuestion(
-                postData.title,
-                [postData.select1, postData.select2, postData.select3, postData.select4],
-                postData.answer,
-                postData.content,
-                postData.domain,
-                postData.card,
-            );
-            console.log("POST 성공:", response);
-
-
-            // 응답 데이터에서 questionCustomId와 shape 추출
-            const { questionCustomId, shape: responseShape } = response;
-
-            // 페이지 이동 (응답 데이터 포함)
-            router.push(`/pockets/complete?questionCustomId=${questionCustomId}&shape=${responseShape}`);
-        } catch (error) {
-            console.error("데이터 전송 중 오류 발생:", error);
-
-            alert("복주머니 만드는 중 문제가 발생했습니다. 다시 시도해주세요.");
+        if (selectOption === "problem") {
+            try {
+                // 문제만 POST
+                const response = await submitCustomQuestion(
+                    title,
+                    answers,
+                    correctAnswer,
+                    null, // 덕담 없음
+                    "C", // 도메인
+                    null, // 카드 없음
+                    null // 편지지 없음
+                );
+                console.log("POST 성공:", response);
+                router.push("/pockets/complete");
+            } catch (error) {
+                console.error("데이터 전송 중 오류 발생:", error);
+                alert("문제를 전송하는 중 문제가 발생했습니다.");
+            }
+        } else if (selectOption === "together") {
+            // 덕담 페이지로 이동
+            router.push("/pockets/form/letter");
+        } else {
+            alert("올바른 선택값(select)이 아닙니다.");
         }
     };
 
     return (
         <div className="container mx-auto p-4">
             <Notice text="문제와 답변은 수정 가능해요" />
-            <form onSubmit={handleSubmit}>
-                {/* 질문 입력 */}
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        placeholder="질문을 입력하세요"
-                        className="w-full text-3xl placeholder-black text-center p-2"
-                    />
+
+            {/* 질문 입력 */}
+            <div className="mb-4">
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="질문을 입력하세요"
+                    className="w-full text-3xl placeholder-black text-center p-2"
+                />
+            </div>
+
+            {/* 답변 입력 */}
+            {answers.map((answer, index) => (
+                <div
+                    key={index}
+                    className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
+                        selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
+                    }`}
+                >
+                    {editingIndex === index ? (
+                        <>
+                            <input
+                                type="text"
+                                value={editingText}
+                                onChange={(e) => setEditingText(e.target.value)}
+                                className="flex-grow bg-gray-50 border border-gray-300 rounded-lg p-2"
+                            />
+                            <button
+                                className="text-green-500"
+                                onClick={() => handleSaveEdit(index)}
+                            >
+                                저장
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <input
+                                type="text"
+                                value={answer}
+                                readOnly
+                                className="flex-grow bg-transparent border-none outline-none"
+                                onClick={() => setSelectedAnswer(index)}
+                            />
+                            <button
+                                className="text-blue-500 flex items-center"
+                                onClick={() => {
+                                    setEditingIndex(index);
+                                    setEditingText(answer);
+                                }}
+                            >
+                                <FaPencilAlt className="mr-1" />
+                            </button>
+                        </>
+                    )}
                 </div>
+            ))}
 
-                {/* 답변 입력 및 선택 */}
-                {answers.map((answer, index) => (
-                    <div
-                        key={index}
-                        className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full cursor-pointer ${
-                            selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
-                        }`}
-                        onClick={() => handleSelection(index) }
-                    >
-                        {/* 정답 선택 */}
-                        <input
-                            type="text"
-                            value={answer}
-                            readOnly
-                            className="flex-grow bg-transparent border-none outline-none cursor-pointer"
-                        />
-
-                        {/* 수정 버튼 */}
-                        <button
-                            type="button"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setEditingIndex(index);
-                            }}
-                            className="text-blue-500 flex items-center"
-                        >
-                            <FaPencilAlt className="mr-1" />
-                        </button>
-                    </div>
-                ))}
-
-                {/* 제출 버튼 */}
-                <div className="flex justify-end mt-4">
-                    <button
-                        type="submit"
-                        onClick={async (e) => {
-                            // 비동기처리해서 . . 쿼리파라미터 분리랑 post 요청 동시에 일어나게 함
-                            e.preventDefault();
-                            if (selectedAnswer === null) {
-                                // 만약 사용자가 답변 안 고르면 경고창 뜨게 함
-                                alert("답변을 선택해주세요!");
-                                return;
-                            }
-                            if (selectOption === "problem") {
-                                // select=problem일 경우 바로 POST 요청
-                                try {
-                                    await handleSubmit(e);
-                                    console.log("POST 요청 성공!");
-                                } catch (error) {
-                                    console.error("POST 요청 실패:", error);
-                                    alert(" 복주머니를 만드는 중 문제가 발생했습니다. 다시 시도해주세요!");
-                                }
-
-                            } else if (selectOption === "together") {
-                                // select=together일 경우 /letter로 이동
-                                // (덕담페이지로 이동 )
-                                router.push("/pockets/form/letter");
-                            }
-                        }}
-                        className={`px-6 py-2 rounded text-xl ${
-                            selectedAnswer !== null ? "text-red-600" : " text-black "
-                        }`}
-                    >
-                        다음
-                    </button>
-                </div>
-            </form>
+            {/* 제출 버튼 */}
+            <div className="flex justify-end mt-4">
+                <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 rounded text-xl text-red-600"
+                >
+                    다음
+                </button>
+            </div>
         </div>
     );
 };
