@@ -1,7 +1,6 @@
 "use client";
 
-// 나중에 도메인 주소 변경
-const KAKAO_LOGIN_URL = "http://localhost:3000/callback"; //"http://localhost:8080/oauth2/authorization/kakao";
+const KAKAO_LOGIN_URL = `${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/kakao`;
 
 export default function KakaoLoginButton() {
   const handleClick = () => {
