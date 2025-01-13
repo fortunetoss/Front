@@ -6,12 +6,15 @@ import { FaPencilAlt } from "react-icons/fa";
 import usePocketStore from "../../store/usePocket";
 import Notice from "../../../components/notice";
 import { fetchRandomQuestion, submitCustomQuestion } from "@/api/api-form";
+import { randomProblems } from "@/utils/problem";
+
 
 const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터
     const { setQuestion, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
+
 
     // 폼 상태
     const [title, setTitle] = useState<string>("");
@@ -42,7 +45,10 @@ const Form = () => {
                 }
             } catch (error) {
                 console.error("랜덤 질문 가져오기 실패:", error);
-                alert("랜덤 질문을 가져오는 데 실패했습니다.");
+                const fallback = randomProblems[Math.floor(Math.random() * randomProblems.length)];
+                setTitle(fallback.title);
+                updateAnswers([fallback.select1, fallback.select2, fallback.select3, fallback.select4]); // 답변 업데이트
+
             }
         };
 
@@ -58,7 +64,7 @@ const Form = () => {
         setEditingText(""); // 수정 텍스트 초기화
     };
 
-    // 제출 핸들러
+    // 제출
     const handleSubmit = async () => {
         if (selectedAnswer === null) {
             alert("답변을 선택해주세요!");
@@ -74,29 +80,32 @@ const Form = () => {
 
         if (selectOption === "problem") {
             try {
-                // 문제만 POST
-                const response = await submitCustomQuestion(
+                const { questionId, domain } = await submitCustomQuestion(
                     title,
                     answers,
                     correctAnswer,
-                    null, // 덕담 없음
-                    "C", // 도메인
-                    null, // 카드 없음
-                    null // 편지지 없음
+                    null,
+                    "D", // 도메인
+                    null,
+                    null
                 );
-                console.log("POST 성공:", response);
-                router.push("/pockets/complete");
+                console.log("ID:", questionId, "domain:", domain);
+
+
+                // Complete URL 생성 및 이동
+                const completeUrl = `/pockets/complete?Id=${questionId}`;
+                router.push(completeUrl);
             } catch (error) {
                 console.error("데이터 전송 중 오류 발생:", error);
                 alert("문제를 전송하는 중 문제가 발생했습니다.");
             }
         } else if (selectOption === "together") {
-            // 덕담 페이지로 이동
             router.push("/pockets/form/letter");
         } else {
             alert("올바른 선택값(select)이 아닙니다.");
         }
     };
+
 
     return (
         <div className="container mx-auto p-4">

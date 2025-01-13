@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Notice from "@/app/components/notice";
+import Notice from "../../../components/notice";
 import axios from "axios";
 import {authApiClient} from "@/api/api-client";
 

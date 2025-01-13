@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "../store/usePocket";
 import Notice from "../../components/notice";
+import {pocketImages} from "@/utils/images/image";
 
 const Pockets = () => {
     const router = useRouter();
@@ -11,16 +12,6 @@ const Pockets = () => {
 
     //pocketImage 는 백엔드에서 수정해주시면 수정해야겠다. .
 
-    const pocketImages = [
-        "pocketsImage/복주머니-01.png",
-        "pocketsImage/복주머니-02.png",
-        "pocketsImage/복주머니-03.png",
-        "pocketsImage/복주머니-04.png",
-        "pocketsImage/복주머니-05.png",
-        "pocketsImage/복주머니-06.png",
-        "pocketsImage/복주머니-07.png",
-        "pocketsImage/복주머니-08.png",
-    ];
 
     const handlePocket = (index: number) => {
         setPocketIndex(index);

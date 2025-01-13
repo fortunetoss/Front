@@ -92,7 +92,7 @@ const Content = () => {
                 answers,
                 correctAnswer,
                 content,
-                "C", // domain
+                "C", // 주머니 모양
                 cardData
             );
 
@@ -128,7 +128,7 @@ const Content = () => {
                 {showButton && !isFlipped && (
                     <button
                         onClick={handleFlipCard}
-                        className="absolute z-20 bg-blue-500 text-white px-4 py-2 rounded-md shadow-md"
+                        className="absolute z-20 bg-blue-500 text-white px-4 py-2  shadow-md"
                     >
                         덕담 작성하기
                     </button>
