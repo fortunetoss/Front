@@ -8,22 +8,13 @@ import Notice from '../../../components/notice';
 const Select = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const pocketIndex = searchParams.get("pocketIndex");
     const setSelectOption = usePocketStore((state) => state.setSelectOption);
-    const setPocketIndex = usePocketStore((state) => state.setPocketIndex);
 
-    React.useEffect(() => {
-        if (pocketIndex) {
-            setPocketIndex(Number(pocketIndex));
-        } else {
-            console.error("pocketIndex가 설정되지 않았습니다.");
-        }
-    }, [pocketIndex, setPocketIndex]);
 
     const handleOption = (option: string) => {
 
         setSelectOption(option);
-        router.push(`/pockets/form?pocketIndex=${pocketIndex}&select=${option}`);
+        router.push(`/pockets/form?&select=${option}`);
     };
 
     return (

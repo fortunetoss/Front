@@ -8,16 +8,14 @@ import Notice from "../../../components/notice";
 import { fetchRandomQuestion, submitCustomQuestion } from "@/api/api-form";
 import { randomProblems } from "@/utils/problem";
 
-
 const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터
-    const { domain,setTitle, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
 
+    const { domain, setTitle, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
 
-    // 폼 상태
-    const [title, setTitle] = useState<string>("");
+    const [title, setLocalTitle] = useState<string>(""); // 로컬 상태
     const [answers, updateAnswers] = useState<string[]>(["", "", "", ""]);
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [editingIndex, setEditingIndex] = useState<number | null>(null); // 수정 중인 답변 인덱스
@@ -28,7 +26,6 @@ const Form = () => {
         const fetchQuestion = async () => {
             try {
                 const data = await fetchRandomQuestion();
-
                 if (
                     data &&
                     typeof data.title === "string" &&
@@ -37,8 +34,7 @@ const Form = () => {
                     typeof data.select3 === "string" &&
                     typeof data.select4 === "string"
                 ) {
-                    // 상태 업데이트
-                    setTitle(data.title);
+                    setLocalTitle(data.title);
                     updateAnswers([data.select1, data.select2, data.select3, data.select4]);
                 } else {
                     console.error("API 응답 형식이 잘못되었습니다:", data);
@@ -46,9 +42,8 @@ const Form = () => {
             } catch (error) {
                 console.error("랜덤 질문 가져오기 실패:", error);
                 const fallback = randomProblems[Math.floor(Math.random() * randomProblems.length)];
-                setTitle(fallback.title);
-                updateAnswers([fallback.select1, fallback.select2, fallback.select3, fallback.select4]); // 답변 업데이트
-
+                setLocalTitle(fallback.title);
+                updateAnswers([fallback.select1, fallback.select2, fallback.select3, fallback.select4]);
             }
         };
 
@@ -74,11 +69,9 @@ const Form = () => {
         const correctAnswer = answers[selectedAnswer];
 
         // Zustand 상태 업데이트
-        setQuestion(title);
+        setTitle(title);
         setAnswers(answers);
         setCorrectAnswer(correctAnswer);
-
-
 
         if (selectOption === "problem") {
             try {
@@ -87,15 +80,14 @@ const Form = () => {
                     answers,
                     correctAnswer,
                     null, // content = null
-                    domain, // domain = domain
-                    null, // card= null
+                    domain, // domain 유지
+                    null, // card = null
                     null // paper = null
                 );
                 console.log("ID:", questionId);
 
-
                 // Complete URL 생성 및 이동
-                const completeUrl = /pockets/complete?Id=${questionId};
+                const completeUrl = `/pockets/complete?Id=${questionId}`;
                 router.push(completeUrl);
             } catch (error) {
                 console.error("데이터 전송 중 오류 발생:", error);
@@ -104,21 +96,20 @@ const Form = () => {
         } else if (selectOption === "together") {
             router.push("/pockets/form/letter");
         } else {
-            alert("올바른 선택값(select)이 아닙니다.");
+            alert("올바르지 않은 선택값입니다.");
         }
     };
 
-
     return (
         <div className="container mx-auto p-4">
-            <Notice text="문제와 답변은 수정 가능해요" />
+            <Notice text="문제와 답변은 수정 가능합니다." />
 
             {/* 질문 입력 */}
             <div className="mb-4">
                 <input
                     type="text"
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => setLocalTitle(e.target.value)}
                     placeholder="질문을 입력하세요"
                     className="w-full text-3xl placeholder-black text-center p-2"
                 />
@@ -128,9 +119,9 @@ const Form = () => {
             {answers.map((answer, index) => (
                 <div
                     key={index}
-                    className={flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
+                    className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
                         selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
-                    }}
+                    }`}
                 >
                     {editingIndex === index ? (
                         <>
@@ -184,4 +175,3 @@ const Form = () => {
 };
 
 export default Form;
-

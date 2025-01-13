@@ -9,9 +9,12 @@ export interface PocketState {
     domain: string | null; // 복주머니 도메인
     card: string | null; // 선택한 카드 (A~E)
     paper: string | null; // 선택한 카드 뒷면
+    selectOption: string | null; // "problem" 또는 "together"
+
 
     setTitle: (title: string) => void;
     setAnswers: (answers: string[]) => void;
+    setSelectOption: (option: string) => void; // 옵션 설정 함수
     setCorrectAnswer: (answer: string) => void;
     setContent: (content: string) => void;
     setDomain: (domain: string) => void;
@@ -28,6 +31,7 @@ const usePocketStore = create<PocketState>()(
             content: null,
             domain: null,
             card: null,
+            selectOption: null,
             paper: null,
 
             setTitle: (title) => set({ title }),
@@ -36,6 +40,8 @@ const usePocketStore = create<PocketState>()(
             setContent: (content) => set({ content }),
             setDomain: (domain) => set({ domain }),
             setCard: (card) => set({ card }),
+            setSelectOption: (option) => set({ selectOption: option }),
+
             setPaper: (paper) => set({ paper }),
         }),
         { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }
