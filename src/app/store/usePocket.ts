@@ -1,92 +1,45 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-// 상태 인터페이스 정의
 export interface PocketState {
-    pocketIndex: number | null; // 선택된 복주머니 번호
-    selectOption: string | null; // "problem" or "together"
-    question: string | null; // 문제 제목
-    answers: string[]; // 답변 배열
+    title: string | null; // 문제 제목
+    answers: string[]; // 선택지 배열
     correctAnswer: string | null; // 정답
-    content: string | null; // 복주머니 모양 ( 원래 기존에 shape 였던 것)
-    domain: string | null; // 덕담
-    card: string | null; // 편지지 앞면
-    paper: string | null; // 편지지 뒷면
-    finalUrl: string | null; // 최종 URL 생성
+    content: string | null; // 덕담 내용
+    domain: string | null; // 복주머니 도메인
+    card: string | null; // 선택한 카드 (A~E)
+    paper: string | null; // 선택한 카드 뒷면
 
-    // 상태를 설정하는 함수
-    setPocketIndex: (index: number) => void;
-    setSelectOption: (option: string) => void;
-    setQuestion: (question: string) => void;
+    setTitle: (title: string) => void;
     setAnswers: (answers: string[]) => void;
     setCorrectAnswer: (answer: string) => void;
-    setContent: (letter: string) => void;
+    setContent: (content: string) => void;
     setDomain: (domain: string) => void;
     setCard: (card: string) => void;
     setPaper: (paper: string) => void;
-    setFinalUrl: (url: string) => void;
-
-    resetPocketState: () => void; // 상태 초기화 함수
 }
 
-// Zustand Store 정의
 const usePocketStore = create<PocketState>()(
     persist(
         (set) => ({
-            pocketIndex: null,
-            selectOption: null,
-            question: "",
+            title: null,
             answers: ["", "", "", ""],
             correctAnswer: null,
             content: null,
             domain: null,
             card: null,
             paper: null,
-            finalUrl: null,
-            setPocketIndex: (index) => set({ pocketIndex: index }),
-            setSelectOption: (option) => set({ selectOption: option }),
-            setQuestion: (question) => set({ question }),
+
+            setTitle: (title) => set({ title }),
             setAnswers: (answers) => set({ answers }),
             setCorrectAnswer: (answer) => set({ correctAnswer: answer }),
             setContent: (content) => set({ content }),
             setDomain: (domain) => set({ domain }),
             setCard: (card) => set({ card }),
             setPaper: (paper) => set({ paper }),
-            setFinalUrl: (url) => set({ finalUrl: url }),
-
-            resetPocketState: () =>
-                set({
-                    pocketIndex: null,
-                    selectOption: null,
-                    question: "",
-                    answers: ["", "", "", ""],
-                    correctAnswer: null,
-                    content: null,
-                    domain: null,
-                    card: null,
-                    paper: null,
-                    finalUrl: null,
-                }),
         }),
-        {
-            // 상태를 URL 해시로 저장 및 복원
-            name: "pocket-storage",
-            storage: createJSONStorage(() => ({
-                getItem: () => window.location.hash.substring(1) || "{}",
-                setItem: (_, value) => {
-                    window.location.hash = value;
-                },
-                removeItem: () => {
-                    window.location.hash = "";
-                },
-            })),
-        }
+        { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }
     )
 );
-
-// 상태 변경 로그 출력
-usePocketStore.subscribe((state) => {
-    console.log(state);
-});
 
 export default usePocketStore;

@@ -13,7 +13,7 @@ const Form = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터
-    const { setQuestion, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
+    const { domain,setTitle, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
 
 
     // 폼 상태
@@ -78,22 +78,24 @@ const Form = () => {
         setAnswers(answers);
         setCorrectAnswer(correctAnswer);
 
+
+
         if (selectOption === "problem") {
             try {
-                const { questionId, domain } = await submitCustomQuestion(
+                const { questionId } = await submitCustomQuestion(
                     title,
                     answers,
                     correctAnswer,
-                    null,
-                    "D", // 도메인
-                    null,
-                    null
+                    null, // content = null
+                    domain, // domain = domain
+                    null, // card= null
+                    null // paper = null
                 );
-                console.log("ID:", questionId, "domain:", domain);
+                console.log("ID:", questionId);
 
 
                 // Complete URL 생성 및 이동
-                const completeUrl = `/pockets/complete?Id=${questionId}`;
+                const completeUrl = /pockets/complete?Id=${questionId};
                 router.push(completeUrl);
             } catch (error) {
                 console.error("데이터 전송 중 오류 발생:", error);
@@ -126,9 +128,9 @@ const Form = () => {
             {answers.map((answer, index) => (
                 <div
                     key={index}
-                    className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
+                    className={flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
                         selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
-                    }`}
+                    }}
                 >
                     {editingIndex === index ? (
                         <>
@@ -182,3 +184,4 @@ const Form = () => {
 };
 
 export default Form;
+

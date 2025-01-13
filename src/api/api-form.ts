@@ -4,7 +4,17 @@ import { authApiClient } from "@/api/api-client";
 
 
 
-
+// 사용자가 처음 로그인했을 때 복주머니 가져오기 - GET
+export const fetchLuckyPouches = async (page: number = 0): Promise<any> => {
+    try {
+        const response = await authApiClient.get(`/api/luckyPouch?page=${page}`);
+        console.log("복주머니 불러오기 성공:", response.data);
+        return response.data.data;
+    } catch (error) {
+        console.error("복주머니 불러오기 실패:", error);
+        throw new Error("복주머니 가져오기 실패");
+    }
+};
 
 // 랜덤 질문 가져오기 - GET
 export const fetchRandomQuestion = async (): Promise<{
@@ -52,8 +62,8 @@ export const submitCustomQuestion = async (
         if (response.status === 200) {
             const questionId = response.data.id;
             const domain = response.data.domain;
-            console.log("POST 성공:  ID:", questionId, "domain:", domain);
-            return { questionId, domain };
+            console.log("POST 성공:  ID:", questionId);
+            return { questionId,domain };
         } else {
             throw new Error(" 제대로 받아오지 못함");
         }

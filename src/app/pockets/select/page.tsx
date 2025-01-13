@@ -21,10 +21,7 @@ const Select = () => {
     }, [pocketIndex, setPocketIndex]);
 
     const handleOption = (option: string) => {
-        if (!pocketIndex) {
-            console.error("pocketIndex가 설정되지 않았습니다.");
-            return;
-        }
+
         setSelectOption(option);
         router.push(`/pockets/form?pocketIndex=${pocketIndex}&select=${option}`);
     };
