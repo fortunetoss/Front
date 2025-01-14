@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import useAnswererStore from "@/store/answerer";
-import { authApiClient } from "@/api/api-client";
+import useAnswererStore from "../../store/answerer";
+import { authApiClient } from "../../api/api-client";
 
 export default function NicknameForm() {
   const [enteredName, setEnteredName] = useState<string>("");
@@ -33,9 +33,7 @@ export default function NicknameForm() {
       router.push(`/${questionId}/answer`);
     } else {
       await authApiClient.patch("/api/name", { name: enteredName });
-      router.push(`/pockets`);
     }
-
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

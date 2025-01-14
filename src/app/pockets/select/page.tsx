@@ -8,10 +8,11 @@ import Notice from "../../../components/notice";
 const Select = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const setSelectOption = usePocketStore((state) => state.setSelectOption);
+  const { setSelectOption, setStep } = usePocketStore();
 
   const handleOption = (option: string) => {
     setSelectOption(option);
+    setStep(3);
     router.push(`/pockets/form?&select=${option}`);
   };
 

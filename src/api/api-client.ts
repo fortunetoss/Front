@@ -1,16 +1,16 @@
 import axios from "axios";
 import { redirect } from "next/navigation";
 
-import useAccessTokenStore from "@/store/accessToken";
-import { reissueAccessToken } from "@/api/auth";
+import useAccessTokenStore from "../store/accessToken";
+import { reissueAccessToken } from "../api/auth";
 
 export const apiClient = axios.create({
-  baseURL: "http://52.78.174.190:8080",
+  baseURL: "https://fortunetoss.store",
 });
 
 // 헤더에 액세스 토큰이 필요한 요청에 사용 (클라이언트 컴포넌트에서만 사용 가능)
 export const authApiClient = axios.create({
-  baseURL: "http://52.78.174.190:8080",
+  baseURL: "https://fortunetoss.store",
 });
 
 authApiClient.interceptors.request.use((config) => {

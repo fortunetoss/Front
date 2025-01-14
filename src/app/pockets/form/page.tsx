@@ -13,10 +13,7 @@ const Form = () => {
     const searchParams = useSearchParams();
     const selectOption = searchParams.get("select"); // 쿼리 파라미터
 
-    const { domain, setTitle, setAnswers, setCorrectAnswer } = usePocketStore(); // Zustand 상태 관리
-
-    const [title, setLocalTitle] = useState<string>(""); // 로컬 상태
-    const [answers, updateAnswers] = useState<string[]>(["", "", "", ""]);
+    const { domain, title, answers, correctAnswer,setTitle, setAnswers,setCorrectAnswer,setStep} = usePocketStore();
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [editingIndex, setEditingIndex] = useState<number | null>(null); // 수정 중인 답변 인덱스
     const [editingText, setEditingText] = useState<string>(""); // 수정 중인 텍스트
@@ -34,27 +31,28 @@ const Form = () => {
                     typeof data.select3 === "string" &&
                     typeof data.select4 === "string"
                 ) {
-                    setLocalTitle(data.title);
-                    updateAnswers([data.select1, data.select2, data.select3, data.select4]);
+                    setTitle(data.title);
+                    setAnswers([data.select1, data.select2, data.select3, data.select4]);
                 } else {
                     console.error("API 응답 형식이 잘못되었습니다:", data);
                 }
             } catch (error) {
                 console.error("랜덤 질문 가져오기 실패:", error);
                 const fallback = randomProblems[Math.floor(Math.random() * randomProblems.length)];
-                setLocalTitle(fallback.title);
-                updateAnswers([fallback.select1, fallback.select2, fallback.select3, fallback.select4]);
+                setTitle(fallback.title);
+                setAnswers([fallback.select1, fallback.select2, fallback.select3, fallback.select4]);
             }
         };
 
         fetchQuestion();
     }, []);
 
+
     // 답변 수정 저장
     const handleSaveEdit = (index: number) => {
         const updatedAnswers = [...answers];
         updatedAnswers[index] = editingText;
-        updateAnswers(updatedAnswers); // 답변 업데이트
+        setAnswers(updatedAnswers); // 답변 업데이트
         setEditingIndex(null); // 수정 모드 종료
         setEditingText(""); // 수정 텍스트 초기화
     };
@@ -67,11 +65,17 @@ const Form = () => {
         }
 
         const correctAnswer = answers[selectedAnswer];
+        setCorrectAnswer(correctAnswer);
+
+
 
         // Zustand 상태 업데이트
-        setTitle(title);
-        setAnswers(answers);
+        /*
+        setTitle(localTitle);
+        setAnswers(updateAnswers);
         setCorrectAnswer(correctAnswer);
+
+         */
 
         if (selectOption === "problem") {
             try {
@@ -84,7 +88,7 @@ const Form = () => {
                     null, // card = null
                     null // paper = null
                 );
-                console.log("ID:", questionId);
+                console.log("ID:",questionId);
 
                 // Complete URL 생성 및 이동
                 const completeUrl = `/pockets/complete?Id=${questionId}`;
@@ -94,6 +98,7 @@ const Form = () => {
                 alert("문제를 전송하는 중 문제가 발생했습니다.");
             }
         } else if (selectOption === "together") {
+            setStep(4);
             router.push("/pockets/form/letter");
         } else {
             alert("올바르지 않은 선택값입니다.");
@@ -109,7 +114,7 @@ const Form = () => {
                 <input
                     type="text"
                     value={title}
-                    onChange={(e) => setLocalTitle(e.target.value)}
+                    onChange={(e) => setTitle(e.target.value)}
                     placeholder="질문을 입력하세요"
                     className="w-full text-3xl placeholder-black text-center p-2"
                 />

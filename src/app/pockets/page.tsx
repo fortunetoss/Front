@@ -8,11 +8,13 @@ import Notice from "../../components/notice";
 
 const Pockets = () => {
   const router = useRouter();
-  const { setDomain } = usePocketStore(); // Zustand에서 domain 상태 업데이트 함수
   const [pouches, setPouches] = useState<any[]>([]); // 복주머니 리스트
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0); // 페이지 번호
   const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
+  const { setDomain, setStep } = usePocketStore();
+  // 퍼널 관리랑 선택한 복주머니 저장하기 위함
+
 
   //    const setPocketIndex = usePocketStore((state) => state.setPocketIndex);
 
@@ -49,6 +51,7 @@ const Pockets = () => {
   const handlePouchSelect = (index: number, domain: string) => {
     // 상태 업데이트
     setDomain(domain);
+    setStep(2);
   };
 
   const handleCreateProblem = () => {

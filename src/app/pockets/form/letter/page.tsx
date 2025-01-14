@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Notice from "../../../../components/notice";
 import usePocketStore from "../../../store/usePocket";
-import CardList from "@/utils/images/cardList";
-import CardInteraction from "@/utils/images/cardInteraction";
-import { submitCustomQuestion } from "@/api/api-form";
+import CardList from "../../../../utils/images/cardList";
+import CardInteraction from "../../../../utils/images/cardInteraction";
+import { submitCustomQuestion } from "../../../../api/api-form";
 
 const Letter = () => {
     const router = useRouter();
@@ -16,8 +16,12 @@ const Letter = () => {
         correctAnswer,
         content,
         setContent,
+        card,
+        paper,
         setCard,
+        setPaper,
         domain,
+        setStep
     } = usePocketStore();
 
     const [selectedCard, setSelectedCard] = useState<number>(0);
@@ -50,16 +54,18 @@ const Letter = () => {
         setCard(card);
 
         try {
-            const { questionId, domain } = await submitCustomQuestion(
+            const { questionId } = await submitCustomQuestion(
                 title,
                 answers,
                 correctAnswer,
                 content,
                 domain,
-                card
+                card,
+                paper
             );
 
             console.log("POST 성공:", { questionId, domain });
+            setStep(5);
             router.push(`/pockets/complete?questionCustomId=${questionId}&domain=${domain}`);
         } catch (error) {
             console.error("POST 요청 실패:", error);

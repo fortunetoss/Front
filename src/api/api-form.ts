@@ -44,7 +44,7 @@ export const submitCustomQuestion = async (
     domain: string | null,
     card: string | null,
     paper: string | null
-): Promise<{ questionId: any; domain: any }> => {
+): Promise<{ questionId: any;  }> => {
     try {
         const response = await authApiClient.post("/api/question", {
             title,
@@ -60,10 +60,9 @@ export const submitCustomQuestion = async (
         });
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.id;
-            const domain = response.data.domain;
+            const questionId = response.data.data.id;
             console.log("POST 성공:  ID:", questionId);
-            return { questionId,domain };
+            return { questionId };
         } else {
             throw new Error(" 제대로 받아오지 못함");
         }
