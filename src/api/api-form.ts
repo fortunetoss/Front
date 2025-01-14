@@ -40,11 +40,11 @@ export const submitCustomQuestion = async (
     title: string,
     answers: string[],
     correctAnswer: string | null,
-    content: string | null,
-    domain: string | null,
     card: string | null,
+    domain: string | null,
+    content: string | null,
     //paper: string | null
-): Promise<{ questionId: any;  }> => {
+): Promise<{ questionId: number;  }> => {
     try {
         const response = await authApiClient.post("/api/question", {
             title,
@@ -60,7 +60,7 @@ export const submitCustomQuestion = async (
         });
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.data.id;
+            const questionId = response.data.id;
             console.log("POST 성공:  ID:", questionId);
             return { questionId };
         } else {

@@ -34,7 +34,7 @@ const Form = () => {
                     setTitle(data.title);
                     setAnswers([data.select1, data.select2, data.select3, data.select4]);
                 } else {
-                    console.error("API 응답 형식이 잘못되었습니다:", data);
+                   // console.error("API 응답 형식이 잘못되었습니다:", data);
                 }
             } catch (error) {
                 console.error("랜덤 질문 가져오기 실패:", error);

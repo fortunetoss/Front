@@ -3,28 +3,28 @@
 
 
 import React from "react";
-import { cardImages } from "../images/image";
+import { cardData } from "../images/cardNames";
 
 interface CardListProps {
-    selectedCard: number;
-    onSelect: (index: number) => void;
+    selectedCard: string; // 선택된 카드 이름
+    onSelect: (name: string) => void; // 카드 이름 선택 핸들러
 }
 
 const CardList: React.FC<CardListProps> = ({ selectedCard, onSelect }) => {
     return (
         <div className="flex  justify-center gap-8 mb-10 ">
-            {cardImages.map((image, index) => (
+            {cardData.map((card, index) => (
                 <div
                     key={index}
                     className={`w-10 h-32 cursor-pointer border-2 rounded-md ${
-                        selectedCard === index ? "border-blue" : "border-transparent"
+                        selectedCard === card.name ? "border-blue" : "border-transparent"
                     }`}
-                    onClick={() => onSelect(index)}
+                    onClick={() => onSelect(card.name)} // 카드 이름 전달
                 >
                     <img
-                        src={image}
-                        alt={`Card ${index + 1}`}
-                        className="w-full h-full  rounded-md"
+                        src={card.frontImage} // 앞면 이미지를 사용
+                        alt={`Card ${card.name}`}
+                        className="w-full h-full rounded-md"
                     />
                 </div>
             ))}
