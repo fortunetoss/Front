@@ -16,7 +16,6 @@ export const authApiClient = axios.create({
 authApiClient.interceptors.request.use((config) => {
   const accessToken = useAccessTokenStore.getState().accessToken;
   config.headers["authorization"] = "Bearer " + accessToken;
-  config.headers["Access-Control-Allow-Origin"]
   console.log(config.headers);
   return config;
 });
