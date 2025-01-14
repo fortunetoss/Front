@@ -17,9 +17,9 @@ const Letter = () => {
         content,
         setContent,
         card,
-        paper,
+        //paper,
         setCard,
-        setPaper,
+        //setPaper,
         domain,
         setStep
     } = usePocketStore();
@@ -61,11 +61,11 @@ const Letter = () => {
                 content,
                 domain,
                 card,
-                paper
+                //paper
             );
 
             console.log("POST 성공:", { questionId, domain });
-            setStep(5);
+            setStep(4);
             router.push(`/pockets/complete?questionCustomId=${questionId}&domain=${domain}`);
         } catch (error) {
             console.error("POST 요청 실패:", error);

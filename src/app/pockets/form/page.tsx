@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { FaPencilAlt } from "react-icons/fa";
 import usePocketStore from "../../store/usePocket";
 import Notice from "../../../components/notice";
-import { fetchRandomQuestion, submitCustomQuestion } from "@/api/api-form";
-import { randomProblems } from "@/utils/problem";
+import { fetchRandomQuestion, submitCustomQuestion } from "../../../api/api-form";
+import { randomProblems } from "../../../utils/problem";
 
 const Form = () => {
     const router = useRouter();
@@ -84,9 +84,8 @@ const Form = () => {
                     answers,
                     correctAnswer,
                     null, // content = null
-                    domain, // domain 유지
+                    domain,
                     null, // card = null
-                    null // paper = null
                 );
                 console.log("ID:",questionId);
 
@@ -98,7 +97,7 @@ const Form = () => {
                 alert("문제를 전송하는 중 문제가 발생했습니다.");
             }
         } else if (selectOption === "together") {
-            setStep(4);
+            setStep(3);
             router.push("/pockets/form/letter");
         } else {
             alert("올바르지 않은 선택값입니다.");

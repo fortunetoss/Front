@@ -1,6 +1,6 @@
 // 폼작성과 관련된 api 코드
 
-import { authApiClient } from "@/api/api-client";
+import { authApiClient } from "../api/api-client";
 
 
 
@@ -43,7 +43,7 @@ export const submitCustomQuestion = async (
     content: string | null,
     domain: string | null,
     card: string | null,
-    paper: string | null
+    //paper: string | null
 ): Promise<{ questionId: any;  }> => {
     try {
         const response = await authApiClient.post("/api/question", {
@@ -53,10 +53,10 @@ export const submitCustomQuestion = async (
             select3: answers[2],
             select4: answers[3],
             answer: correctAnswer,
-            content,
-            domain,
             card,
-            paper,
+            domain,
+            content,
+            //paper,
         });
         // 응답 처리
         if (response.status === 200) {

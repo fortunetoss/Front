@@ -8,8 +8,9 @@ export interface PocketState {
     correctAnswer: string | null; // 정답
     content: string | null; // 덕담 내용
     domain: string | null; // 복주머니 도메인
+    questionCustomId: number | null; // 선택된 복주머니의 questionCustomId
     card: string | null; // 선택한 카드 (A~E)
-    paper: string | null; // 선택한 카드 뒷면
+    //paper: string | null; // 선택한 카드 뒷면
     selectOption: string | null; // "problem" 또는 "together"
     step: number; // 현재 단계
 
@@ -21,8 +22,9 @@ export interface PocketState {
     setCorrectAnswer: (answer: string) => void;
     setContent: (content: string) => void;
     setDomain: (domain: string) => void;
+    setQuestionCustomId: (questionCustomId: number) => void;
     setCard: (card: string) => void;
-    setPaper: (paper: string) => void;
+    //setPaper: (paper: string) => void;
     setStep: (step: number) => void;
     resetFunnel: () => void; // 퍼널 초기화
 
@@ -38,10 +40,11 @@ const usePocketStore = create<PocketState>()(
             correctAnswer: null,
             content: null,
             domain: null,
+            questionCustomId: null,
             card: null,
             selectOption: null,
-            paper: null,
-            step:1,
+            //paper: null,
+            step:0,
 
             setTitle: (title) => {
                 console.log("setTitle:", title);
@@ -63,6 +66,10 @@ const usePocketStore = create<PocketState>()(
                 console.log("setDomain:", domain);
                 set({ domain })
             },
+            setQuestionCustomId: (questionCustomId: number) => {
+                console.log("setQuestionCustomId:", questionCustomId);
+                set({ questionCustomId })
+            },
             setCard: (card) => {
                 console.log("setCard:", card);
                 set({ card })
@@ -71,10 +78,14 @@ const usePocketStore = create<PocketState>()(
                 console.log("setSelectOption:", option);
                 set({ selectOption: option })
             },
+            /*
             setPaper: (paper) => {
                 console.log("setPaper:", paper);
                 set({ paper })
+
             },
+
+             */
             setStep: (step) => {
                 // @ts-ignore
                 console.log(`setStep(${step}):`, get());
@@ -90,9 +101,10 @@ const usePocketStore = create<PocketState>()(
                     content: null,
                     domain: null,
                     card: null,
-                    paper: null,
+                    questionCustomId: null,
+                    //paper: null,
                     selectOption: null,
-                    step: 1, // 초기 단계로 되돌림
+                    step: 0, // 초기 단계로 되돌림
                 }),
 
         }),

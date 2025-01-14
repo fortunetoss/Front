@@ -12,7 +12,7 @@ const Select = () => {
 
   const handleOption = (option: string) => {
     setSelectOption(option);
-    setStep(3);
+    setStep(2);
     router.push(`/pockets/form?&select=${option}`);
   };
 

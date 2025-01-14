@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "../store/usePocket";
-import { fetchLuckyPouches } from "@/api/api-form";
+import { fetchLuckyPouches } from "../../api/api-form";
 import Notice from "../../components/notice";
 
 const Pockets = () => {
@@ -12,7 +12,7 @@ const Pockets = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0); // 페이지 번호
   const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
-  const { setDomain, setStep } = usePocketStore();
+  const { setDomain, setStep, setQuestionCustomId } = usePocketStore();
   // 퍼널 관리랑 선택한 복주머니 저장하기 위함
 
 
@@ -48,12 +48,16 @@ const Pockets = () => {
   };
 
   // 복주머니 선택 핸들러
-  const handlePouchSelect = (index: number, domain: string) => {
+  const handlePouchSelect = ( domain: string,questionCustomId:number) => {
     // 상태 업데이트
     setDomain(domain);
-    setStep(2);
+    setQuestionCustomId(questionCustomId);
+    setStep(1);
+    console.log(domain, questionCustomId);
+
   };
 
+  // 문제내기 vs 덕담 까지
   const handleCreateProblem = () => {
     router.push("/pockets/select");
   };
@@ -63,14 +67,15 @@ const Pockets = () => {
       <Notice text="문제를 내고 복주머니를 전달하세요!" />
       <div className="grid grid-cols-2 gap-y-6">
         {/* 복주머니 리스트 */}
-        {pouches.map((pouch, index) => (
+        {pouches.map((pouch) => (
           <div
-            key={index}
+              key={pouch.domain}
             className="relative max-w-[200px] max-h-screen mx-auto"
           >
             <div
-              onClick={() => handlePouchSelect(index, pouch.domain)} // 복주머니 선택 시 핸들러 호출
-              className="p-4 border rounded-lg shadow-md text-center cursor-pointer hover:bg-gray-100"
+              onClick={() =>
+                  handlePouchSelect(pouch.domain, pouch.questionCustomId)}
+                  className="p-4 border rounded-lg shadow-md text-center cursor-pointer hover:bg-gray-100"
             >
               <img
                 src={`/images/pouches/${pouch.domain}.png`} // domain 값에 따라 이미지 렌더링
