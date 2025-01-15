@@ -63,7 +63,7 @@ const Letter = () => {
                 answers,
                 correctAnswer,
                 card,
-                "G",
+                domain,
                 content
             );
 

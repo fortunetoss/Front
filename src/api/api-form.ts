@@ -60,7 +60,7 @@ export const submitCustomQuestion = async (
         });
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.id;
+            const questionId = response.data.data.id;
             console.log("POST 성공:  ID:", questionId);
             return { questionId };
         } else {

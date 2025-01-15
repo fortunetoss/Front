@@ -5,6 +5,7 @@
 
 import React, { useEffect, useState } from "react";
 import {useRouter} from "next/navigation";
+import Notice from "../../../components/notice";
 
 
 const Shared = () => {
@@ -16,7 +17,8 @@ const Shared = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1>복주머니가 공유되었어요 ! </h1>
+            <Notice text="복주머니가 공유되었어요!"></Notice>
+
 
             <div className="mt-6 text-gray-700 text-center">
                 <p className="text-xl">

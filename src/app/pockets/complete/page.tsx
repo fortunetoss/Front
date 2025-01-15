@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react";
 import Notice from "../../../components/notice";
 import axios from "axios";
-import {authApiClient} from "@/api/api-client";
+import {authApiClient} from "../../../api/api-client";
+import Modal from "../../../components/modals";
+import {useRouter} from "next/navigation";
 
 const Complete = () => {
     // Zustand 상태 기반 코드 주석 처리 (백엔드 통신으로 대체)
@@ -24,9 +26,12 @@ const Complete = () => {
     */
 
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const router= useRouter();
 
     useEffect(() => {
         // 백엔드에서 questionId 받아오기
+        // 엥 근데 여기 코드 너무 이상함... ㅠ ㅠ 내가 다시 수정해야겠다
         const fetchQuestionId = async () => {
             try {
 
@@ -46,7 +51,17 @@ const Complete = () => {
         fetchQuestionId();
     }, []);
 
-    // URL 복사 핸들러
+    // 카카오톡 공유
+    const handleKakaoShare=() => {
+        if (shareableUrl) {
+            console.log(`카카오톡으로 공유: ${shareableUrl}`);
+        }
+        router.push("/shared"); // 공유 후 /shared 페이지로 이동
+    };
+
+
+
+    // URL 복사
     const handleCopyUrl = () => {
         if (shareableUrl) {
             navigator.clipboard
@@ -56,6 +71,7 @@ const Complete = () => {
         } else {
             alert("공유 가능한 URL이 없습니다.");
         }
+        router.push("/shared");
     };
 
     return (
@@ -74,7 +90,7 @@ const Complete = () => {
                     이전
                 </button>
                 <button
-                    onClick={handleCopyUrl}
+                    onClick={() => setModalOpen(true)}
                     className="px-6 py-3 text-lg font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition"
                 >
                     공유하기
@@ -85,8 +101,14 @@ const Complete = () => {
                     공유할 URL: <a href={shareableUrl} className="text-blue-500">{shareableUrl}</a>
                 </div>
             )}
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setModalOpen(false)}
+                onCopyUrl={handleCopyUrl}
+                onKakaoShare={handleKakaoShare}
+            ></Modal>
         </div>
-    );
+    )
 };
 
 export default Complete;

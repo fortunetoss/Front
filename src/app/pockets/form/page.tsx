@@ -77,15 +77,16 @@ const Form = () => {
 
          */
 
+
         if (selectOption === "problem") {
             try {
                 const { questionId } = await submitCustomQuestion(
                     title,
                     answers,
                     correctAnswer,
-                    null, // content = null
-                    domain,
                     null, // card = null
+                    domain,
+                    null, // content = null
                 );
                 console.log("ID:",questionId);
 
