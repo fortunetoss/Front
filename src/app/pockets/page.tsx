@@ -24,8 +24,6 @@ const Pockets = () => {
     try {
       const data = await fetchLuckyPouches(page);
 
-      //검증로직
-      const validatedPouches = validatePouches(data.content); // 검증 로직 적용
 
 
       if (data) {
@@ -65,7 +63,7 @@ const Pockets = () => {
 
     if (questionCustomId) {
       // 이미 채워져 있는 경우
-      router.push("/result");
+      router.push(`/result?questionCustomId=${questionCustomId}`);
       // 결과지 페이지로 이동
     } else {
       // 비어 있는 경우

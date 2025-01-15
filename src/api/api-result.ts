@@ -27,6 +27,7 @@ export const fetchResultData = async (questionCustomId: string): Promise<ResultD
     try {
         const response = await authApiClient.get(`/api/result/${questionCustomId}`);
         if (response.data.status === "success") {
+            console.log("응답 성공:", response.data);
             return response.data.data;
         } else {
             throw new Error(response.data.message || "결과 데이터를 불러오지 못했습니다.");

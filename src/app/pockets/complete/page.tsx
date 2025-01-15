@@ -55,6 +55,7 @@ const Complete = () => {
     const handleKakaoShare=() => {
         if (shareableUrl) {
             console.log(`카카오톡으로 공유: ${shareableUrl}`);
+            router.push('/shared');
         }
         router.push("/shared"); // 공유 후 /shared 페이지로 이동
     };
@@ -70,6 +71,7 @@ const Complete = () => {
                 .catch((err) => console.error("URL 복사 실패:", err));
         } else {
             alert("공유 가능한 URL이 없습니다.");
+            router.push("/shared")
         }
         router.push("/shared");
     };
@@ -90,7 +92,7 @@ const Complete = () => {
                     이전
                 </button>
                 <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={() => setIsModalOpen(true)}
                     className="px-6 py-3 text-lg font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition"
                 >
                     공유하기
@@ -103,7 +105,7 @@ const Complete = () => {
             )}
             <Modal
                 isOpen={isModalOpen}
-                onClose={() => setModalOpen(false)}
+                onClose={() => setIsModalOpen(false)}
                 onCopyUrl={handleCopyUrl}
                 onKakaoShare={handleKakaoShare}
             ></Modal>
