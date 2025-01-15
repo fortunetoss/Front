@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import useAnswererStore from "@/store/answerer";
 import Header from "@/components/header/header";
 import Logo from "@/components/header/logo";
-import { useParams } from "next/navigation";
+import AnswererFinalActions from "@/components/buttons/answerer-final-actions";
 
 export default function ResultPage() {
   const { isCorrect, question, correctAnswer, hasMessage } = useAnswererStore();
@@ -39,14 +40,7 @@ export default function ResultPage() {
               </div>
             )}
           </div>
-          {!hasMessage && (
-            <div className="flex flex-col gap-[14px]">
-              <Link href="/" className="broad-btn">
-                나도 문제 내러가기
-              </Link>
-              <button className="broad-btn">내 결과 공유하기</button>
-            </div>
-          )}
+          {!hasMessage && <AnswererFinalActions />}
         </section>
       </main>
     </>

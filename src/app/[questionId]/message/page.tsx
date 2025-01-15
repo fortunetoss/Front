@@ -5,6 +5,7 @@ import BackButton from "@/components/header/back-button";
 import Header from "@/components/header/header";
 import useAnswererStore from "@/store/answerer";
 import FlippingCard from "@/components/card/flipping-card";
+import AnswererFinalActions from "@/components/buttons/answerer-final-actions";
 
 export default function MessagePage() {
   const { creatorName, name: answererName } = useAnswererStore();
@@ -32,12 +33,7 @@ export default function MessagePage() {
         >
           {message}
         </FlippingCard>
-        <section className="flex flex-col gap-[14px]">
-          <Link href="/" className="broad-btn">
-            나도 문제 내러가기
-          </Link>
-          <button className="broad-btn">내 결과 공유하기</button>
-        </section>
+        <AnswererFinalActions />
       </main>
     </>
   );
