@@ -10,21 +10,20 @@
 }
 
 .card {
-  position: relative;
-  width: 260px;
-  /* height: 380px; */
+  @apply flex flex-col justify-center mx-auto relative w-[260px] h-[365px];
   transform-style: preserve-3d;
   transform: perspective(500px);
   transition: all 0.5s;
-  aspect-ratio: 260/365;
 }
 
 .card-front,
 .card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
+  @apply absolute flex justify-center w-full h-full bg-cover bg-center bg-no-repeat;
   backface-visibility: hidden;
+}
+
+.card-front {
+  @apply items-end;
 }
 
 .card-back {
