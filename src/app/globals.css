@@ -8,3 +8,29 @@
 .broad-btn {
   @apply block text-center px-3 py-[14px] w-full border-[1.2px] rounded-lg border-[#C6C6C6] bg-white font-medium active:border-blue active:font-bold active:text-blue;
 }
+
+.card {
+  position: relative;
+  width: 260px;
+  /* height: 380px; */
+  transform-style: preserve-3d;
+  transform: perspective(500px);
+  transition: all 0.5s;
+  aspect-ratio: 260/365;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
