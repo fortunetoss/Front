@@ -1,6 +1,7 @@
 // 폼작성과 관련된 api 코드
 
 import { authApiClient } from "../api/api-client";
+import usePocketStore from "@/app/store/usePocket";
 
 
 
@@ -60,7 +61,11 @@ export const submitCustomQuestion = async (
         });
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.data.id;
+            const questionId = response.data.data.questionCustomId;
+            const {setQuestionCustomId} = usePocketStore.getState();
+            setQuestionCustomId(questionId);
+            // 응답할때 questionCustomId 받아오면 이걸 zustand 에 일단 저장해놓음
+            // -> url 만들 때 쓸거니까
             console.log("POST 성공:  ID:", questionId);
             return { questionId };
         } else {

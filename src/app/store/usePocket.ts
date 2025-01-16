@@ -46,6 +46,9 @@ const usePocketStore = create<PocketState>()(
             //paper: null,
             step:0,
 
+
+
+
             setTitle: (title) => {
                 console.log("setTitle:", title);
                 set({ title })
@@ -106,6 +109,10 @@ const usePocketStore = create<PocketState>()(
                     selectOption: null,
                     step: 0, // 초기 단계로 되돌림
                 }),
+
+
+
+
 
         }),
         { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }

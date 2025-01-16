@@ -2,28 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import Notice from "../../../components/notice";
-import axios from "axios";
 import {authApiClient} from "../../../api/api-client";
 import Modal from "../../../components/modals";
 import {useRouter} from "next/navigation";
+import {generateUrl} from "@/utils/url/urlGenerator";
+
 
 const Complete = () => {
-    // Zustand 상태 기반 코드 주석 처리 (백엔드 통신으로 대체)
-    /*
-    const { pocketIndex, correctAnswer, finalUrl, question, answers, content, setFinalUrl } = usePocketStore();
-
-    useEffect(() => {
-        if (!finalUrl) {
-            // Zustand의 상태를 기반으로 최종 URL 생성
-            const generatedUrl = `/pockets/complete?pocketIndex=${pocketIndex}&question=${encodeURIComponent(
-                question || ""
-            )}&answers=${encodeURIComponent(JSON.stringify(answers || []))}&correctAnswer=${encodeURIComponent(
-                correctAnswer || ""
-            )}${letter ? `&letter=${encodeURIComponent(letter)}` : ""}`;
-            setFinalUrl(generatedUrl); // Zustand에 저장
-        }
-    }, [pocketIndex, question, answers, correctAnswer, content, finalUrl, setFinalUrl]);
-    */
 
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,28 +16,22 @@ const Complete = () => {
 
     useEffect(() => {
         // 백엔드에서 questionId 받아오기
-        // 엥 근데 여기 코드 너무 이상함... ㅠ ㅠ 내가 다시 수정해야겠다
-        const fetchQuestionId = async () => {
-            try {
 
-                const response = await authApiClient.get("/api/questionId");
-                const { questionId } = response.data;
+        const url = generateUrl();
+        if (url) {
+            setShareableUrl(url);
+            console.log(`url 생성 ${url}`);
 
-                if (questionId) {
-                    // 공유 가능한 URL 생성
-                    const generatedUrl = `${window.location.origin}/${questionId}`;
-                    setShareableUrl(generatedUrl); // 공유 가능한 URL 저장
-                }
-            } catch (error) {
-                console.error("questionId 가져오기 실패:", error);
-            }
-        };
+        } else {
+            console.error("URL 생성 실패: api 오류");
+        }
+    },[]);
 
-        fetchQuestionId();
-    }, []);
 
     // 카카오톡 공유
     const handleKakaoShare=() => {
+        // 일단 똑같이.. 해놓고
+        // 나중에 카카오톡 공유 추가함!
         if (shareableUrl) {
             console.log(`카카오톡으로 공유: ${shareableUrl}`);
             router.push('/shared');
@@ -61,13 +40,13 @@ const Complete = () => {
     };
 
 
-
     // URL 복사
     const handleCopyUrl = () => {
         if (shareableUrl) {
             navigator.clipboard
                 .writeText(shareableUrl)
                 .then(() => alert("URL이 클립보드에 복사되었습니다!"))
+
                 .catch((err) => console.error("URL 복사 실패:", err));
         } else {
             alert("공유 가능한 URL이 없습니다.");
@@ -98,11 +77,6 @@ const Complete = () => {
                     공유하기
                 </button>
             </div>
-            {shareableUrl && (
-                <div className="mt-8 text-center text-sm text-gray-600">
-                    공유할 URL: <a href={shareableUrl} className="text-blue-500">{shareableUrl}</a>
-                </div>
-            )}
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
