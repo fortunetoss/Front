@@ -14,6 +14,9 @@ export default {
         blue: "#3B93F4",
         disable: "#DFDFE0",
       },
+      fontFamily: {
+        pretendard: ["var(--font-pretendard)"],
+      },
     },
   },
   plugins: [],
