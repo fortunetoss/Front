@@ -91,8 +91,7 @@ const Form = () => {
                 console.log("ID:",questionId);
 
                 // Complete URL 생성 및 이동
-                const completeUrl = `/pockets/complete?Id=${questionId}`;
-                router.push(completeUrl);
+                router.push("/pockets/complete");
             } catch (error) {
                 console.error("데이터 전송 중 오류 발생:", error);
                 alert("문제를 전송하는 중 문제가 발생했습니다.");

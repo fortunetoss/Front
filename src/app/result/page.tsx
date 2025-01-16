@@ -46,7 +46,7 @@ const Result = () => {
             <div className="bg-blue-100 p-4 rounded-md mb-6 text-center">
                 <p className="text-lg font-semibold">{resultData?.title}문제:</p>
                 <div className="bg-blue p-4 mt-3 rounded-3xl">
-                    <p className="text-white  ">{resultData?.answer}정답:</p>
+                    <p className="text-white  ">정답: {resultData?.answer}</p>
                 </div>
 
             </div>

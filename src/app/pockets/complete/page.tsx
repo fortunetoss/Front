@@ -34,9 +34,9 @@ const Complete = () => {
         // 나중에 카카오톡 공유 추가함!
         if (shareableUrl) {
             console.log(`카카오톡으로 공유: ${shareableUrl}`);
-            router.push('/shared');
+            router.push('/pockets/shared');
         }
-        router.push("/shared"); // 공유 후 /shared 페이지로 이동
+        router.push("/pockets/shared"); // 공유 후 /shared 페이지로 이동
     };
 
 

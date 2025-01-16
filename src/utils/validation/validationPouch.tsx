@@ -2,13 +2,13 @@
 
 export interface Pouch {
     domain:string;
-    questionCustomId:number|null;
+    questionCustomid:number|null;
 }
 
 export const validatePouches = (pouches: Pouch[]) => {
     return pouches.map((pouch) => ({
         ...pouch,
-        isFilled: pouch.questionCustomId !== null,
+        isFilled: pouch.questionCustomid !== null,
         // questionCustomId가 null이 아니면 채워져 있음
     }));
 };

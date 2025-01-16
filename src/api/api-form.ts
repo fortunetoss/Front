@@ -59,9 +59,11 @@ export const submitCustomQuestion = async (
             content,
             //paper,
         });
+
+        console.log("응답데이터")
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.data.questionCustomId;
+            const questionId = response.data.data.id;
             const {setQuestionCustomId} = usePocketStore.getState();
             setQuestionCustomId(questionId);
             // 응답할때 questionCustomId 받아오면 이걸 zustand 에 일단 저장해놓음
