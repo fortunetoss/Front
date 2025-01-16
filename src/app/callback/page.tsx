@@ -18,10 +18,11 @@ export default function CallbackPage() {
   useEffect(() => {
     const getAccessToken = async () => {
       //await reissueAccessToken();
-      // if (isNewUser) {
-      router.push("/nickname");
-      // }
-      // router.push("/pockets");
+      if (isNewUser) {
+        router.push("/nickname");
+      } else {
+        router.push("/pockets");
+      }
     };
 
     getAccessToken();
