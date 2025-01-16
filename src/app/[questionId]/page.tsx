@@ -7,6 +7,7 @@ import { apiClient, authApiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import ResponseData from "@/models/response-data";
 import useAnswererStore from "@/store/answerer";
+import Logo from "@/components/header/logo";
 
 export default function IntroPage() {
   const { creatorName, hasMessage, pouchImg, setInitialData } =
@@ -62,7 +63,7 @@ export default function IntroPage() {
   return (
     <>
       <Header>
-        <div>LOGO</div>
+        <Logo />
       </Header>
       <main className="flex flex-col gap-16 px-5 py-8 bg-white">
         <div className="flex flex-col gap-[10px]">
