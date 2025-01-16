@@ -21,8 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${pretendard.variable} font-pretendard bg-black`}>
-        <div className="mx-auto max-w-[480px] bg-white">{children}</div>
+      <body className={`${pretendard.variable} font-pretendard bg-black text-[#171719]`}>
+        <div className="mx-auto max-w-[480px] h-screen bg-white">
+          {children}
+        </div>
       </body>
     </html>
   );

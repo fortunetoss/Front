@@ -2,41 +2,41 @@ import axios from "axios";
 import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { redirect } from "next/navigation";
-
-const MOCK_SUCCESS_RESPONSE = {
-  data: {
-    status: "success",
-    message: "Email sent successfully",
-    data: null,
-    errorDetails: null,
-    code: 200,
-  },
-  headers: { access: "accessToken" },
-};
+import { apiClient } from "./api-client";
 
 const requestAccessTokenReissue = async () => {
-  // const response = await axios.post<ResponseData>(
-  //   "http://localhost:8080/reissue",
-  //   {},
-  //   { withCredentials: true }
-  // );
+  const response = await apiClient.post<ResponseData>(
+    "/reissue",
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 
-  const response = MOCK_SUCCESS_RESPONSE;
+  // const response = fetch("https://fortunetoss.store/reissue", {
+  //   method: "POST",
+  //   credentials: "include",
+  // });
 
   return response;
 };
 
 export const reissueAccessToken = async () => {
-  const response = await requestAccessTokenReissue();
+  try {
+    const response = await requestAccessTokenReissue();
+    console.log(response);
 
-  if (response.data.code === 200) {
-    const accessToken = response.headers["access"];
+    if (response.status === 200) {
+      const accessToken = response.headers["authorization"];
 
-    if (accessToken) {
-      const setAccessToken = useAccessTokenStore.getState().setAccessToken;
-      setAccessToken(accessToken);
+      if (accessToken) {
+        const setAccessToken = useAccessTokenStore.getState().setAccessToken;
+        setAccessToken(accessToken);
+      }
+    } else {
+      redirect("/");
     }
-  } else {
-    redirect("/");
+  } catch (err) {
+    console.log(err);
   }
 };
