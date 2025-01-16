@@ -16,15 +16,13 @@ export default function CallbackPage() {
   setAccessToken(accessToken ?? "");
 
   useEffect(() => {
-    const getAccessToken = async () => {
+    (async () => {
       //await reissueAccessToken();
-      // if (isNewUser) {
-      router.push("/nickname");
-      // }
-      // router.push("/pockets");
-    };
-
-    getAccessToken();
+      if (isNewUser) {
+        router.push("/nickname");
+      }
+      router.push("/pockets");
+    })();
   }, []);
 
   return null;
