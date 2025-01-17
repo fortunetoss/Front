@@ -17,10 +17,10 @@ export const pocketsImageData = [
 
 // 카드이름 매
 export const cardData = [
-    { name: "A", frontImage: "/card/FORTUNETOSS_CARD_1.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_1.webp" },
-    { name: "B", frontImage: "/card/FORTUNETOSS_CARD_2.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_2.webp" },
-    { name: "C", frontImage: "/card/FORTUNETOSS_CARD_3.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_3.webp" },
-    { name: "D", frontImage: "/card/FORTUNETOSS_CARD_4.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_4.webp" },
-    { name: "E", frontImage: "/card/FORTUNETOSS_CARD_5.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_5.webp" },
+    { name: "A", frontImage: "/card/FORTUNETOSS_CARD_1.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_1.webp", width: 500, height: 1000 },
+    { name: "B", frontImage: "/card/FORTUNETOSS_CARD_2.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_2.webp", width: 500, height: 1000 },
+    { name: "C", frontImage: "/card/FORTUNETOSS_CARD_3.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_3.webp", width: 500, height: 1000 },
+    { name: "D", frontImage: "/card/FORTUNETOSS_CARD_4.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_4.webp", width: 500, height: 1000 },
+    { name: "E", frontImage: "/card/FORTUNETOSS_CARD_5.webp", backImage: "/cardBack/FORTUNETOSS_CARD_BACK_5.webp", width: 500, height: 1000 },
 ];
 
