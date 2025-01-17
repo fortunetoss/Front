@@ -1,18 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Notice from "../../../components/notice";
 import {authApiClient} from "../../../api/api-client";
 import Modal from "../../../components/modals";
 import {useRouter} from "next/navigation";
 import {generateUrl} from "@/utils/url/urlGenerator";
+import usePocketStore from "@/app/store/usePocket";
+import {pocketsImageData} from "@/utils/images/cardNames";
 
 
 const Complete = () => {
 
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const router= useRouter();
+    const router = useRouter();
+    const {domain}=usePocketStore();
+
+    const selectedPouch = pocketsImageData.find((pouch) => pouch.name === domain);
 
     useEffect(() => {
         // 백엔드에서 questionId 받아오기
@@ -25,11 +29,11 @@ const Complete = () => {
         } else {
             console.error("URL 생성 실패: api 오류");
         }
-    },[]);
+    }, []);
 
 
     // 카카오톡 공유
-    const handleKakaoShare=() => {
+    const handleKakaoShare = () => {
         // 일단 똑같이.. 해놓고
         // 나중에 카카오톡 공유 추가함!
         if (shareableUrl) {
@@ -54,25 +58,36 @@ const Complete = () => {
         }
         router.push("/pockets/shared")
     };
-
     return (
-        <div className="container mx-auto p-4">
-            <Notice text="복주머니가 완성되었어요!" />
-            <div className="mt-6 text-gray-700 text-center">
-                <p className="text-xl">
-                    복나누미가 되어 친구에게 공유해보세요!
-                </p>
+        <div className="container mx-auto p-4 ">
+            <div className="mt-6 mb-20 text-gray-700 ">
+                <h1 className="font-semibold text-xl mt-1">
+                    복주머니가 완성되었어요!
+                </h1>
+                <p className="text-gray-500">복 나누미가 되어 친구에게 공유해보세요.</p>
             </div>
-            <div className="flex justify-center space-x-4 mt-8">
+
+            {selectedPouch ? (
+                <div className="mx-auto mb-24">
+                    <img
+                        src={selectedPouch.pocketsImage}
+                        alt={`복주머니 ${selectedPouch.name}`}
+                        className="mx-auto w-80 h-80 opacity-80"
+                    />
+                </div>
+            ) : (
+                <p className="text-red-500">복주머니를 선택하지 않았습니다.</p>
+            )}
+            <div className="flex w-full space-x-4 mt-8">
                 <button
                     onClick={() => window.history.back()}
-                    className="px-6 py-3 text-lg font-medium text-gray-700 border-2 border-gray-400 rounded-lg hover:bg-gray-100 transition"
+                    className="flex-1 py-3 text-lg font-medium text-gray-700 border-2 border-gray-400 rounded-lg hover:bg-gray-100 transition"
                 >
                     이전
                 </button>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="px-6 py-3 text-lg font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition"
+                    className="flex-1  py-3 text-lg font-medium text-white bg-blue rounded-lg hover:bg-red-600 transition"
                 >
                     공유하기
                 </button>
