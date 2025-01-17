@@ -6,6 +6,7 @@ import usePocketStore from "../store/usePocket";
 import { fetchLuckyPouches } from "../../api/api-form";
 import Notice from "../../components/notice";
 import {validatePouches,Pouch} from "../../utils/validation/validationPouch";
+import {getPouch} from "@/utils/images/domain";
 
 const Pockets = () => {
   const router = useRouter();
@@ -13,11 +14,9 @@ const Pockets = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(0); // 페이지 번호
   const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
-  const { setDomain, setStep, setQuestionCustomId } = usePocketStore();
+  const {setDomain, setStep, setQuestionCustomId} = usePocketStore();
   // 퍼널 관리랑 선택한 복주머니 저장하기 위함
 
-
-  //    const setPocketIndex = usePocketStore((state) => state.setPocketIndex);
 
   // 로그인 후에 복주머니 가져오기
   const loadPouches = async (page: number) => {
@@ -25,9 +24,11 @@ const Pockets = () => {
       const data = await fetchLuckyPouches(page);
 
 
-
       if (data) {
-        const validatedPouches = validatePouches(data.content);
+        const validatedPouches = validatePouches(data.content).map((pouch,idx)=>({
+          ...pouch,
+          index: idx + page * data.content.length, // 고유 인덱스 부여
+        }));
         //검증로직
         setPouches((prev) => [...prev, ...validatedPouches]); // 기존 데이터에 검증된 데이터 추가
         setIsLastPage(data.last); // 마지막 페이지 여부 갱신
@@ -53,72 +54,75 @@ const Pockets = () => {
   };
 
   // 복주머니 선택 핸들러
-  const handlePouchSelect = (domain: string, questionCustomId: number | null) => {
+  const handlePouchSelect = async (domain: string, questionCustomId: number | null, index:number) => {
     // 상태 업데이트
     setDomain(domain);
-    setQuestionCustomId(questionCustomId || 0); // null일 경우 0으로 설정
+    setQuestionCustomId(questionCustomId);
     setStep(1);
 
-    console.log("Domain:", domain, "QuestionCustomId:", questionCustomId);
 
-    if (questionCustomId) {
+    if (questionCustomId !== null) {
       // 이미 채워져 있는 경우
-      router.push(`/result?questionCustomId=${questionCustomId}`);
+      await router.push(`/result?questionCustomId=${questionCustomId}`);
       // 결과지 페이지로 이동
     } else {
       // 비어 있는 경우
-      router.push("/pockets/select"); // /select 페이지로 이동
+      await router.push("/pockets/select");
     }
   };
 
-  // 문제내기 vs 덕담 까지
-  /*
-  const handleCreateProblem = () => {
-    router.push("/pockets/select");
-  };
 
-   */
-
+  // @ts-ignore
   return (
-    <div className="container mx-auto p-10">
-      <Notice text="문제를 내고 복주머니를 전달하세요!" />
-      <div className="grid grid-cols-2 gap-y-6">
-        {/* 복주머니 리스트 */}
-        {pouches.map((pouch) => (
-            <div
-                key={pouch.domain}
-                className={`relative max-w-[200px] max-h-screen mx-auto ${
-                    pouch.isFilled ? "bg-gray-200" : "bg-white"
-                }`} // 채워진 복주머니는 다른 배경색으로 표시
-            >
+      <div className="container mx-auto p-10">
+        <Notice text="문제를 내고 복주머니를 전달하세요!"/>
+        <div className="grid grid-cols-2 gap-y-4">
+          {pouches.map((pouch, index) => (
               <div
-                  onClick={() => handlePouchSelect(pouch.domain, pouch.questionCustomId)}
-                  className="p-4 border rounded-lg shadow-md text-center cursor-pointer hover:bg-gray-100"
+                  key={`${pouch.domain}-${index}`}
+                  className={`relative p-4 text-center cursor-pointer ${
+                      pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
+                  }`}
+                  onClick={() =>
+                      handlePouchSelect(pouch.domain, pouch.questionCustomId, pouch.index)
+                  } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
               >
-                <img
-                    src={`/images/pouches/${pouch.domain}.png`} // domain 값에 따라 이미지 렌더링
-                    alt={`복주머니`}
-                    className="mx-auto mb-2 w-24 h-24"
-                />
-                {pouch.isFilled && <p className="text-red-500 mt-2">채워져 있음</p>}
-                {!pouch.isFilled && <p className="text-green-500 mt-2">문제 내러 가기 </p>}
-              </div>
+                <div
+                    className="relative"
+                    style={{
+                      filter: pouch.isFilled ? "none" : "blur(4px)",
+                    }}
+                >
+                  <img
+                      src={getPouch(pouch.domain)}
+                      alt={`복주머니 ${pouch.domain}`}
+                      className="mx-auto w-30 h-30"
+                  />
+                </div>
 
+                {!pouch.isFilled && (
+                    <div
+                        className="absolute inset-0 flex items-center justify-center"
+                        style={{zIndex: 10}}
+                    >
+                      <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">문제내기</p>
+                    </div>
+                )}
+              </div>
+          ))}
+        </div>
+
+        {!isLastPage && (
+            <div className="flex justify-center mt-6">
+              <button
+                  onClick={handleLoadMore}
+                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+              >
+                더 보기
+              </button>
             </div>
-        ))}
+        )}
       </div>
-      {!isLastPage && (
-          <div className="flex justify-center mt-6">
-            <button
-                onClick={handleLoadMore}
-                className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-            >
-              더 보기
-            </button>
-          </div>
-      )}
-    </div>
   );
 };
-
-export default Pockets;
+  export default Pockets;
