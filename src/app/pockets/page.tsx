@@ -21,16 +21,16 @@ const Pockets = () => {
   // 로그인 후에 복주머니 가져오기
   const loadPouches = async (page: number) => {
     try {
+      setPouches([]);
       const data = await fetchLuckyPouches(page);
 
 
       if (data) {
         const validatedPouches = validatePouches(data.content).map((pouch,idx)=>({
           ...pouch,
-          index: idx + page * data.content.length, // 고유 인덱스 부여
         }));
         //검증로직
-        setPouches((prev) => [...prev, ...validatedPouches]); // 기존 데이터에 검증된 데이터 추가
+        setPouches(validatedPouches);
         setIsLastPage(data.last); // 마지막 페이지 여부 갱신
       }
     } catch (error) {
@@ -42,7 +42,11 @@ const Pockets = () => {
 
   // 컴포넌트 마운트 시 첫 페이지 데이터 로드
   useEffect(() => {
-    loadPouches(0); // 첫 페이지 요청
+    const fetchData = async () => {
+      await loadPouches(0); // 데이터 로드
+    };
+
+    fetchData();
   }, []);
 
   // 다음 페이지 데이터 로드 - 무한스크롤
@@ -72,7 +76,7 @@ const Pockets = () => {
   };
 
 
-  // @ts-ignore
+
   return (
       <div className="container mx-auto p-10">
         <Notice text="문제를 내고 복주머니를 전달하세요!"/>
