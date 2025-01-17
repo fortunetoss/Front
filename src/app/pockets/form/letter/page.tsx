@@ -34,7 +34,7 @@ const Letter = () => {
 
 
     // 덕담 입력 핸들러
-    const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setContent(e.target.value);
         console.log(content);
     };
