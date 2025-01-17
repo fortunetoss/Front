@@ -1,8 +1,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import {get} from "node:http";
+import {Pouch} from "@/utils/validation/validationPouch";
+
 
 export interface PocketState {
+    pouches:Pouch[];
     title: string;
     answers: string[]; // 선택지 배열
     correctAnswer: string | null; // 정답
@@ -22,11 +25,12 @@ export interface PocketState {
     setCorrectAnswer: (answer: string) => void;
     setContent: (content: string) => void;
     setDomain: (domain: string) => void;
-    setQuestionCustomId: (questionCustomId: number) => void;
+    setQuestionCustomId: (questionCustomId: number|null) => void;
     setCard: (card: string) => void;
     //setPaper: (paper: string) => void;
     setStep: (step: number) => void;
     resetFunnel: () => void; // 퍼널 초기화
+    setPouches: (pouches: Pouch[]) => void;
 
 
 
@@ -45,8 +49,7 @@ const usePocketStore = create<PocketState>()(
             selectOption: null,
             //paper: null,
             step:0,
-
-
+            pouches:[],
 
 
             setTitle: (title) => {
@@ -69,7 +72,7 @@ const usePocketStore = create<PocketState>()(
                 console.log("setDomain:", domain);
                 set({ domain })
             },
-            setQuestionCustomId: (questionCustomId: number) => {
+            setQuestionCustomId: (questionCustomId: number|null) => {
                 console.log("setQuestionCustomId:", questionCustomId);
                 set({ questionCustomId })
             },
@@ -89,6 +92,8 @@ const usePocketStore = create<PocketState>()(
             },
 
              */
+            setPouches:(pouches: Pouch[]) => ({
+                pouches}),
             setStep: (step) => {
                 // @ts-ignore
                 console.log(`setStep(${step}):`, get());
