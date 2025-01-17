@@ -2,7 +2,7 @@
 
 import {pocketsImageData} from "@/utils/images/cardNames";
 
-const getPouch = (domain:string) =>{
+export const getPouch = (domain:string) =>{
     const card= pocketsImageData.find((item)=>item.name===domain);
     return card?card.pocketsImage:undefined;
 
