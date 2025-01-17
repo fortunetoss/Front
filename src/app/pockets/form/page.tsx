@@ -69,15 +69,6 @@ const Form = () => {
 
 
 
-        // Zustand 상태 업데이트
-        /*
-        setTitle(localTitle);
-        setAnswers(updateAnswers);
-        setCorrectAnswer(correctAnswer);
-
-         */
-
-
         if (selectOption === "problem") {
             try {
                 const { questionId } = await submitCustomQuestion(
@@ -107,23 +98,29 @@ const Form = () => {
     return (
         <div className="container mx-auto p-6">
             <Notice text="문제와 답변은 수정 가능해요!"/>
-
             {/* 질문 입력 */}
             <div className="mb-4">
-                <input
-                    type="text"
+                <textarea
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    onBlur={() => setTitle(title)} // 입력 필드 벗어나면 저장
                     placeholder="질문을 입력하세요"
-                    className="w-full text-2xl placeholder-black text-center p-2 mb-6"
+                    className="w-full text-2xl placeholder-black text-center p-3 mb-6 bg-white resize-none break-words"
+                    style={{
+                        wordBreak: "break-word", // 단어 줄바꿈
+                        whiteSpace: "pre-wrap",  // 공백 및 줄바꿈 유지
+                        overflowWrap: "break-word", // 강제 줄바꿈
+                    }}
+                    rows={2} // 기본 높이 설정
                 />
             </div>
+
 
             {answers.map((answer, index) => (
                 <div
                     key={index}
                     className={`flex items-center text-xl space-x-2 mb-4 p-5 border-2 rounded-full ${
-                        selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
+                        selectedAnswer === index ? "bg-blue text-white" : "bg-white text-black"
                     }`}
                 >
                     <input
@@ -132,11 +129,12 @@ const Form = () => {
                         readOnly={editingIndex !== index} // 수정 중이 아닐 때는 읽기 전용
                         onChange={(e) => setEditingText(e.target.value)} // 수정 중일 때만 값 변경
                         className={`flex-grow border-none outline-none bg-transparent ${
-                            editingIndex === index ? "bg-gray-50 text-white p-2 rounded-full" : ""
+                            editingIndex === index ? "bg-gray-50 text-black p-2 rounded-full" : ""
                         }`}
                         onClick={() => {
                             if (editingIndex !== index) {
-                                setSelectedAnswer(index); // 보기 모드에서 클릭 시 답변 선택
+                                setSelectedAnswer(index);
+                                // 보기 모드에서 클릭 시 답변 선택
                             }
                         }}
                     />
@@ -155,7 +153,7 @@ const Form = () => {
                                 setEditingText(answer);
                             }}
                         >
-                            <FaPencilAlt className="mr-1" />
+                            <FaPencilAlt className="mr-1"/>
                         </button>
                     )}
                 </div>

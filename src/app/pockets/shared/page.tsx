@@ -28,7 +28,7 @@ const Shared = () => {
             </div>
             <div className="flex justify-center flex-col mt-8">
                 <button
-                    onClick={() => window.history.back()}
+                    onClick={handleMovePockets}
                     className="px-6 py-3 text-lg font-medium text-blue border-2 border-blue rounded-lg hover:bg-blue  hover:text-white transition"
                 >
                     다른 문제 내러가기
