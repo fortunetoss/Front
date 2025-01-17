@@ -24,18 +24,14 @@ const Letter = () => {
     } = usePocketStore();
 
     const [selectedCard, setSelectedCard] = useState<string>("A"); // 선택된 카드 이름 저장
-    const [isFlipped, setIsFlipped] = useState<boolean>(false); // 카드 뒤집기 상태
 
     // 카드 선택 핸들러
     const handleSelectedCard = (name: string) => {
         setSelectedCard(name); // 선택된 카드 이름 업데이트
-        setIsFlipped(false); // 카드 뒤집기 초기화
+
     };
 
-    // 카드 뒤집기 핸들러
-    const handleFlipCard = () => {
-        setIsFlipped(true);
-    };
+
 
     // 덕담 입력 핸들러
     const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,9 +81,7 @@ const Letter = () => {
 
             {/* 카드 디스플레이 */}
             <CardInteraction
-                isFlipped={isFlipped}
                 selectedCard={selectedCard}
-                onFlip={handleFlipCard}
                 onContentChange={handleContentChange}
 
             />
@@ -96,7 +90,7 @@ const Letter = () => {
             {/* 다음 버튼 */}
             <div className="flex justify-end mt-6">
                 <button
-                    className="text-red-600 px-4 py-2 rounded-lg"
+                    className="text-blue text-2xl px-4 py-2 rounded-lg"
                     onClick={handleNextClick}
                 >
                     완료

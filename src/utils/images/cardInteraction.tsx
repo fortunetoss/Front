@@ -3,29 +3,36 @@ import Image from "next/image";
 import {cardData} from "../../utils/images/cardNames";
 
 interface CardInteractionProps {
-    isFlipped: boolean; // 카드 뒤집힘 상태
     selectedCard: string; // 선택된 카드 이름
-    onFlip: () => void; // 카드 뒤집기 핸들러
-    onContentChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // 덕담 입력 핸들러
+    onContentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void; // 덕담 입력 핸들러
 
 }
 
 
 const CardInteraction: React.FC<CardInteractionProps> = ({
-                                                             isFlipped,
-                                                             selectedCard, // 초기값 설정
-                                                             onFlip,
-                                                             onContentChange
-                                                         }) => {
+    selectedCard,
+    onContentChange,
+})=>{
+    const [isFlipped, setIsFlipped] = React.useState(false);
     // 선택된 카드 데이터
     const card = cardData.find((c) => c.name === selectedCard);
+    if (!card){
+        return null;
+    }
+
+    // 카드 뒤집기
+    const handleFlip=()=>{
+        setIsFlipped((prev) => !prev);
+    }
+
+
 
     return (
         <div className="relative flex justify-center items-center mt-10">
             {/* 선택된 카드 */}
             <div
                 className="relative cursor-pointer transition-transform duration-300"
-                onClick={onFlip} // 카드 클릭 시 뒤집기 실행
+                onClick={handleFlip} // 카드 클릭 시 뒤집기 실행
             >
                 <Image
                     src={isFlipped ? card.backImage : card.frontImage} // 앞면 또는 뒷면 이미지
