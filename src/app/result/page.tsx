@@ -44,7 +44,7 @@ const Result = () => {
 
             {/* 정답 */}
             <div className="bg-blue-100 p-4 rounded-md mb-6 text-center">
-                <p className="text-lg font-semibold">{resultData?.title}문제:</p>
+                <p className="text-lg font-semibold">{resultData?.questionTitle}</p>
                 <div className="bg-blue p-4 mt-3 rounded-3xl">
                     <p className="text-white  ">정답: {resultData?.answer}</p>
                 </div>
