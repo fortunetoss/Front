@@ -3,6 +3,8 @@
 export interface Pouch {
     domain:string;
     questionCustomId:number|null;
+    index:number;
+
 }
 
 export const validatePouches = (pouches: Pouch[]) => {
