@@ -34,11 +34,12 @@ const Complete = () => {
         // 나중에 카카오톡 공유 추가함!
         if (shareableUrl) {
             console.log(`카카오톡으로 공유: ${shareableUrl}`);
-            router.push('/pockets/shared');
+        } else {
+            alert("공유 가능한 URL이 없습니다.");
         }
-        router.push("/pockets/shared"); // 공유 후 /shared 페이지로 이동
-    };
+        router.push('/pockets/shared'); // 공유 후 /shared 페이지로 이동
 
+    };
 
     // URL 복사
     const handleCopyUrl = () => {
@@ -46,13 +47,12 @@ const Complete = () => {
             navigator.clipboard
                 .writeText(shareableUrl)
                 .then(() => alert("URL이 클립보드에 복사되었습니다!"))
-
                 .catch((err) => console.error("URL 복사 실패:", err));
         } else {
             alert("공유 가능한 URL이 없습니다.");
-            router.push("/shared")
+
         }
-        router.push("/shared");
+        router.push("/pockets/shared")
     };
 
     return (

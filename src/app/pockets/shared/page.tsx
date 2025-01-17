@@ -21,9 +21,7 @@ const Shared = () => {
 
 
             <div className="mt-6 text-gray-700 text-center">
-                <p className="text-xl">
-                    복나누미가 되어 친구에게 공유해보세요!
-                </p>
+
             </div>
             <div className="flex justify-center space-x-4 mt-8">
                 <button
