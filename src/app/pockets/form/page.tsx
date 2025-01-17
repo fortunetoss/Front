@@ -105,8 +105,8 @@ const Form = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <Notice text="문제와 답변은 수정 가능합니다." />
+        <div className="container mx-auto p-6">
+            <Notice text="문제와 답변은 수정 가능해요!"/>
 
             {/* 질문 입력 */}
             <div className="mb-4">
@@ -115,11 +115,10 @@ const Form = () => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="질문을 입력하세요"
-                    className="w-full text-3xl placeholder-black text-center p-2"
+                    className="w-full text-2xl placeholder-black text-center p-2 mb-6"
                 />
             </div>
 
-            {/* 답변 입력 */}
             {answers.map((answer, index) => (
                 <div
                     key={index}
@@ -127,49 +126,50 @@ const Form = () => {
                         selectedAnswer === index ? "bg-blue text-white" : "bg-gray-100 text-black"
                     }`}
                 >
+                    <input
+                        type="text"
+                        value={editingIndex === index ? editingText : answer}
+                        readOnly={editingIndex !== index} // 수정 중이 아닐 때는 읽기 전용
+                        onChange={(e) => setEditingText(e.target.value)} // 수정 중일 때만 값 변경
+                        className={`flex-grow border-none outline-none bg-transparent ${
+                            editingIndex === index ? "bg-gray-50 text-white p-2 rounded-full" : ""
+                        }`}
+                        onClick={() => {
+                            if (editingIndex !== index) {
+                                setSelectedAnswer(index); // 보기 모드에서 클릭 시 답변 선택
+                            }
+                        }}
+                    />
                     {editingIndex === index ? (
-                        <>
-                            <input
-                                type="text"
-                                value={editingText}
-                                onChange={(e) => setEditingText(e.target.value)}
-                                className="flex-grow bg-gray-50 border border-gray-300 rounded-lg p-2"
-                            />
-                            <button
-                                className="text-green-500"
-                                onClick={() => handleSaveEdit(index)}
-                            >
-                                저장
-                            </button>
-                        </>
+                        <button
+                            className="text-red-500"
+                            onClick={() => handleSaveEdit(index)} // 수정 저장
+                        >
+                            저장
+                        </button>
                     ) : (
-                        <>
-                            <input
-                                type="text"
-                                value={answer}
-                                readOnly
-                                className="flex-grow bg-transparent border-none outline-none"
-                                onClick={() => setSelectedAnswer(index)}
-                            />
-                            <button
-                                className="text-blue-500 flex items-center"
-                                onClick={() => {
-                                    setEditingIndex(index);
-                                    setEditingText(answer);
-                                }}
-                            >
-                                <FaPencilAlt className="mr-1" />
-                            </button>
-                        </>
+                        <button
+                            className="text-blue-500 flex items-center"
+                            onClick={() => {
+                                setEditingIndex(index);
+                                setEditingText(answer);
+                            }}
+                        >
+                            <FaPencilAlt className="mr-1" />
+                        </button>
                     )}
                 </div>
             ))}
 
-            {/* 제출 버튼 */}
+
             <div className="flex justify-end mt-4">
                 <button
                     onClick={handleSubmit}
-                    className="px-6 py-2 rounded text-xl text-red-600"
+                    className={`px-6 py-2 rounded text-xl transition ${
+                        selectedAnswer !== null
+                            ? "text-blue hover:text-blue-700"
+                            : "text-black"
+                    }`}
                 >
                     다음
                 </button>
