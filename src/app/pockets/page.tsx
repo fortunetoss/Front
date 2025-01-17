@@ -80,7 +80,7 @@ const Pockets = () => {
   return (
       <div className="container mx-auto p-10">
         <Notice text="문제를 내고 복주머니를 전달하세요!"/>
-        <div className="grid grid-cols-2 gap-y-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {pouches.map((pouch, index) => (
               <div
                   key={`${pouch.domain}-${index}`}
