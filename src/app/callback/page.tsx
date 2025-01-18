@@ -8,7 +8,6 @@ import { useEffect } from "react";
 export default function CallbackPage() {
   const router = useRouter();
   const params = useSearchParams();
-  const isNewUser = params.get("newUser");
 
   // 개발 환경용 임심 로직
   const accessToken = params.get("access");
@@ -16,16 +15,22 @@ export default function CallbackPage() {
   setAccessToken(accessToken ?? "");
 
   useEffect(() => {
+    if (!params) return;
+
     const getAccessToken = async () => {
+      const isNewUser = params.get("newUser");
+
       //await reissueAccessToken();
-      // if (isNewUser) {
-      router.push("/nickname");
-      // }
-      // router.push("/pockets");
+
+      if (isNewUser === "true") {
+        router.push("/nickname");
+      } else {
+        router.push("/pockets");
+      }
     };
 
     getAccessToken();
-  }, []);
+  }, [params]);
 
   return null;
 }
