@@ -12,12 +12,14 @@ export default function NicknameForm() {
   const router = useRouter();
 
   useEffect(() => {
+    const getDefaultName = async () => {
+      const response = await authApiClient.get("/api/name");
+      const defaultName = response.data.data.name;
+      setEnteredName(defaultName);
+    };
+
     if (!questionId) {
-      (async () => {
-        const response = await authApiClient.get("/api/name");
-        const defaultName = response.data.data.name;
-        setEnteredName(defaultName);
-      })();
+      getDefaultName();
     }
   }, []);
 

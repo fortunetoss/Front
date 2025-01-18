@@ -1,10 +1,10 @@
 import axios from "axios";
 
-import useAccessTokenStore from "@/store/accessToken";
-import { reissueAccessToken } from "@/api/auth";
+import useAccessTokenStore from "../store/accessToken";
+import { reissueAccessToken } from "../api/auth";
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_SEVER_URL,
+  baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
 });
 
 // 헤더에 액세스 토큰이 필요한 요청에 사용 (클라이언트 컴포넌트에서만 사용 가능)
@@ -26,7 +26,9 @@ authApiClient.interceptors.response.use(
   },
   async (error) => {
     // 배포 전까지 주석 처리
+
     // const originalRequest = error.config;
+
     // if (error.code === 401 && !originalRequest._retry) {
     //   await reissueAccessToken();
     //   originalRequest._retry = true;
