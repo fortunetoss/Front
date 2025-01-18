@@ -9,7 +9,7 @@ export default function CallbackPage() {
   const router = useRouter();
   const params = useSearchParams();
 
-  // 개발 환경용 임심 로직
+  // 개발 환경용 임시 로직
   const accessToken = params.get("access");
   const setAccessToken = useAccessTokenStore.getState().setAccessToken;
   setAccessToken(accessToken ?? "");
