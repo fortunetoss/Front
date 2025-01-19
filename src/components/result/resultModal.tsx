@@ -23,7 +23,7 @@ const ResultModal: React.FC<ResultModalProps> = ({isOpen, onClose}) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end  z-50">
-            <div className="bg-white mb-10 rounded-lg  max-w-screen-sm w-8/12  p-6 pb-36 relative">
+            <div className="fixed bg-white mb-10 rounded-lg  max-w-screen-sm w-8/12  p-6  relative">
                 <button
                     className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
                     onClick={onClose}
@@ -53,7 +53,7 @@ const ResultModal: React.FC<ResultModalProps> = ({isOpen, onClose}) => {
                     총 {activeTab === "correct" ? RightSolvers.length : WrongSolvers.length}명
                 </p>
                 <div className="overflow-y-auto max-h-60">
-                    <SolverList solvers={solvers} loading={false}/>
+                    <SolverList solvers={solvers} loading={false} activeTab={activeTab}/>
                 </div>
 
             </div>
