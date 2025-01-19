@@ -8,9 +8,11 @@ import { Solver } from "@/api/api-result-data";
 interface SolversListProps {
     solvers: Solver[];
     loading: boolean;
+    activeTab: "correct" | "incorrect"; // 현재 탭 정보
+
 }
 
-const SolversList:React.FC<SolversListProps> =({solvers,loading})=> {
+const SolversList:React.FC<SolversListProps> =({solvers,loading,activeTab})=> {
 
     if (!solvers|| solvers.length === 0) {
         return (
@@ -21,14 +23,19 @@ const SolversList:React.FC<SolversListProps> =({solvers,loading})=> {
     return (
         <ul className="space-y-3">
             {solvers.map((solver, index) => (
-                <li key={index} className="flex items-center space-x-2 text-xl">
+                <li key={index} className="flex items-center justify-between">
                     <span className="font-semibold">{solver.solver}</span>
-                    <span className="font-semibold">{solver.answer}</span>
+                    <span
+                        className={`py-1 px-2 rounded-full text-white text-sm ${
+                            activeTab === "correct" ? "bg-blue" : "bg-yellow-500"
+                        }`}
+                    >
+                        {solver.answer}
+                    </span>
                 </li>
             ))}
         </ul>
     );
 };
-
 
 export default SolversList;
