@@ -1,44 +1,28 @@
 import React, {useEffect} from "react";
 import {useState} from "react";
 import useResultStore from "@/app/store/useResultStore";
-import {fetchAnswers} from "@/api/api-result-data";
-import {ValidateResult} from "@/app/result/resultValidation";
+
 
 interface ResultModalProps{
     isOpen:boolean;
     onClose:() => void;
-    questionCustomId:string;
-    answer:string;
+
 }
 
-const ResultModal: React.FC<ResultModalProps> = ({isOpen, onClose, questionCustomId, answer,}) => {
+const ResultModal: React.FC<ResultModalProps> = ({isOpen, onClose}) => {
     if(!isOpen) return null;
     const [activeTab, setActiveTab] = useState<"correct" | "incorrect">("correct");
-    const { RightSolvers, WrongSolvers, setSolvers } = useResultStore();
+    const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
+    const [error, setError] = useState<string | null>(null); // 에러 상태
+    const { RightSolvers, WrongSolvers } = useResultStore();
 
-    // 모달 창 열자마자 API 호출
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const solvers = await fetchAnswers(questionCustomId, answer);
-                const { correctSolvers, incorrectSolvers } = ValidateResult(solvers, answer);
-                setSolvers(correctSolvers, incorrectSolvers);
-
-            } catch (error) {
-                console.error("데이터 로드 실패:", error);
-            }
-        };
-
-        if (isOpen) {
-            fetchData(); // 모달이 열릴 때만 데이터 로드
-
-        }
-
-    }, []);
 
 
     const SolversList=() => {
         let solvers;
+        if (loading) {
+            return <p className="text-center text-gray-500">로딩 중...</p>;
+        }
         if (activeTab === "correct") {
             solvers = RightSolvers;
             // zustand 에서 가져온거
