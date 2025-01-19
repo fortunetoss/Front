@@ -8,6 +8,8 @@ import { fetchResultData, ResultData } from "../../api/api-result";
 import ResultModal from "../../components/result/resultModal";
 import {ValidateResult} from "@/components/result/resultValidation";
 import {fetchAnswers} from "@/api/api-result-data";
+import useResultStore from "@/app/store/useResultStore";
+
 
 
 const Result = () => {
@@ -16,10 +18,13 @@ const Result = () => {
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
     const searchParams = useSearchParams();
+    const { setSolvers, RightSolvers, WrongSolvers } = useResultStore();
 
 
     // questionCustomId 가져오기
     const questionCustomId = searchParams.get("questionCustomId");
+
+
 
     useEffect(() => {
         const fetchResult = async () => {
@@ -29,7 +34,9 @@ const Result = () => {
                 setResultData(result);
 
                 const solvers = await fetchAnswers(questionCustomId,result.answer);
-                ValidateResult(solvers, result.answer);
+                // 정답자/오답자 분리
+                const { RightSolvers, WrongSolvers } = ValidateResult(solvers, result.answer);
+                setSolvers(RightSolvers, WrongSolvers);
             } catch (err) {
                 console.log(error);
             } finally {
@@ -40,6 +47,8 @@ const Result = () => {
         fetchResult();
         console.log(fetchResultData)
     }, [questionCustomId, ValidateResult]);
+
+
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
