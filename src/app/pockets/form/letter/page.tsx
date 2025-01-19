@@ -8,6 +8,8 @@ import CardList from "../../../../utils/images/cardList";
 import CardInteraction from "../../../../utils/images/cardInteraction";
 import { cardData } from "../../../../utils/images/cardNames";
 import { submitCustomQuestion } from "../../../../api/api-form";
+import Header from "@/components/header/header";
+import BackButton from "@/components/header/back-button";
 
 const Letter = () => {
     const router = useRouter();
@@ -73,28 +75,33 @@ const Letter = () => {
     };
 
     return (
-        <div className="p-4">
-            <Notice text="새해 덕담을 작성해주세요!" />
+        <div>
+            <Header>
+                <BackButton/>
+            </Header>
+            <div className="p-4">
+                <Notice text="새해 덕담을 작성해주세요!"/>
 
-            {/* 카드 리스트 */}
-            <CardList selectedCard={selectedCard} onSelect={handleSelectedCard} />
+                {/* 카드 리스트 */}
+                <CardList selectedCard={selectedCard} onSelect={handleSelectedCard}/>
 
-            {/* 카드 디스플레이 */}
-            <CardInteraction
-                selectedCard={selectedCard}
-                onContentChange={handleContentChange}
+                {/* 카드 디스플레이 */}
+                <CardInteraction
+                    selectedCard={selectedCard}
+                    onContentChange={handleContentChange}
 
-            />
+                />
 
 
-            {/* 다음 버튼 */}
-            <div className="flex justify-end mt-6">
-                <button
-                    className="text-blue text-2xl px-4 py-2 rounded-lg"
-                    onClick={handleNextClick}
-                >
-                    완료
-                </button>
+                {/* 다음 버튼 */}
+                <div className="flex justify-end mt-6">
+                    <button
+                        className="text-blue text-2xl px-4 py-2 rounded-lg"
+                        onClick={handleNextClick}
+                    >
+                        완료
+                    </button>
+                </div>
             </div>
         </div>
     );
