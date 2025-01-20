@@ -7,6 +7,9 @@ import { fetchLuckyPouches } from "../../api/api-form";
 import Notice from "../../components/notice";
 import {validatePouches,Pouch} from "../../utils/validation/validationPouch";
 import {getPouch} from "@/utils/images/domain";
+import Header from "@/components/header/header";
+import Logo from "@/components/header/logo";
+import OpenSettingButton from "@/components/header/open-setting-button";
 
 const Pockets = () => {
   const router = useRouter();
@@ -78,54 +81,62 @@ const Pockets = () => {
 
 
   return (
-      <div className="container mx-auto p-10">
-        <Notice text="문제를 내고 복주머니를 전달하세요!"/>
-        <div className="grid grid-cols-2 gap-y-4">
-          {pouches.map((pouch, index) => (
-              <div
-                  key={`${pouch.domain}-${index}`}
-                  className={`relative p-4 text-center cursor-pointer ${
-                      pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
-                  }`}
-                  onClick={() =>
-                      handlePouchSelect(pouch.domain, pouch.questionCustomId, pouch.index)
-                  } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
-              >
+      <div>
+        <Header>
+          <Logo />
+          <OpenSettingButton />
+        </Header>
+
+        <div className="container mx-auto p-10">
+
+          <Notice text="문제를 내고 복주머니를 전달하세요!"/>
+          <div className="grid grid-cols-2 gap-y-4">
+            {pouches.map((pouch, index) => (
                 <div
-                    className="relative"
-                    style={{
-                      filter: pouch.isFilled ? "none" : "blur(4px)",
-                    }}
+                    key={`${pouch.domain}-${index}`}
+                    className={`relative p-4 text-center cursor-pointer ${
+                        pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
+                    }`}
+                    onClick={() =>
+                        handlePouchSelect(pouch.domain, pouch.questionCustomId, pouch.index)
+                    } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
                 >
-                  <img
-                      src={getPouch(pouch.domain)}
-                      alt={`복주머니 ${pouch.domain}`}
-                      className="mx-auto w-30 h-30"
-                  />
+                  <div
+                      className="relative"
+                      style={{
+                        filter: pouch.isFilled ? "none" : "blur(4px)",
+                      }}
+                  >
+                    <img
+                        src={getPouch(pouch.domain)}
+                        alt={`복주머니 ${pouch.domain}`}
+                        className="mx-auto w-30 h-30"
+                    />
+                  </div>
+
+                  {!pouch.isFilled && (
+                      <div
+                          className="absolute inset-0 flex items-center justify-center"
+                          style={{zIndex: 10}}
+                      >
+                        <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">문제내기</p>
+                      </div>
+                  )}
                 </div>
+            ))}
+          </div>
 
-                {!pouch.isFilled && (
-                    <div
-                        className="absolute inset-0 flex items-center justify-center"
-                        style={{zIndex: 10}}
-                    >
-                      <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">문제내기</p>
-                    </div>
-                )}
+          {!isLastPage && (
+              <div className="flex justify-center mt-6">
+                <button
+                    onClick={handleLoadMore}
+                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+                >
+                  더 보기
+                </button>
               </div>
-          ))}
+          )}
         </div>
-
-        {!isLastPage && (
-            <div className="flex justify-center mt-6">
-              <button
-                  onClick={handleLoadMore}
-                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                더 보기
-              </button>
-            </div>
-        )}
       </div>
   );
 };
