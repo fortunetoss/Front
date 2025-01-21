@@ -1,53 +1,45 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {authApiClient} from "../../../api/api-client";
+import { useRouter } from "next/navigation";
+import { authApiClient } from "../../../api/api-client";
 import Modal from "../../../components/modals";
-import {useRouter} from "next/navigation";
-import {generateUrl} from "@/utils/url/urlGenerator";
+import { generateUrl } from "@/utils/url/urlGenerator";
 import usePocketStore from "@/app/store/usePocket";
-import {pocketsImageData} from "@/utils/images/cardNames";
+import { pocketsImageData } from "@/utils/images/cardNames";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-
+import { buttonBackClick } from "@/components/edit/buttonBackClick";
+import {getEdit} from "@/api/api-getEdit";
 
 const Complete = () => {
-
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
-    const {domain}=usePocketStore();
+    const questionCustomId = usePocketStore((state) => state.questionCustomId);
+    const { domain } = usePocketStore();
 
     const selectedPouch = pocketsImageData.find((pouch) => pouch.name === domain);
 
     useEffect(() => {
-        // 백엔드에서 questionId 받아오기
-
         const url = generateUrl();
         if (url) {
             setShareableUrl(url);
-            console.log(`url 생성 ${url}`);
-
+            console.log(`URL 생성: ${url}`);
         } else {
-            console.error("URL 생성 실패: api 오류");
+            console.error("URL 생성 실패: API 오류");
         }
     }, []);
 
-
-    // 카카오톡 공유
     const handleKakaoShare = () => {
-        // 일단 똑같이.. 해놓고
-        // 나중에 카카오톡 공유 추가함!
         if (shareableUrl) {
             console.log(`카카오톡으로 공유: ${shareableUrl}`);
         } else {
             alert("공유 가능한 URL이 없습니다.");
         }
-        router.push('/pockets/shared'); // 공유 후 /shared 페이지로 이동
-
+        router.push("/pockets/shared");
     };
 
-    // URL 복사
     const handleCopyUrl = () => {
         if (shareableUrl) {
             navigator.clipboard
@@ -56,17 +48,27 @@ const Complete = () => {
                 .catch((err) => console.error("URL 복사 실패:", err));
         } else {
             alert("공유 가능한 URL이 없습니다.");
-
         }
-        router.push("/pockets/shared")
+        router.push("/pockets/shared");
     };
+
     return (
         <div>
             <Header>
-                <BackButton/>
+                <BackButton
+                    onClick={async () => {
+                        if (questionCustomId) {
+                            buttonBackClick(questionCustomId);
+                            history.back();
+                        } else {
+                            history.back(); // 단순 뒤로 가기
+                        }
+                    }}
+                />
+
             </Header>
-            <div className="container mx-auto p-4 ">
-                <div className="mt-6 mb-20 text-gray-700 ">
+            <div className="container mx-auto p-4">
+                <div className="mt-6 mb-20 text-gray-700">
                     <h1 className="font-semibold text-xl mt-1">
                         복주머니가 완성되었어요!
                     </h1>
@@ -84,16 +86,24 @@ const Complete = () => {
                 ) : (
                     <p className="text-red-500">복주머니를 선택하지 않았습니다.</p>
                 )}
+
                 <div className="flex w-full space-x-4 mt-8">
                     <button
-                        onClick={() => window.history.back()}
+                        onClick={() => {
+                            if (questionCustomId) {
+                                buttonBackClick(questionCustomId);
+                                history.back();
+                            } else {
+                                history.back();
+                            }
+                        }}
                         className="flex-1 py-3 text-lg font-medium text-gray-700 border-2 border-gray-400 rounded-lg hover:bg-gray-100 transition"
                     >
                         이전
                     </button>
                     <button
                         onClick={() => setIsModalOpen(true)}
-                        className="flex-1  py-3 text-lg font-medium text-white bg-blue rounded-lg hover:bg-red-600 transition"
+                        className="flex-1 py-3 text-lg font-medium text-white bg-blue rounded-lg hover:bg-red-600 transition"
                     >
                         공유하기
                     </button>
@@ -103,10 +113,10 @@ const Complete = () => {
                     onClose={() => setIsModalOpen(false)}
                     onCopyUrl={handleCopyUrl}
                     onKakaoShare={handleKakaoShare}
-                ></Modal>
+                />
             </div>
         </div>
-    )
+    );
 };
 
 export default Complete;
