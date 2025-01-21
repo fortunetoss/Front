@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import {cardData} from "../../utils/images/cardNames";
+import usePocketStore from "@/app/store/usePocket";
+
 
 interface CardInteractionProps {
     selectedCard: string; // 선택된 카드 이름
@@ -14,6 +16,7 @@ const CardInteraction: React.FC<CardInteractionProps> = ({
     onContentChange,
 })=>{
     const [isFlipped, setIsFlipped] = React.useState(false);
+    const { setContent } = usePocketStore();
     // 선택된 카드 데이터
     const card = cardData.find((c) => c.name === selectedCard);
     if (!card){
@@ -51,9 +54,7 @@ const CardInteraction: React.FC<CardInteractionProps> = ({
                     <textarea
                         className="w-[95%] max-w-[600px] text-2xl text-gray-700 outline-none resize-none px-2 py-16 text-center"
                         placeholder="덕담을 입력하세요"
-                        onChange={(e) => {
-                            onContentChange(e); // 부모 컴포넌트로 이벤트 전달
-                        }}
+                        onChange={(e) => setContent(e.target.value)}
                     />
                 </div>
             )}
