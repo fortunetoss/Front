@@ -19,6 +19,8 @@ const Letter = () => {
     const questionCustomId = usePocketStore((state) => state.questionCustomId);
     // 상태에서 복주머니 ID 가져오기
 
+
+
     const {
         title,
         answers,
@@ -49,8 +51,9 @@ const Letter = () => {
 
     //덕담 입력
     const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setContent(e.target.value);
-        console.log(content);
+        const newValue = e.target.value;
+        setContent(newValue);
+        console.log(newValue);
         setModified(true);
         //덕담입력재수정-> 상태수정됨
 
