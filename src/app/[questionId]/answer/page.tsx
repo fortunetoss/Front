@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import Option from "@/components/buttons/option";
 import useAnswererStore from "@/store/answerer";
-import { apiClient, authApiClient } from "@/api/api-client";
+import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 
@@ -17,7 +17,7 @@ export default function AnswerPage() {
     setAnswer(text);
 
     // 나중에 apiClient로 변경 필요
-    const response = await authApiClient.post(`/api/answer/${questionId}`, {
+    const response = await apiClient.post(`/api/answer/${questionId}`, {
       answer: text,
       solver: name,
     });
