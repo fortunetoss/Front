@@ -1,4 +1,5 @@
-// 문제 수정하기 위해 일단 받아옴
+// 문제 수정하기 위해 일단 api 받아옴
+
 
 import {authApiClient} from "../api/api-client";
 
