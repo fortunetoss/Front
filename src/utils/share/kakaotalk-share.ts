@@ -13,6 +13,9 @@ export const kakaotalkShare = (targetUrl: string, isAnswerer?: boolean) => {
 
   if (isAnswerer) {
     // 문구 변경하기
+    title = "문제에 대한 응답이 도착했어요!";
+    description = "응답자가 정답을 맞췄는지 확인해보세요!";
+    buttonText = "응답 결과 확인하기";
   }
 
   window.Kakao.Share.sendDefault({
