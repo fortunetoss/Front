@@ -52,6 +52,8 @@ export default function IntroPage() {
     })();
   }, []);
 
+  const pouchImg = getPouch(pouchType);
+
   return (
     <>
       <Header>
@@ -64,13 +66,15 @@ export default function IntroPage() {
             문제를 맞추고 {publisherName}님이 보낸 덕담을 확인하세요.
           </h2>
         </div>
-        <Image
-          alt="복주머니"
-          src={getPouch(pouchType) ?? "/pocketsImage/복주머니_01.webp"}
-          width={240}
-          height={240}
-          className="mx-auto"
-        />
+        {pouchImg && (
+          <Image
+            alt="복주머니"
+            src={pouchImg}
+            width={240}
+            height={240}
+            className="mx-auto"
+          />
+        )}
         <Link
           href={`/${questionId}/nickname`}
           className="block mx-auto w-full bg-blue text-white font-bold px-3 py-4 rounded-lg text-center"

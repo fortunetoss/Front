@@ -8,9 +8,8 @@ import Logo from "@/components/header/logo";
 import AnswererFinalActions from "@/components/buttons/answerer-final-actions";
 
 export default function ResultPage() {
-  const { isCorrect, question, correctAnswer, hasMessage } = useAnswererStore();
+  const { isCorrect, question, correctAnswer, message } = useAnswererStore();
   const { questionId } = useParams();
-  console.log(isCorrect, correctAnswer);
 
   return (
     <>
@@ -32,7 +31,7 @@ export default function ResultPage() {
                 정답: <strong className="font-bold">{correctAnswer}</strong>
               </p>
             </div>
-            {hasMessage && (
+            {message !== null && (
               <div className="flex justify-end">
                 <Link href={`/${questionId}/message`} className="next-btn">
                   다음
@@ -40,7 +39,7 @@ export default function ResultPage() {
               </div>
             )}
           </div>
-          {!hasMessage && <AnswererFinalActions />}
+          {message === null && <AnswererFinalActions />}
         </section>
       </main>
     </>

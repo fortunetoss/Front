@@ -15,6 +15,8 @@ interface AnswererStore {
   message: string | null;
   cardType: string;
 
+  answerId: number | null;
+
   setInitialData: (
     question: string,
     options: string[],
@@ -25,7 +27,8 @@ interface AnswererStore {
     isCorrect: boolean | null,
     correctAnswer: string,
     message: string | null,
-    cardType: string
+    cardType: string,
+    answerId: number
   ) => void;
   setName: (name: string) => void;
   setAnswer: (answer: string) => void;
@@ -44,6 +47,8 @@ const initialState = {
   correctAnswer: "",
   message: null,
   cardType: "",
+
+  answerId: null,
 };
 
 const useAnswererStore = create(
@@ -62,13 +67,20 @@ const useAnswererStore = create(
           pouchType,
         })),
 
-      setAnswererResult: (isCorrect, correctAnswer, message, cardType) =>
+      setAnswererResult: (
+        isCorrect,
+        correctAnswer,
+        message,
+        cardType,
+        answerId
+      ) =>
         set((prev) => ({
           ...prev,
           isCorrect,
           correctAnswer,
           message,
           cardType,
+          answerId,
         })),
 
       setName: (name) => set((prev) => ({ ...prev, name })),

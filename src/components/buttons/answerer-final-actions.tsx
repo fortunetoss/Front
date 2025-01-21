@@ -4,9 +4,11 @@ import Link from "next/link";
 import ShareModal from "../modal/share-modal";
 import { useState } from "react";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
+import useAnswererStore from "@/store/answerer";
 
 export default function AnswererFinalActions() {
   const [isOpen, setIsOpen] = useState(false);
+  const answerId = useAnswererStore((state) => state.answerId);
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -19,8 +21,12 @@ export default function AnswererFinalActions() {
   const handleCopyUrl = () => {};
 
   const onKakaoShare = () => {
-    // 경로에 응답 id 뒤에 붙이기
-    kakaotalkShare(`${process.env.NEXT_PUBLIC_URL}/result-share/`, true);
+    if (answerId) {
+      kakaotalkShare(
+        `${process.env.NEXT_PUBLIC_URL}/result-share/${answerId}`,
+        true
+      );
+    }
   };
 
   return (
