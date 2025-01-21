@@ -3,9 +3,17 @@
 import backBtnImg from "@/assets/icons/header/back.svg";
 import Image from "next/image";
 
-export default function BackButton() {
+interface BackButtonProps {
+  onClick?:()=>void;
+}
+
+export default function BackButton({ onClick }: BackButtonProps) {
   const handleClick = () => {
-    history.back();
+    if (onClick) {
+      onClick();
+    } else {
+      history.back();
+    }
   };
 
   return (
