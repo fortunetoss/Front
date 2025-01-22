@@ -44,7 +44,6 @@ export default function AnswerPage() {
                 <Option
                   text={option}
                   isSelected={option === answer}
-                  disabled={answer !== null}
                   onClick={handleClick}
                 />
               </li>
