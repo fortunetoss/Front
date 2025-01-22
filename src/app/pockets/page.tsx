@@ -18,22 +18,21 @@ const Pockets = () => {
   const [page, setPage] = useState<number>(0); // 페이지 번호
   const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
   const {setDomain, setStep, setQuestionCustomId} = usePocketStore();
+
   // 퍼널 관리랑 선택한 복주머니 저장하기 위함
 
 
   // 로그인 후에 복주머니 가져오기
   const loadPouches = async (page: number) => {
     try {
-      setPouches([]);
+      setIsLoading(true);
       const data = await fetchLuckyPouches(page);
 
-
       if (data) {
-        const validatedPouches = validatePouches(data.content).map((pouch,idx)=>({
+        const validatedPouches = validatePouches(data.content).map((pouch) => ({
           ...pouch,
         }));
-        //검증로직
-        setPouches(validatedPouches);
+        setPouches(validatedPouches); // 기존 데이터 초기화 후 새 데이터 설정
         setIsLastPage(data.last); // 마지막 페이지 여부 갱신
       }
     } catch (error) {
@@ -42,6 +41,7 @@ const Pockets = () => {
       setIsLoading(false);
     }
   };
+
 
   // 컴포넌트 마운트 시 첫 페이지 데이터 로드
   useEffect(() => {
@@ -53,20 +53,36 @@ const Pockets = () => {
   }, []);
 
   // 다음 페이지 데이터 로드 - 무한스크롤
+  /*
   const handleLoadMore = () => {
     if (!isLastPage) {
       setPage((prevPage) => prevPage + 1); // 페이지 번호 증가
       loadPouches(page + 1); // 다음 페이지 데이터 요청
     }
+
+  };
+
+   */
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 0 && newPage !== page) {
+      setPage(newPage);
+      //setPouches([]); // 페이지 변경 시 기존 데이터를 초기화 (필요 시 제거 가능)
+      loadPouches(newPage);
+      window.scrollTo(0, 0); // 페이지 변경 시 스크롤 상단으로 이동
+
+    }
   };
 
   // 복주머니 선택 핸들러
-  const handlePouchSelect = async (domain: string, questionCustomId: number | null, index:number) => {
-    // 상태 업데이트
+  const handlePouchSelect = async (
+      domain: string,
+      questionCustomId: number | null,
+      index: number
+  ) => {
     setDomain(domain);
     setQuestionCustomId(questionCustomId);
     setStep(1);
-
 
     if (questionCustomId !== null) {
       // 이미 채워져 있는 경우
@@ -83,8 +99,8 @@ const Pockets = () => {
   return (
       <div>
         <Header>
-          <Logo />
-          <OpenSettingButton />
+          <Logo/>
+          <OpenSettingButton/>
         </Header>
 
         <div className="container mx-auto p-10">
@@ -112,7 +128,7 @@ const Pockets = () => {
                         alt={`복주머니 ${pouch.domain}`}
                         className="mx-auto w-30 h-30"
                     />
-                  </div>
+                 </div>
 
                   {!pouch.isFilled && (
                       <div
@@ -125,10 +141,35 @@ const Pockets = () => {
                 </div>
             ))}
           </div>
+          <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center shadow-lg">
+            {/* 페이지 버튼 */}
+            {Array.from({ length: page + 1 }, (_, index) => (
+                <button
+                    key={index}
+                    onClick={() => {
+                      if (index !== page) handlePageChange(index); // 중복 호출 방지
+                    }}
+                    className={`px-4 py-2 mx-1 rounded ${
+                        page === index ? " text-red-600 font-bold" : " text-black"
+                    }`}
+                >
+                  {index + 1}
+                </button>
+            ))}
 
-
+            {!isLastPage && (
+                <button
+                    onClick={() => {
+                      const nextPage = page + 1;
+                      handlePageChange(nextPage);
+                    }}
+                    className="px-4 py-2 mx-1 text-black "
+                >
+                  {page + 2}
+                </button>
+            )}
+          </div>
         </div>
-      </div>
   );
 };
-  export default Pockets;
+export default Pockets;

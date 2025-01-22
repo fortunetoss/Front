@@ -1,7 +1,7 @@
 interface ResponseData {
   status: string;
   message: string;
-  data: Record<string, any> | null;
+  data: any | null;
   errorDetails: null | {
     message: string;
     details: string;
