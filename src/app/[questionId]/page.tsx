@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import { apiClient, authApiClient } from "@/api/api-client";
+import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import ResponseData from "@/models/response-data";
 import useAnswererStore from "@/store/answerer";
@@ -23,7 +23,7 @@ export default function IntroPage() {
   useEffect(() => {
     (async () => {
       // 나중에 apiClient로 변경 필요
-      const response = await authApiClient.get<ResponseData>(
+      const response = await apiClient.get<ResponseData>(
         `/api/answer/${questionId}`
       );
 

@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authApiClient } from "../../../api/api-client";
-import Modal from "../../../components/modals";
+import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
+import ShareModal from "@/components/modal/share-modal";
 import { generateUrl } from "@/utils/url/urlGenerator";
 import usePocketStore from "@/app/store/usePocket";
 import { pocketsImageData } from "@/utils/images/cardNames";
@@ -33,7 +34,7 @@ const Complete = () => {
 
     const handleKakaoShare = () => {
         if (shareableUrl) {
-            console.log(`카카오톡으로 공유: ${shareableUrl}`);
+            kakaotalkShare(shareableUrl);
         } else {
             alert("공유 가능한 URL이 없습니다.");
         }
@@ -108,7 +109,7 @@ const Complete = () => {
                         공유하기
                     </button>
                 </div>
-                <Modal
+                <ShareModal
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     onCopyUrl={handleCopyUrl}

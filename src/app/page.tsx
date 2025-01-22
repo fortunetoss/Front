@@ -1,5 +1,5 @@
 import Image from "next/image";
-import KakaoLoginButton from "@/components/login/kako-login-button";
+import KakaoLoginButton from "@/components/kakao/kakao-login-button";
 import logoImg from "@/assets/icons/logo.svg";
 import pouchImg from "@/assets/onbarding/onboarding-pouch.webp";
 
