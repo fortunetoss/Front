@@ -2,20 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.next-btn {
+  @apply text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg;
+}
+.broad-btn {
+  @apply block text-center px-3 py-[14px] w-full border-[1.2px] rounded-lg border-[#C6C6C6] bg-white font-medium active:border-blue active:font-bold active:text-blue;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.card {
+  @apply flex flex-col justify-center mx-auto relative w-[260px] h-[365px];
+  transform-style: preserve-3d;
+  transform: perspective(500px);
+  transition: all 0.5s;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.card-front,
+.card-back {
+  @apply absolute flex justify-center w-full h-full bg-cover bg-center bg-no-repeat;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  @apply items-end;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.flipped {
+  transform: rotateY(180deg);
 }
