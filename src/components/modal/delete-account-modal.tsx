@@ -13,9 +13,12 @@ export default function DeleteAccountModal({
   const router = useRouter();
 
   const handleDeleteAccount = async () => {
-    await authApiClient.post("/api/users/delete");
-    setAccessToken("");
-    router.push("/");
+    try {
+      await authApiClient.post("/api/users/delete");
+      setAccessToken("");
+      sessionStorage.setItem("hasDeleted", "true");
+      router.push("/");
+    } catch (err) {}
   };
 
   return (
