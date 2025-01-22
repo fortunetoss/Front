@@ -18,7 +18,14 @@ export default function AnswererFinalActions() {
     setIsOpen(false);
   };
 
-  const handleCopyUrl = () => {};
+  const handleCopyUrl = () => {
+    if (answerId) {
+      navigator.clipboard
+        .writeText(`${process.env.NEXT_PUBLIC_URL}/result-share/${answerId}`)
+        .then(() => alert("URL이 클립보드에 복사되었습니다!"))
+        .catch((err) => console.error("URL 복사 실패:", err));
+    }
+  };
 
   const onKakaoShare = () => {
     if (answerId) {
