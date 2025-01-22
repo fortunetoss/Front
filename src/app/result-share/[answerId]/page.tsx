@@ -49,7 +49,7 @@ export default function ResultSharePage() {
       )}
       <section className="flex flex-col gap-[14px]">
         <button className="broad-btn" onClick={goToQuestion}>
-          맞춘 문제 확인하기
+          푼 문제 확인하기
         </button>
         <button className="broad-btn" onClick={goToHome}>
           홈으로 이동
