@@ -4,18 +4,19 @@ import Image from "next/image";
 import KakaoLoginButton from "@/components/kakao/kakao-login-button";
 import logoImg from "@/assets/icons/logo.svg";
 import pouchImg from "@/assets/onbarding/onboarding-pouch.webp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [hasDeleted, setHasDeleted] = useState(
-    sessionStorage.getItem("hasDeleted") === "true"
-  );
+  const [hasDeleted, setHasDeleted] = useState(false);
 
-  console.log(hasDeleted);
-  setTimeout(() => {
-    setHasDeleted(false);
-    sessionStorage.removeItem("hasDeleted");
-  }, 2000);
+  useEffect(() => {
+    if (sessionStorage.getItem("hasDeleted") === "true") {
+      setTimeout(() => {
+        setHasDeleted(false);
+        sessionStorage.removeItem("hasDeleted");
+      }, 2000);
+    }
+  }, []);
 
   return (
     <main className="relative flex flex-col items-center justify-center h-full gap-[14px] px-8">
