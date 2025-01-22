@@ -8,7 +8,6 @@ const KAKAO_LOGIN_URL = `${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorizat
 export default function KakaoLoginButton() {
   const handleClick = () => {
     window.location.href = KAKAO_LOGIN_URL;
-    console.log(process.env.NEXT_PUBLIC_SERVER_URL);
   };
 
   return (

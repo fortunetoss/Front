@@ -45,7 +45,7 @@ export const submitCustomQuestion = async (
     domain: string | null,
     content: string | null,
     //paper: string | null
-): Promise<{ questionId: number;  }> => {
+): Promise<{ questionCustomId: number;  }> => {
     try {
         const response = await authApiClient.post("/api/question", {
             title,
@@ -63,13 +63,14 @@ export const submitCustomQuestion = async (
         console.log("응답데이터")
         // 응답 처리
         if (response.status === 200) {
-            const questionId = response.data.data.id;
+            const questionCustomId = response.data.data.id;
             const {setQuestionCustomId} = usePocketStore.getState();
-            setQuestionCustomId(questionId);
+            setQuestionCustomId(questionCustomId);
             // 응답할때 questionCustomId 받아오면 이걸 zustand 에 일단 저장해놓음
             // -> url 만들 때 쓸거니까
-            console.log("POST 성공:  ID:", questionId);
-            return { questionId };
+            console.log("POST 성공:  quesitonCustomId:", questionCustomId);
+            return { questionCustomId };
+
         } else {
             throw new Error(" 제대로 받아오지 못함");
         }

@@ -128,7 +128,7 @@ const Pockets = () => {
                         alt={`복주머니 ${pouch.domain}`}
                         className="mx-auto w-30 h-30"
                     />
-                  </div>
+                 </div>
 
                   {!pouch.isFilled && (
                       <div
@@ -141,7 +141,6 @@ const Pockets = () => {
                 </div>
             ))}
           </div>
-
           <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center shadow-lg">
             {/* 페이지 버튼 */}
             {Array.from({ length: page + 1 }, (_, index) => (
@@ -170,7 +169,6 @@ const Pockets = () => {
                 </button>
             )}
           </div>
-        </div>
         </div>
   );
 };
