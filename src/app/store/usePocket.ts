@@ -65,7 +65,7 @@ const usePocketStore = create<PocketState>()(
                 set({ correctAnswer: answer })
             },
             setContent: (content) => {
-                console.log("setContent:", content);
+               // console.log("setContent:", content);
                 set({ content })
             },
             setDomain: (domain) => {
