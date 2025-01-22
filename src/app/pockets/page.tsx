@@ -10,17 +10,21 @@ import {getPouch} from "@/utils/images/domain";
 import Header from "@/components/header/header";
 import Logo from "@/components/header/logo";
 import OpenSettingButton from "@/components/header/open-setting-button";
+import {useInfiniteScroll} from "@/components/scroll/useInfiniteScroll";
+import InfiniteScroll from "@/components/scroll/InfiniteScroll";
 
 const Pockets = () => {
   const router = useRouter();
-  const [pouches, setPouches] = useState<(Pouch & { isFilled: boolean })[]>([]); // 채워져 있음 여부 추가
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(0); // 페이지 번호
-  const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
   const {setDomain, setStep, setQuestionCustomId} = usePocketStore();
+  const [currentPage, setCurrentPage] = useState(0); // 페이지 상태 추가
+
   // 퍼널 관리랑 선택한 복주머니 저장하기 위함
 
+  const { pouches, loadMorePouches, loadPreviousPouches, isLastPage, setPouches,isFirstPage,isLoading } = useInfiniteScroll();
 
+  // 초기데이터 로드
+  // page=0 으로 a해서 로그인하면 맨첫번째 8개 데이터 가져오기
+  // 초기 데이터를 로드하는 함수
   // 로그인 후에 복주머니 가져오기
   const loadPouches = async (page: number) => {
     try {
@@ -34,18 +38,19 @@ const Pockets = () => {
         }));
         //검증로직
         setPouches(validatedPouches);
-        setIsLastPage(data.last); // 마지막 페이지 여부 갱신
+        //setIsLastPage(data.last); // 마지막 페이지 여부 갱신
       }
     } catch (error) {
       console.error("복주머니 데이터를 가져오는 데 실패했습니다.", error);
     } finally {
-      setIsLoading(false);
+      //setIsLoading(false);
     }
   };
 
   // 컴포넌트 마운트 시 첫 페이지 데이터 로드
   useEffect(() => {
     const fetchData = async () => {
+      setPouches([]); // 초기화
       await loadPouches(0); // 데이터 로드
     };
 
@@ -53,12 +58,19 @@ const Pockets = () => {
   }, []);
 
   // 다음 페이지 데이터 로드 - 무한스크롤
-  const handleLoadMore = () => {
+  const handleLoadMore = async() => {
     if (!isLastPage) {
-      setPage((prevPage) => prevPage + 1); // 페이지 번호 증가
-      loadPouches(page + 1); // 다음 페이지 데이터 요청
+      // @ts-ignore
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage); // 페이지 상태 업데이트
+      await loadPouches(nextPage); // 다음 페이지 데이터 요청
     }
   };
+
+
+
+
+
 
   // 복주머니 선택 핸들러
   const handlePouchSelect = async (domain: string, questionCustomId: number | null, index:number) => {
@@ -86,57 +98,52 @@ const Pockets = () => {
           <Logo />
           <OpenSettingButton />
         </Header>
+        <InfiniteScroll onLoadMore={loadMorePouches} onLoadPrevious={loadPreviousPouches}
+                        isLastPage={isLastPage} isFirstPage={isFirstPage}
+                        isLoading={isLoading}
+        >
 
-        <div className="container mx-auto p-10">
+          <div className="container mx-auto p-10">
 
-          <Notice text="문제를 내고 복주머니를 전달하세요!"/>
-          <div className="grid grid-cols-2 gap-y-4">
-            {pouches.map((pouch, index) => (
-                <div
-                    key={`${pouch.domain}-${index}`}
-                    className={`relative p-4 text-center cursor-pointer ${
-                        pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
-                    }`}
-                    onClick={() =>
-                        handlePouchSelect(pouch.domain, pouch.questionCustomId, pouch.index)
-                    } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
-                >
+            <Notice text="문제를 내고 복주머니를 전달하세요!"/>
+            <div className="grid grid-cols-2 gap-y-4">
+              {pouches.map((pouch, index) => (
                   <div
-                      className="relative"
-                      style={{
-                        filter: pouch.isFilled ? "none" : "blur(4px)",
-                      }}
+                      key={`${pouch.domain}-${index}`}
+                      className={`relative p-4 text-center cursor-pointer ${
+                          pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
+                      }`}
+                      onClick={() =>
+                          handlePouchSelect(pouch.domain, pouch.questionCustomId, pouch.index)
+                      } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
                   >
-                    <img
-                        src={getPouch(pouch.domain)}
-                        alt={`복주머니 ${pouch.domain}`}
-                        className="mx-auto w-30 h-30"
-                    />
+                    <div
+                        className="relative"
+                        style={{
+                          filter: pouch.isFilled ? "none" : "blur(4px)",
+                        }}
+                    >
+                      <img
+                          src={getPouch(pouch.domain)}
+                          alt={`복주머니 ${pouch.domain}`}
+                          className="mx-auto w-30 h-30"
+                      />
+                    </div>
+
+                    {!pouch.isFilled && (
+                        <div
+                            className="absolute inset-0 flex items-center justify-center"
+                            style={{zIndex: 10}}
+                        >
+                          <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">문제내기</p>
+                        </div>
+                    )}
                   </div>
+              ))}
+            </div>
 
-                  {!pouch.isFilled && (
-                      <div
-                          className="absolute inset-0 flex items-center justify-center"
-                          style={{zIndex: 10}}
-                      >
-                        <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">문제내기</p>
-                      </div>
-                  )}
-                </div>
-            ))}
-          </div>
-
-          {!isLastPage && (
-              <div className="flex justify-center mt-6">
-                <button
-                    onClick={handleLoadMore}
-                    className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-                >
-                  더 보기
-                </button>
-              </div>
-          )}
         </div>
+        </InfiniteScroll>
       </div>
   );
 };
