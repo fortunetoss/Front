@@ -33,13 +33,13 @@ const Select = () => {
               <div className="space-y-4 mt-28">
                   <button
                       onClick={() => handleOption("problem")}
-                      className="w-full text-black bg-white hover:bg-blue hover:text-white border border-gray-300 text-lg rounded-lg px-4 py-2 shadow hover:bg-gray-100"
+                      className="w-full text-black bg-white hover:bg-blue hover:text-white border border-gray-300 text-lg rounded-lg px-4 py-2 shadow hover:bg-blue"
                   >
                       문제만 보내기
                   </button>
                   <button
                       onClick={() => handleOption("together")}
-                      className="w-full text-black hover:bg-blue hover:text-white border border-gray-300 text-lg rounded-lg px-4 py-2 shadow hover:bg-gray-100"
+                      className="w-full text-black hover:bg-blue hover:text-white border border-gray-300 text-lg rounded-lg px-4 py-2 shadow hover:bg-blue"
                   >
                       문제와 덕담 같이 보내기
                   </button>
