@@ -23,6 +23,7 @@ export default function Home() {
     return () => {
       if (timer) {
         clearTimeout(timer);
+        sessionStorage.removeItem("hasDeleted");
       }
     };
   }, []);
