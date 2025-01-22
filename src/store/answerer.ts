@@ -7,29 +7,28 @@ interface AnswererStore {
 
   question: string;
   options: Array<string>;
-  hasMessage: boolean;
-  creatorName: string;
-  pouchImg: string;
+  publisherName: string;
+  pouchType: string;
 
   isCorrect: boolean | null;
   correctAnswer: string;
   message: string | null;
-  cardImg: string;
-  paperImg: string;
+  cardType: string;
+
+  answerId: number | null;
 
   setInitialData: (
     question: string,
     options: string[],
-    creatorName: string,
-    pouchImg: string,
-    hasMessage: boolean
+    publisherName: string,
+    pouchType: string
   ) => void;
   setAnswererResult: (
     isCorrect: boolean | null,
     correctAnswer: string,
     message: string | null,
-    cardImg: string,
-    paperImg: string
+    cardType: string,
+    answerId: number
   ) => void;
   setName: (name: string) => void;
   setAnswer: (answer: string) => void;
@@ -41,15 +40,15 @@ const initialState = {
 
   question: "",
   options: [],
-  hasMessage: false,
-  creatorName: "",
-  pouchImg: "",
+  publisherName: "",
+  pouchType: "",
 
   isCorrect: null,
   correctAnswer: "",
   message: null,
-  cardImg: "",
-  paperImg: "",
+  cardType: "",
+
+  answerId: null,
 };
 
 const useAnswererStore = create(
@@ -59,30 +58,29 @@ const useAnswererStore = create(
       ...initialState,
 
       // 상태 업데이트 함수들
-      setInitialData: (question, options, creatorName, pouchImg, hasMessage) =>
+      setInitialData: (question, options, publisherName, pouchType) =>
         set((prev) => ({
           ...prev,
           question,
           options,
-          hasMessage,
-          creatorName,
-          pouchImg,
+          publisherName,
+          pouchType,
         })),
 
       setAnswererResult: (
         isCorrect,
         correctAnswer,
         message,
-        cardImg,
-        paperImg
+        cardType,
+        answerId
       ) =>
         set((prev) => ({
           ...prev,
           isCorrect,
           correctAnswer,
           message,
-          cardImg,
-          paperImg,
+          cardType,
+          answerId,
         })),
 
       setName: (name) => set((prev) => ({ ...prev, name })),
