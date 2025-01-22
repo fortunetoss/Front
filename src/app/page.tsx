@@ -10,12 +10,22 @@ export default function Home() {
   const [hasDeleted, setHasDeleted] = useState(false);
 
   useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
     if (sessionStorage.getItem("hasDeleted") === "true") {
-      setTimeout(() => {
+      setHasDeleted(true);
+      timer = setTimeout(() => {
         setHasDeleted(false);
         sessionStorage.removeItem("hasDeleted");
       }, 2000);
     }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+        sessionStorage.removeItem("hasDeleted");
+      }
+    };
   }, []);
 
   return (
