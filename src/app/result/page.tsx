@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchResultData, ResultData } from "../../api/api-result";
 import ResultModal from "../../components/result/resultModal";
-import {ValidateResult} from "@/components/result/resultValidation";
-import {fetchAnswers} from "@/api/api-result-data";
+//import {ValidateResult} from "@/components/result/resultValidation";
+import { fetchRightAnswers, fetchWrongAnswers} from "@/api/api-result-data";
 import useResultStore from "@/app/store/useResultStore";
 
 
@@ -18,7 +18,7 @@ const Result = () => {
     const [error, setError] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
     const searchParams = useSearchParams();
-    const { setSolvers, RightSolvers, WrongSolvers } = useResultStore();
+    const {  setRightSolvers, setWrongSolvers,RightSolvers, WrongSolvers } = useResultStore();
 
 
     // questionCustomId 가져오기
@@ -28,15 +28,20 @@ const Result = () => {
 
     useEffect(() => {
         const fetchResult = async () => {
-            if (!questionCustomId) return;
+            if (!questionCustomId) {
+                return;
+            }
             try {
+                const WrongSolvers = await fetchWrongAnswers(questionCustomId);
+                setWrongSolvers(WrongSolvers);
                 const result = await fetchResultData(questionCustomId);
                 setResultData(result);
 
-                const solvers = await fetchAnswers(questionCustomId,result.answer);
-                // 정답자/오답자 분리
-                const { RightSolvers, WrongSolvers } = ValidateResult(solvers, result.answer);
-                setSolvers(RightSolvers, WrongSolvers);
+                const RightSolvers=await fetchRightAnswers(questionCustomId, result.answer)
+
+
+                setRightSolvers(RightSolvers);
+                setWrongSolvers(WrongSolvers);
             } catch (err) {
                 console.log(error);
             } finally {
@@ -45,12 +50,11 @@ const Result = () => {
         };
 
         fetchResult();
-        console.log(fetchResultData)
-    }, [questionCustomId, ValidateResult]);
+        console.log(fetchResult,fetchWrongAnswers,fetchRightAnswers);
+    }, [questionCustomId]);
 
 
-
-    const handleOpenModal = () => {
+        const handleOpenModal = () => {
         setIsModalOpen(true);
 
     };
@@ -156,7 +160,6 @@ const Result = () => {
                 </div>
             </div>
 
-            {/* 모달 */}
             <ResultModal isOpen={isModalOpen} onClose={handleCloseModal}/>
         </div>
     );
