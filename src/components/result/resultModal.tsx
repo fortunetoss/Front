@@ -22,8 +22,8 @@ const ResultModal: React.FC<ResultModalProps> = ({isOpen, onClose}) => {
 
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end  z-50">
-            <div className="fixed bg-white mb-10 rounded-lg  max-w-screen-sm w-8/12  p-6  relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end   z-50">
+            <div className=" bg-white rounded-lg  px-4 py-8 w-11/12 max-w-sm shadow-lg mb-10">
                 <button
                     className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
                     onClick={onClose}
