@@ -32,29 +32,27 @@ const Result = () => {
                 return;
             }
             try {
-                const WrongSolvers = await fetchWrongAnswers(questionCustomId);
-                setWrongSolvers(WrongSolvers);
                 const result = await fetchResultData(questionCustomId);
                 setResultData(result);
 
-                const RightSolvers=await fetchRightAnswers(questionCustomId, result.answer)
+                const [wrongSolversData, rightSolversData] = await Promise.all([
+                    fetchWrongAnswers(questionCustomId),
+                    fetchRightAnswers(questionCustomId, result.answer),
+                ]);
 
-
-                setRightSolvers(RightSolvers);
-                setWrongSolvers(WrongSolvers);
-            } catch (err) {
-                console.log(error);
-            } finally {
-                setLoading(false);
+                setWrongSolvers(wrongSolversData);
+                setRightSolvers(rightSolversData);
+            } catch (error) {
+                console.error(error);
             }
         };
 
         fetchResult();
-        console.log(fetchResult,fetchWrongAnswers,fetchRightAnswers);
     }, [questionCustomId]);
 
 
-        const handleOpenModal = () => {
+
+    const handleOpenModal = () => {
         setIsModalOpen(true);
 
     };
