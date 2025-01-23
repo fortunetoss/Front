@@ -17,13 +17,14 @@ const Complete = () => {
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
-    const questionCustomId = usePocketStore((state) => state.questionCustomId);
+    const questionCustomId = usePocketStore((state) => state.questionId);
     const { domain } = usePocketStore();
 
     const selectedPouch = pocketsImageData.find((pouch) => pouch.name === domain);
 
     useEffect(() => {
-        const url = generateUrl();
+        // @ts-ignore
+        const url = generateUrl(questionCustomId);
         if (url) {
             setShareableUrl(url);
             console.log(`URL 생성: ${url}`);
