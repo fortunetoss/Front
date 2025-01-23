@@ -2,21 +2,21 @@
 
 import { apiClient } from "@/api/api-client";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ResultSharePage() {
   const { answerId } = useParams();
   const router = useRouter();
   const [answerer, setAnswerer] = useState<string | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  let questionId: null | number = null;
+  const questionIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     (async () => {
       const response = await apiClient.get(`/api/answer/result/${answerId}`);
       const { correct, answerNickname, questionCustomId } = response.data.data;
 
-      questionId = questionCustomId;
+      questionIdRef.current = questionCustomId;
       setAnswerer(answerNickname);
       setIsCorrect(correct);
     })();
@@ -27,8 +27,8 @@ export default function ResultSharePage() {
   };
 
   const goToQuestion = () => {
-    if (questionId) {
-      router.push(`/result?questionCustomId=${questionId}`);
+    if (questionIdRef.current) {
+      router.push(`/result?questionCustomId=${questionIdRef.current}`);
     } else {
       router.push("/pockets");
     }
