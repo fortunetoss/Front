@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "../store/usePocket";
 import { fetchLuckyPouches } from "../../api/api-form";
@@ -10,72 +10,70 @@ import { getPouch } from "@/utils/images/domain";
 import Header from "@/components/header/header";
 import Logo from "@/components/header/logo";
 import OpenSettingButton from "@/components/header/open-setting-button";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
 const Pockets = () => {
   const router = useRouter();
+  const target = useRef(null);
+  const [page, setPage] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(true);
   const [pouches, setPouches] = useState<(Pouch & { isFilled: boolean })[]>([]); // 채워져 있음 여부 추가
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(0); // 페이지 번호
-  const [isLastPage, setIsLastPage] = useState<boolean>(false); // 마지막 페이지 여부
   const { setDomain, setStep, setQuestionCustomId } = usePocketStore();
 
-  // 퍼널 관리랑 선택한 복주머니 저장하기 위함
+  const callback = useCallback(() => {
+    setPage((prevPage) => prevPage + 1);
+  }, []);
+  const [observe, unobserve] = useIntersectionObserver(callback);
 
-  // 로그인 후에 복주머니 가져오기
-  const loadPouches = async (page: number) => {
-    try {
+  useEffect(() => {
+    // 복주머니 가져오기
+    const loadPouches = async () => {
+      let data;
       setIsLoading(true);
-      const data = await fetchLuckyPouches(page);
+
+      try {
+        data = await fetchLuckyPouches(page);
+      } catch (error) {
+        alert("복주머니 데이터를 가져오는 데 실패했습니다.");
+        console.error(error);
+      }
 
       if (data) {
-        const validatedPouches = validatePouches(data.content).map((pouch) => ({
-          ...pouch,
-        }));
-        setPouches(validatedPouches); // 기존 데이터 초기화 후 새 데이터 설정
-        setIsLastPage(data.last); // 마지막 페이지 여부 갱신
-      }
-    } catch (error) {
-      console.error("복주머니 데이터를 가져오는 데 실패했습니다.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        const validatedPouches = validatePouches(data.content);
+        setPouches((prev) => [...prev, ...validatedPouches]);
 
-  // 컴포넌트 마운트 시 첫 페이지 데이터 로드
-  useEffect(() => {
-    const fetchData = async () => {
-      await loadPouches(0); // 데이터 로드
+        if (page === 0) {
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 500);
+        } else {
+          setIsLoading(false);
+        }
+
+        if (data.last && target.current) {
+          unobserve(target.current);
+          target.current = null;
+        }
+      }
     };
 
-    fetchData();
-  }, []);
+    loadPouches();
+  }, [page]);
 
-  // 다음 페이지 데이터 로드 - 무한스크롤
-  /*
-  const handleLoadMore = () => {
-    if (!isLastPage) {
-      setPage((prevPage) => prevPage + 1); // 페이지 번호 증가
-      loadPouches(page + 1); // 다음 페이지 데이터 요청
+  useEffect(() => {
+    if (target.current) {
+      if (isLoading) {
+        unobserve(target.current);
+      } else {
+        observe(target.current);
+      }
     }
-
-  };
-
-   */
-
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 0 && newPage !== page) {
-      setPage(newPage);
-      //setPouches([]); // 페이지 변경 시 기존 데이터를 초기화 (필요 시 제거 가능)
-      loadPouches(newPage);
-      window.scrollTo(0, 0); // 페이지 변경 시 스크롤 상단으로 이동
-    }
-  };
+  }, [isLoading]);
 
   // 복주머니 선택 핸들러
   const handlePouchSelect = async (
     domain: string,
-    questionCustomId: number | null,
-    index: number
+    questionCustomId: number | null
   ) => {
     setDomain(domain);
     setQuestionCustomId(questionCustomId);
@@ -98,7 +96,7 @@ const Pockets = () => {
         <OpenSettingButton />
       </Header>
 
-      <div className="container mx-auto p-10">
+      <div className="container mx-auto p-10 bg-white">
         <Notice text="문제를 내고 복주머니를 전달하세요!" />
         <div className="grid grid-cols-2 gap-y-4">
           {pouches.map((pouch, index) => (
@@ -108,11 +106,7 @@ const Pockets = () => {
                 pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
               }`}
               onClick={() =>
-                handlePouchSelect(
-                  pouch.domain,
-                  pouch.questionCustomId,
-                  pouch.index
-                )
+                handlePouchSelect(pouch.domain, pouch.questionCustomId)
               } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
             >
               <div
@@ -141,34 +135,7 @@ const Pockets = () => {
             </div>
           ))}
         </div>
-        <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-center items-center shadow-lg">
-          {/* 페이지 버튼 */}
-          {Array.from({ length: page + 1 }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                if (index !== page) handlePageChange(index); // 중복 호출 방지
-              }}
-              className={`px-4 py-2 mx-1 rounded ${
-                page === index ? " text-red-600 font-bold" : " text-black"
-              }`}
-            >
-              {index + 1}
-            </button>
-          ))}
-
-          {!isLastPage && (
-            <button
-              onClick={() => {
-                const nextPage = page + 1;
-                handlePageChange(nextPage);
-              }}
-              className="px-4 py-2 mx-1 text-black "
-            >
-              {page + 2}
-            </button>
-          )}
-        </div>
+        <div ref={target} className="mx-auto h-10 w-full"></div>
       </div>
     </div>
   );

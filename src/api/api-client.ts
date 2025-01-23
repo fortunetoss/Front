@@ -15,13 +15,11 @@ export const authApiClient = axios.create({
 authApiClient.interceptors.request.use((config) => {
   const accessToken = useAccessTokenStore.getState().accessToken;
   config.headers["authorization"] = "Bearer " + accessToken;
-  console.log(config.headers);
   return config;
 });
 
 authApiClient.interceptors.response.use(
   async (response) => {
-    console.log(response);
     return response;
   },
   async (error) => {
