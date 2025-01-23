@@ -8,8 +8,15 @@ import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 
 export default function AnswerPage() {
-  const { question, options, name, answer, setAnswer, setAnswererResult } =
-    useAnswererStore();
+  const {
+    question,
+    options,
+    name,
+    answer,
+    publisherName,
+    setAnswer,
+    setAnswererResult,
+  } = useAnswererStore();
   const router = useRouter();
   const { questionId } = useParams();
 
@@ -36,7 +43,7 @@ export default function AnswerPage() {
       <main className="flex flex-col gap-16 px-5 py-8 bg-white">
         <section className="flex flex-col gap-[32px] py-[42px]">
           <h1 className="text-[22px] font-medium text-center mx-10">
-            {question}
+            {publisherName}님이 {question}
           </h1>
           <ul className="flex flex-col gap-[14px]">
             {options.map((option, idx) => (
@@ -44,7 +51,6 @@ export default function AnswerPage() {
                 <Option
                   text={option}
                   isSelected={option === answer}
-                  disabled={answer !== null}
                   onClick={handleClick}
                 />
               </li>

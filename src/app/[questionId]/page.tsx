@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import ResponseData from "@/models/response-data";
@@ -26,6 +26,7 @@ export default function IntroPage() {
   const { publisherName, pouchType, setInitialData } = useAnswererStore();
 
   const { questionId } = useParams();
+  const [hasMessage, setHasMessage] = useState<null | boolean>(null);
 
   useEffect(() => {
     (async () => {
@@ -49,10 +50,22 @@ export default function IntroPage() {
         publisher,
         domain
       );
+      setHasMessage(content !== null);
     })();
   }, []);
 
   const pouchImg = getPouch(pouchType);
+
+  let title = "";
+  let phrase = "";
+
+  if (hasMessage === true) {
+    title = "당신을 위한 특별한 새해 메시지!";
+    phrase = `문제를 맞추고 ${publisherName}님이 보낸 덕담을 확인하세요.`;
+  } else if (hasMessage === false) {
+    title = `2024년 ${publisherName}님과 가까운 한 해였나요?`;
+    phrase = `${publisherName}님의 지난 한 해는 어땠을지 문제를 통해 맞춰보세요!`;
+  }
 
   return (
     <>
@@ -61,10 +74,8 @@ export default function IntroPage() {
       </Header>
       <main className="flex flex-col gap-16 px-5 py-8 bg-white">
         <div className="flex flex-col gap-[10px]">
-          <h1 className="text-xl font-bold">당신을 위한 특별한 새해 메시지!</h1>
-          <h2 className="text-base font-medium text-[#848588]">
-            문제를 맞추고 {publisherName}님이 보낸 덕담을 확인하세요.
-          </h2>
+          <h1 className="text-xl font-bold">{title}</h1>
+          <p className="text-base font-medium text-[#848588]">{phrase}</p>
         </div>
         {pouchImg && (
           <Image

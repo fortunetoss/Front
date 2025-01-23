@@ -1,8 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import {get} from "node:http";
-import {Pouch} from "@/utils/validation/validationPouch";
-
+import { Pouch } from "@/utils/validation/validationPouch";
 
 export interface PocketState {
     pouches:Pouch[];
@@ -92,13 +90,13 @@ const usePocketStore = create<PocketState>()(
             },
 
              */
-            setPouches:(pouches: Pouch[]) => ({
-                pouches}),
-            setStep: (step) => {
-                // @ts-ignore
-                console.log(`setStep(${step}):`, get());
-                set({ step })
-            },
+      setPouches: (pouches: Pouch[]) => ({
+        pouches,
+      }),
+      setStep: (step) => {
+        // @ts-ignore
+        set({ step });
+      },
 
             // 퍼널 초기화
             resetFunnel: () =>
