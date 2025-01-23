@@ -9,6 +9,9 @@ import ResultModal from "../../components/result/resultModal";
 //import {ValidateResult} from "@/components/result/resultValidation";
 import { fetchRightAnswers, fetchWrongAnswers} from "@/api/api-result-data";
 import useResultStore from "@/app/store/useResultStore";
+import Header from "@/components/header/header";
+import BackButton from "@/components/header/back-button";
+import ShareButton from "@/components/header/share-button";
 
 
 
@@ -63,102 +66,112 @@ const Result = () => {
 
 
     return (
-        <div className="container mx-auto p-6">
-            {/* 정답 */}
-            <div className="p-4 rounded-md mb-10 text-center">
-                <p className="text-3xl mb-10 mt-10">{resultData?.questionTitle}</p>
-                <div className="rounded-3xl inline-block bg-blue px-4 py-2">
-                    <p className="text-white text-xl">정답: {resultData?.answer}</p>
+        <div>
+            <Header>
+                <BackButton/>
+                <ShareButton/>
+            </Header>
+            <div className="container mx-auto p-6">
+                {/* 정답 */}
+                <div className="p-4 rounded-md mb-10 text-center">
+                    <p className="text-3xl mb-10 mt-10">{resultData?.questionTitle}</p>
+                    <div className="rounded-3xl inline-block bg-blue px-4 py-2">
+                        <p className="text-white text-xl">정답: {resultData?.answer}</p>
+                    </div>
                 </div>
-            </div>
 
-            {/* 선택지 컨테이너 */}
-            <div
-                className="p-6  cursor-pointer  transition"
-                onClick={handleOpenModal} // 클릭하면 모달 열기
-            >
-                {/* 선택지 1 */}
-                <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                    <p className="text-gray-700 text-xl w-16">{resultData?.select1 || "선택지 1"}</p>
-                    <div className="relative flex-1 bg-gray-200 rounded-full h-6">
-                        <div
-                            className={`absolute h-6 rounded-full ${
-                                resultData?.select1 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
-                            }`}
-                            style={{
-                                width: `${resultData?.select1per || 0}%`,
-                                transition: "width 1s ease-in-out",
-                            }}
-                        ></div>
-                        <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                {/* 선택지 컨테이너 */}
+                <div
+                    className="p-6  cursor-pointer  transition"
+                    onClick={handleOpenModal} // 클릭하면 모달 열기
+                >
+                    {/* 선택지 1 */}
+                    <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
+                        <p className="text-gray-700 text-xl w-16">{resultData?.select1 || "선택지 1"}</p>
+                        <div className="relative flex-1 bg-gray-200 rounded-full h-6">
+                            <div
+                                className={`absolute h-6 rounded-full ${
+                                    resultData?.select1 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                }`}
+                                style={{
+                                    width: `${resultData?.select1per || 0}%`,
+                                    transition: "width 1s ease-in-out",
+                                }}
+                            ></div>
+                            <span
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
                             {resultData?.select1per || 0}%
                         </span>
+                        </div>
+                        <p className="text-gray-700 text-xl w-12">{resultData?.select1cnt || 0}명</p>
                     </div>
-                    <p className="text-gray-700 text-xl w-12">{resultData?.select1cnt || 0}명</p>
-                </div>
 
-                {/* 선택지 2 */}
-                <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                    <p className="text-gray-700 text-xl w-16">{resultData?.select2 || "선택지 2"}</p>
-                    <div className="relative flex-1 bg-gray-200 rounded-full h-6">
-                        <div
-                            className={`absolute h-6 rounded-full ${
-                                resultData?.select2 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
-                            }`}
-                            style={{
-                                width: `${resultData?.select2per || 0}%`,
-                                transition: "width 1s ease-in-out",
-                            }}
-                        ></div>
-                        <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                    {/* 선택지 2 */}
+                    <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
+                        <p className="text-gray-700 text-xl w-16">{resultData?.select2 || "선택지 2"}</p>
+                        <div className="relative flex-1 bg-gray-200 rounded-full h-6">
+                            <div
+                                className={`absolute h-6 rounded-full ${
+                                    resultData?.select2 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                }`}
+                                style={{
+                                    width: `${resultData?.select2per || 0}%`,
+                                    transition: "width 1s ease-in-out",
+                                }}
+                            ></div>
+                            <span
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
                             {resultData?.select2per || 0}%
                         </span>
+                        </div>
+                        <p className="text-gray-700 text-xl w-12">{resultData?.select2cnt || 0}명</p>
                     </div>
-                    <p className="text-gray-700 text-xl w-12">{resultData?.select2cnt || 0}명</p>
-                </div>
 
-                {/* 선택지 3 */}
-                <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                    <p className="text-gray-700 text-xl w-16">{resultData?.select3 || "선택지 3"}</p>
-                    <div className="relative flex-1 bg-gray-200 rounded-full h-6">
-                        <div
-                            className={`absolute h-6 rounded-full ${
-                                resultData?.select3 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
-                            }`}
-                            style={{
-                                width: `${resultData?.select3per || 0}%`,
-                                transition: "width 1s ease-in-out",
-                            }}
-                        ></div>
-                        <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                    {/* 선택지 3 */}
+                    <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
+                        <p className="text-gray-700 text-xl w-16">{resultData?.select3 || "선택지 3"}</p>
+                        <div className="relative flex-1 bg-gray-200 rounded-full h-6">
+                            <div
+                                className={`absolute h-6 rounded-full ${
+                                    resultData?.select3 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                }`}
+                                style={{
+                                    width: `${resultData?.select3per || 0}%`,
+                                    transition: "width 1s ease-in-out",
+                                }}
+                            ></div>
+                            <span
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
                             {resultData?.select3per || 0}%
                         </span>
+                        </div>
+                        <p className="text-gray-700 text-xl w-12">{resultData?.select3cnt || 0}명</p>
                     </div>
-                    <p className="text-gray-700 text-xl w-12">{resultData?.select3cnt || 0}명</p>
-                </div>
 
-                {/* 선택지 4 */}
-                <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                    <p className="text-gray-700 text-xl w-16">{resultData?.select4 || "선택지 4"}</p>
-                    <div className="relative flex-1 bg-gray-200 rounded-full h-6">
-                        <div
-                            className={`absolute h-6 rounded-full ${
-                                resultData?.select4 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
-                            }`}
-                            style={{
-                                width: `${resultData?.select4per || 0}%`,
-                                transition: "width 1s ease-in-out",
-                            }}
-                        ></div>
-                        <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                    {/* 선택지 4 */}
+                    <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
+                        <p className="text-gray-700 text-xl w-16">{resultData?.select4 || "선택지 4"}</p>
+                        <div className="relative flex-1 bg-gray-200 rounded-full h-6">
+                            <div
+                                className={`absolute h-6 rounded-full ${
+                                    resultData?.select4 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                }`}
+                                style={{
+                                    width: `${resultData?.select4per || 0}%`,
+                                    transition: "width 1s ease-in-out",
+                                }}
+                            ></div>
+                            <span
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
                             {resultData?.select4per || 0}%
                         </span>
+                        </div>
+                        <p className="text-gray-700 text-xl w-12">{resultData?.select4cnt || 0}명</p>
                     </div>
-                    <p className="text-gray-700 text-xl w-12">{resultData?.select4cnt || 0}명</p>
                 </div>
-            </div>
 
-            <ResultModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+                <ResultModal isOpen={isModalOpen} onClose={handleCloseModal}/>
+            </div>
         </div>
     );
 };
