@@ -32,7 +32,7 @@ const Complete = () => {
 
   const handleKakaoShare = () => {
     if (shareableUrl) {
-      kakaotalkShare(shareableUrl);
+      kakaotalkShare(shareableUrl, { hasMessage: content !== null });
     } else {
       alert("공유 가능한 URL이 없습니다.");
     }
