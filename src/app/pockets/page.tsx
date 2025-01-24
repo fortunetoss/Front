@@ -18,7 +18,7 @@ const Pockets = () => {
   const [page, setPage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [pouches, setPouches] = useState<(Pouch & { isFilled: boolean })[]>([]); // 채워져 있음 여부 추가
-  const { setDomain, setStep, setQuestionCustomId } = usePocketStore();
+  const { setDomain, setStep, setQuestionId } = usePocketStore();
 
   const callback = useCallback(() => {
     setPage((prevPage) => prevPage + 1);
@@ -76,7 +76,7 @@ const Pockets = () => {
     questionCustomId: number | null
   ) => {
     setDomain(domain);
-    setQuestionCustomId(questionCustomId);
+    setQuestionId(questionCustomId);
     setStep(1);
 
     if (questionCustomId !== null) {
