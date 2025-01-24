@@ -221,11 +221,7 @@ const Form = () => {
         <div className="flex justify-end mt-4">
           <button
             onClick={handleSubmit}
-            className={`px-6 py-2 rounded text-xl transition ${
-              selectedAnswer !== null
-                ? "text-blue hover:text-blue-700"
-                : "text-black"
-            }`}
+            className="next-btn"
             disabled={selectedAnswer === null}
           >
             다음
