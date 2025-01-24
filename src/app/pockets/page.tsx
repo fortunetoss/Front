@@ -99,54 +99,54 @@ const Pockets = () => {
 
 
   return (
-    <div>
-      <Header>
-        <Logo />
-        <OpenSettingButton />
-      </Header>
+      <div>
+        <Header>
+          <Logo />
+          <OpenSettingButton />
+        </Header>
 
-      <div className="container mx-auto p-10 bg-white">
-        <Notice text="문제를 내고 복주머니를 전달하세요!" />
-        <div className="grid grid-cols-2 gap-y-4">
-          {pouches.map((pouch, index) => (
-            <div
-              key={`${pouch.domain}-${index}`}
-              className={`relative p-4 text-center cursor-pointer ${
-                pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
-              }`}
-              onClick={() =>
-                handlePouchSelect(pouch.domain, pouch.questionCustomId)
-              } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
-            >
-              <div
-                className="relative"
-                style={{
-                  filter: pouch.isFilled ? "none" : "blur(4px)",
-                }}
-              >
-                <img
-                  src={getPouch(pouch.domain)}
-                  alt={`복주머니 ${pouch.domain}`}
-                  className="mx-auto w-30 h-30"
-                />
-              </div>
-
-              {!pouch.isFilled && (
+        <div className="container mx-auto p-10 bg-white">
+          <Notice text="문제를 내고 복주머니를 전달하세요!" />
+          <div className="grid grid-cols-2 gap-y-4">
+            {pouches.map((pouch, index) => (
                 <div
-                  className="absolute inset-0 flex items-center justify-center"
-                  style={{ zIndex: 10 }}
+                    key={`${pouch.domain}-${index}`}
+                    className={`relative p-4 text-center cursor-pointer ${
+                        pouch.isFilled ? "hover:bg-gray-100" : "hover:bg-gray-100"
+                    }`}
+                    onClick={() =>
+                        handlePouchSelect(pouch.domain, pouch.questionCustomId)
+                    } // 클릭 이벤트 핸들러를 외부 div에 바로 연결
                 >
-                  <p className="text-gray-900 bg-white p-2 border-black border rounded-full ">
-                    문제내기
-                  </p>
+                  <div
+                      className="relative"
+                      style={{
+                        filter: pouch.isFilled ? "none" : "blur(4px)",
+                      }}
+                  >
+                    <img
+                        src={getPouch(pouch.domain)}
+                        alt={`복주머니 ${pouch.domain}`}
+                        className="mx-auto w-30 h-30"
+                    />
+                  </div>
+
+                  {!pouch.isFilled && (
+                      <div
+                          className="absolute inset-0 flex items-center justify-center"
+                          style={{ zIndex: 10 }}
+                      >
+                        <p className="text-gray-900 bg-white p-2 font-medium border-black border rounded-full ">
+                          문제내기
+                        </p>
+                      </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+          <div ref={target} className="mx-auto h-10 w-full"></div>
         </div>
-        <div ref={target} className="mx-auto h-10 w-full"></div>
       </div>
-    </div>
   );
 };
 export default Pockets;
