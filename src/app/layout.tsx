@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="ko">
       <KakaoScript />
       <body
-        className={`${pretendard.variable} font-pretendard bg-white text-[#171719]`}
+        className={`${pretendard.variable} font-pretendard bg-black text-[#171719]`}
       >
         <div className="mx-auto max-w-[480px] h-screen bg-white">
           {children}
