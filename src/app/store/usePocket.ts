@@ -98,28 +98,23 @@ const usePocketStore = create<PocketState>()(
         set({ step });
       },
 
-            // 퍼널 초기화
-            resetFunnel: () =>
-                set({
-                    title: "",
-                    answers: ["", "", "", ""],
-                    correctAnswer: null,
-                    content: null,
-                    domain: null,
-                    card: null,
-                    questionId: null,
-                    //paper: null,
-                    selectOption: null,
-                    step: 0, // 초기 단계로 되돌림
-                }),
-
-
-
-
-
+      // 퍼널 초기화
+      resetFunnel: () =>
+        set({
+          title: "",
+          answers: ["", "", "", ""],
+          correctAnswer: null,
+          content: null,
+          domain: null,
+          card: null,
+          questionId: null,
+          //paper: null,
+          selectOption: null,
+          step: 0, // 초기 단계로 되돌림
         }),
-        { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }
-    )
+    }),
+    { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }
+  )
 );
 
 export default usePocketStore;
