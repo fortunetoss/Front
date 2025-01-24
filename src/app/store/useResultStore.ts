@@ -3,27 +3,24 @@ import { Solver } from "@/api/api-result-data";
 
 // 상태 타입 정의
 interface ResultState {
-    RightSolvers: Solver[];
-    WrongSolvers: Solver[];
+  rightSolvers: Solver[];
+  wrongSolvers: Solver[];
 }
 
 // 액션 타입 정의
 interface ResultActions {
-    setRightSolvers: (solvers: Solver[]) => void;
-    setWrongSolvers: (solvers: Solver[]) => void;
+  setRightSolvers: (solvers: Solver[]) => void;
+  setWrongSolvers: (solvers: Solver[]) => void;
 }
-
 
 type ResultStore = ResultState & ResultActions;
 
-
 const useResultStore = create<ResultStore>((set) => ({
+  rightSolvers: [],
+  wrongSolvers: [],
 
-    RightSolvers: [],
-    WrongSolvers: [],
-
-    setRightSolvers: (solvers) => set(() => ({ RightSolvers: solvers })),
-    setWrongSolvers: (solvers) => set(() => ({ WrongSolvers: solvers })),
+  setRightSolvers: (solvers) => set(() => ({ rightSolvers: solvers })),
+  setWrongSolvers: (solvers) => set(() => ({ wrongSolvers: solvers })),
 }));
 
 export default useResultStore;

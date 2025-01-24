@@ -20,15 +20,15 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
 
   const solvers = activeTab === "correct" ? rightSolvers : wrongSolvers;
 
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex  justify-center items-end mb-10   z-50">
-            <div className="relative inset-0 bg-white rounded-lg  px-4 py-8  w-11/12 max-w-sm shadow-lg ">
-                <button
-                    className="absolute right-6 text-2xl bottom-3/4 text-gray-500 hover:text-gray-800"
-                    onClick={onClose}
-                >
-                    ✕
-                </button>
+  return (
+    <div className="fixed inset-0 h-screen bg-black bg-opacity-50 flex  justify-center items-end mb-10   z-50">
+      <div className="relative inset-0 bg-white rounded-lg mb-8  px-4 py-8  w-11/12 max-w-sm shadow-lg ">
+        <button
+          className="absolute right-6 text-2xl bottom-3/4 text-gray-500 hover:text-gray-800"
+          onClick={onClose}
+        >
+          ✕
+        </button>
 
         <div className="flex inset-0 justify-end items-end mb-4">
           <button
