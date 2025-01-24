@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authApiClient } from "../../../api/api-client";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 import ShareModal from "@/components/modal/share-modal";
 import { generateUrl } from "@/utils/url/urlGenerator";
@@ -11,19 +10,18 @@ import { pocketsImageData } from "@/utils/images/cardNames";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import { buttonBackClick } from "@/components/edit/buttonBackClick";
-import { getEdit } from "@/api/api-getEdit";
 
 const Complete = () => {
   const [shareableUrl, setShareableUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
-  const questionCustomId = usePocketStore((state) => state.questionCustomId);
-  const { domain } = usePocketStore();
+  const questionCustomId = usePocketStore((state) => state.questionId);
+  const { domain, content } = usePocketStore();
 
   const selectedPouch = pocketsImageData.find((pouch) => pouch.name === domain);
 
   useEffect(() => {
-    const url = generateUrl();
+    const url = generateUrl(questionCustomId);
     if (url) {
       setShareableUrl(url);
       console.log(`URL 생성: ${url}`);
