@@ -76,7 +76,7 @@ const Pockets = () => {
     questionCustomId: number | null
   ) => {
     setDomain(domain);
-    setQuestionCustomId(questionCustomId);
+    setQuestionId(questionCustomId);
     setStep(1);
 
     if (questionCustomId !== null) {
