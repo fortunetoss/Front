@@ -26,6 +26,7 @@ const Result = () => {
   const [isOverlay, setIsOverlay] = useState(false);
   const { setRightSolvers, setWrongSolvers, rightSolvers, wrongSolvers } =
     useResultStore();
+  const router = useRouter();
 
   // questionCustomId 가져오기
   const questionCustomId = searchParams.get("questionCustomId");
@@ -100,7 +101,11 @@ const Result = () => {
         })()}
       </div>
       <Header>
-        <BackButton />
+        <BackButton
+          onClick={() => {
+            router.push("/pockets");
+          }}
+        />
         <ShareButton
           onClick={() => {
             setIsShareModalOpen(true);
