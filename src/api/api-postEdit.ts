@@ -12,7 +12,7 @@ export const postEdit = async (
     domain: string | null,
     content: string | null
 ): Promise<{ questionCustomId: number; domain: string | null }> => {
-    const questionCustomId = usePocketStore.getState().questionCustomId;
+    const questionCustomId = usePocketStore.getState().questionId;
 
     if (!questionCustomId) {
         throw new Error("수정할 문제 ID가 없습니다.");

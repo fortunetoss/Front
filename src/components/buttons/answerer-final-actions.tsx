@@ -8,7 +8,7 @@ import useAnswererStore from "@/store/answerer";
 
 export default function AnswererFinalActions() {
   const [isOpen, setIsOpen] = useState(false);
-  const answerId = useAnswererStore((state) => state.answerId);
+  const { answerId, pouchType } = useAnswererStore();
 
   const handleOpenModal = () => {
     setIsOpen(true);
@@ -31,7 +31,7 @@ export default function AnswererFinalActions() {
     if (answerId) {
       kakaotalkShare(
         `${process.env.NEXT_PUBLIC_URL}/result-share/${answerId}`,
-        true
+        { isAnswerer: true, pouchType }
       );
     }
   };

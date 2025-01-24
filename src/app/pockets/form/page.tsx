@@ -13,6 +13,10 @@ import {
 import { postEdit } from "../../../api/api-postEdit";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
+import { useInputLimit } from "@/hooks/useInputLimit";
+
+const MAX_TITLE_LENGTH = 30;
+const MAX_ANSWER_LENGTH = 25;
 
 const Form = () => {
   const router = useRouter();
@@ -28,7 +32,7 @@ const Form = () => {
     setAnswers,
     setCorrectAnswer,
     setStep,
-    questionCustomId,
+    questionId,
   } = usePocketStore();
   const { isModified, setModified } = useModifiedStore();
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -51,6 +55,26 @@ const Form = () => {
 
     fetchQuestion();
   }, [setTitle, setAnswers]);
+
+  // 질문 입력 핸들러
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const inputText = e.target.value;
+    if (inputText.length <= MAX_TITLE_LENGTH) {
+      setTitle(inputText);
+    } else {
+      alert(`질문은 최대 ${MAX_TITLE_LENGTH}자까지 입력 가능합니다.`);
+    }
+  };
+
+  // 답변 입력 핸들러
+  const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputText = e.target.value;
+    if (inputText.length <= MAX_ANSWER_LENGTH) {
+      setEditingText(inputText);
+    } else {
+      alert(`답변은 최대 ${MAX_ANSWER_LENGTH}자까지 입력 가능합니다.`);
+    }
+  };
 
   // 답변 수정 저장
   const handleSaveEdit = (index: number) => {
@@ -77,7 +101,7 @@ const Form = () => {
         return;
       }
       // 수정 여부에 따라 API 호출
-      if (isModified && questionCustomId) {
+      if (isModified && questionId) {
         await postEdit(
           title,
           answers,
@@ -108,22 +132,29 @@ const Form = () => {
       alert("문제를 처리하는 중 오류가 발생했습니다.");
     }
   };
+  // 질문과 답변 입력 핸들러 훅
+  /*
+  const { value: title, onChange: handleTitleChange } = useInputLimit(MAX_TITLE_LENGTH);
+  const { value: editingText, onChange: handleAnswerChange } = useInputLimit(MAX_ANSWER_LENGTH);
+
+
+   */
 
   return (
     <div>
       <Header>
         <BackButton />
       </Header>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 bg-white">
         <Notice text="문제와 답변은 수정 가능해요!" />
 
         {/* 질문 입력 */}
         <div className="mb-4">
           <textarea
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleTitleChange}
             placeholder="질문을 입력하세요"
-            className="w-full text-2xl placeholder-black text-center p-3 mb-6 bg-white resize-none break-words"
+            className="w-full text-2xl placeholder-black text-center p-3 mt-4 mb-6 bg-white  break-words"
             rows={2}
           />
         </div>
@@ -142,17 +173,17 @@ const Form = () => {
               type="text"
               value={editingIndex === index ? editingText : answer}
               readOnly={editingIndex !== index}
-              onChange={(e) => setEditingText(e.target.value)}
-              className={`flex-grow border-none outline-none bg-transparent ${
+              onChange={handleAnswerChange}
+              className={`flex-grow text-center border-none outline-none bg-transparent ${
                 editingIndex === index
-                  ? "bg-gray-50 text-black p-2 rounded-full"
+                  ? "bg-gray-50 text-black rounded-full"
                   : ""
               }`}
               onClick={() => setSelectedAnswer(index)}
             />
             {editingIndex === index ? (
               <button
-                className="text-red-500"
+                className="text-white"
                 onClick={() => handleSaveEdit(index)}
               >
                 저장

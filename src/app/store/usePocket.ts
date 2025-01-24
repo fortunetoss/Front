@@ -9,7 +9,7 @@ export interface PocketState {
   correctAnswer: string | null; // 정답
   content: string | null; // 덕담 내용
   domain: string | null; // 복주머니 도메인
-  questionCustomId: number | null; // 선택된 복주머니의 questionCustomId
+  questionId: number | null; // 선택된 복주머니의 questionCustomId
   card: string | null; // 선택한 카드 (A~E)
   //paper: string | null; // 선택한 카드 뒷면
   selectOption: string | null; // "problem" 또는 "together"
@@ -21,7 +21,7 @@ export interface PocketState {
   setCorrectAnswer: (answer: string) => void;
   setContent: (content: string) => void;
   setDomain: (domain: string) => void;
-  setQuestionCustomId: (questionCustomId: number | null) => void;
+  setQuestionId: (questionId: number | null) => void;
   setCard: (card: string) => void;
   //setPaper: (paper: string) => void;
   setStep: (step: number) => void;
@@ -37,7 +37,7 @@ const usePocketStore = create<PocketState>()(
       correctAnswer: null,
       content: null,
       domain: null,
-      questionCustomId: null,
+      questionId: null,
       card: null,
       selectOption: null,
       //paper: null,
@@ -64,9 +64,9 @@ const usePocketStore = create<PocketState>()(
         console.log("setDomain:", domain);
         set({ domain });
       },
-      setQuestionCustomId: (questionCustomId: number | null) => {
-        console.log("setQuestionCustomId:", questionCustomId);
-        set({ questionCustomId });
+      setQuestionId: (questionId: number | null) => {
+        console.log("setQuestionCustomId:", questionId);
+        set({ questionId });
       },
       setCard: (card) => {
         console.log("setCard:", card);
@@ -101,13 +101,13 @@ const usePocketStore = create<PocketState>()(
           content: null,
           domain: null,
           card: null,
-          questionCustomId: null,
+          questionId: null,
           //paper: null,
           selectOption: null,
           step: 0, // 초기 단계로 되돌림
         }),
     }),
-    { name: "pocket-storage", storage: createJSONStorage(() => localStorage) }
+    { name: "pocket-storage", storage: createJSONStorage(() => sessionStorage) }
   )
 );
 
