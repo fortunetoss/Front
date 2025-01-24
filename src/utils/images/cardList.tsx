@@ -11,11 +11,11 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ selectedCard, onSelect }) => {
   return (
-    <div className="flex justify-center gap-2 mb-10 ">
+    <div className="flex justify-between gap-2 mb-10 ">
       {cardData.map((card, index) => (
         <div
           key={index}
-          className={`w-10 h-32 cursor-pointer border-2 rounded-md ${
+          className={`h-20 cursor-pointer border-2 rounded-md ${
             selectedCard === card.name ? "border-blue" : "border-transparent"
           }`}
           onClick={() => onSelect(card.name)} // 카드 이름 전달
