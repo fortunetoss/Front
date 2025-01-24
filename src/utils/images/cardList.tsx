@@ -11,7 +11,7 @@ interface CardListProps {
 
 const CardList: React.FC<CardListProps> = ({ selectedCard, onSelect }) => {
   return (
-    <div className="flex justify-center gap-8 mb-10 ">
+    <div className="flex justify-center gap-2 mb-10 ">
       {cardData.map((card, index) => (
         <div
           key={index}
