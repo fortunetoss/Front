@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaPencilAlt } from "react-icons/fa";
 import usePocketStore from "../../store/usePocket";
@@ -38,6 +38,15 @@ const Form = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [editingText, setEditingText] = useState<string>("");
+  const optionsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (optionsRef.current && editingIndex !== null) {
+      const input =
+        optionsRef.current?.children[editingIndex]?.querySelector("input");
+      input?.focus();
+    }
+  }, [editingIndex]);
 
   // 랜덤 질문 가져오기
   useEffect(() => {
@@ -159,52 +168,54 @@ const Form = () => {
           />
         </div>
 
-        {/* 답변 리스트 */}
-        {answers.map((answer, index) => (
-          <div
-            key={index}
-            className={`w-full flex max-w-[480px] gap-[10px] justify-between items-center font-pretendard font-medium text-lg mb-[14px] px-3 py-[18px] border-[1.2px] rounded-full ${
-              selectedAnswer === index
-                ? "bg-blue text-white"
-                : "bg-white text-black"
-            }`}
-          >
-            <input
-              type="text"
-              value={editingIndex === index ? editingText : answer}
-              readOnly={editingIndex !== index}
-              onChange={handleAnswerChange}
-              className={`w-full text-center border-none mx-0 outline-none bg-transparent ${
-                editingIndex === index
-                  ? "bg-gray-50 text-black rounded-full"
-                  : ""
+        <section className="w-full flex flex-col gap-[14px]" ref={optionsRef}>
+          {/* 답변 리스트 */}
+          {answers.map((answer, index) => (
+            <div
+              key={index}
+              className={`w-full flex max-w-[480px] gap-[10px] justify-between items-center font-pretendard font-medium text-lg px-3 py-[18px] border-[1.2px] rounded-full ${
+                selectedAnswer === index
+                  ? "bg-blue text-white"
+                  : "bg-white text-black"
               }`}
-              onClick={() => {
-                setSelectedAnswer(index);
-              }}
-            />
-            <div className="text-md flex justify-end mr-1">
-              {editingIndex === index ? (
-                <button
-                  className="w-10 text-center right-4 text-black "
-                  onClick={() => handleSaveEdit(index)}
-                >
-                  저장
-                </button>
-              ) : (
-                <button
-                  className="text-gray-400 flex items-center justify-center w-6 h-6"
-                  onClick={() => {
-                    setEditingIndex(index);
-                    setEditingText(answer);
-                  }}
-                >
-                  <FaPencilAlt />
-                </button>
-              )}
+            >
+              <input
+                type="text"
+                value={editingIndex === index ? editingText : answer}
+                readOnly={editingIndex !== index}
+                onChange={handleAnswerChange}
+                className={`w-full text-center border-none mx-0 outline-none bg-transparent ${
+                  editingIndex === index
+                    ? "bg-gray-50 text-black rounded-full"
+                    : ""
+                }`}
+                onClick={() => {
+                  setSelectedAnswer(index);
+                }}
+              />
+              <div className="text-md flex justify-end mr-1">
+                {editingIndex === index ? (
+                  <button
+                    className="w-10 text-center right-4 text-black "
+                    onClick={() => handleSaveEdit(index)}
+                  >
+                    저장
+                  </button>
+                ) : (
+                  <button
+                    className="text-gray-400 flex items-center justify-center w-6 h-6"
+                    onClick={() => {
+                      setEditingIndex(index);
+                      setEditingText(answer);
+                    }}
+                  >
+                    <FaPencilAlt />
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </section>
 
         {/* 다음 버튼 */}
         <div className="flex justify-end mt-4">
@@ -215,6 +226,7 @@ const Form = () => {
                 ? "text-blue hover:text-blue-700"
                 : "text-black"
             }`}
+            disabled={selectedAnswer === null}
           >
             다음
           </button>
