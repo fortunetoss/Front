@@ -6,11 +6,11 @@
   @apply text-blue disabled:text-disable py-[6px] px-2 font-bold text-lg;
 }
 .broad-btn {
-  @apply block text-center px-3 py-[14px] w-full border-[1.2px] rounded-lg border-[#C6C6C6] bg-white font-medium active:border-blue active:font-bold active:text-blue;
+  @apply block text-center px-3 py-[14px] w-full border-[1.2px] rounded-lg border-[#C6C6C6] bg-white font-medium hover:border-blue hover:font-bold hover:text-blue;
 }
 
 .card {
-  @apply flex flex-col justify-center mx-auto relative w-[260px] h-[365px];
+  @apply flex flex-col justify-center mx-auto relative w-[270px] h-[375px];
   transform-style: preserve-3d;
   transform: perspective(500px);
   transition: all 0.5s;
