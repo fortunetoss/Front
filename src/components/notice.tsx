@@ -11,7 +11,7 @@ export default function Notice({ text }: AlertBoxProps) {
     return (
         isVisible && (
             <div className="flex items-center space-x-3 mb-10 p-5 rounded  bg-sky-100  text-blue transition-all duration-300">
-                <FaFlag className="text-blue" />
+                <FaFlag className="text-blue font-pretendard" />
                 <span className="text-xl">{text}</span>
                 <button
                     className="text-blue-600 "
