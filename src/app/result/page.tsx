@@ -112,12 +112,12 @@ const Result = () => {
           }}
         />
       </Header>
-      <div className="container mx-auto p-6 bg-white">
+      <div className="container mx-auto p-2 bg-white">
         {/* 정답 */}
         <div className="p-4 rounded-md mb-10 text-center">
           <p className="text-3xl mb-10 mt-10">{resultData?.questionTitle}</p>
           <div className="rounded-3xl inline-block bg-blue px-4 py-2">
-            <p className="text-white text-xl">정답: {resultData?.answer}</p>
+            <p className="text-white text-xl font-semibold">정답: {resultData?.answer}</p>
           </div>
         </div>
 
