@@ -13,13 +13,10 @@ import {
 import { postEdit } from "../../../api/api-postEdit";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import {useInputLimit} from "@/hooks/useInputLimit";
-
+import { useInputLimit } from "@/hooks/useInputLimit";
 
 const MAX_TITLE_LENGTH = 30;
 const MAX_ANSWER_LENGTH = 25;
-
-
 
 const Form = () => {
   const router = useRouter();
@@ -59,7 +56,6 @@ const Form = () => {
     fetchQuestion();
   }, [setTitle, setAnswers]);
 
-
   // 질문 입력 핸들러
   const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
@@ -69,7 +65,6 @@ const Form = () => {
       alert(`질문은 최대 ${MAX_TITLE_LENGTH}자까지 입력 가능합니다.`);
     }
   };
-
 
   // 답변 입력 핸들러
   const handleAnswerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,13 +140,12 @@ const Form = () => {
 
    */
 
-
   return (
     <div>
       <Header>
         <BackButton />
       </Header>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 bg-white">
         <Notice text="문제와 답변은 수정 가능해요!" />
 
         {/* 질문 입력 */}

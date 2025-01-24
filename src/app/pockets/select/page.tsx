@@ -23,7 +23,7 @@ const Select = () => {
       <Header>
         <BackButton />
       </Header>
-      <div className="container mx-auto p-6">
+      <div className="container mx-auto p-6 bg-white">
         <h1 className="font-semibold text-xl mt-1">
           2024년을 돌아보며
           <br />

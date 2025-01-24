@@ -131,7 +131,7 @@ const Letter = () => {
           }}
         />
       </Header>
-      <div className="p-4">
+      <div className="p-4 bg-white">
         <Notice text="새해 덕담을 작성해주세요!" />
 
         {/* 카드 리스트 */}

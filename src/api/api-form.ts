@@ -44,6 +44,18 @@ export const submitCustomQuestion = async (
   content: string | null
   //paper: string | null
 ): Promise<{ questionId: any }> => {
+  console.log({
+    title,
+    select1: answers[0],
+    select2: answers[1],
+    select3: answers[2],
+    select4: answers[3],
+    answer: correctAnswer,
+    card,
+    domain,
+    content,
+    //paper,
+  });
   try {
     const response = await authApiClient.post("/api/question", {
       title,

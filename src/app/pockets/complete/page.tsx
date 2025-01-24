@@ -65,7 +65,7 @@ const Complete = () => {
           }}
         />
       </Header>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 bg-white">
         <div className="mt-6 mb-20 text-gray-700">
           <h1 className="font-semibold text-xl mt-1">
             복주머니가 완성되었어요!
