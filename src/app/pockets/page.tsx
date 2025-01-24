@@ -18,7 +18,7 @@ const Pockets = () => {
   const [page, setPage] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
   const [pouches, setPouches] = useState<(Pouch & { isFilled: boolean })[]>([]); // 채워져 있음 여부 추가
-  const { setDomain, setStep, setQuestionId } = usePocketStore();
+  const {resetFunnel, setDomain, setStep, setQuestionId } = usePocketStore();
 
   const callback = useCallback(() => {
     setPage((prevPage) => prevPage + 1);
@@ -72,22 +72,31 @@ const Pockets = () => {
 
   // 복주머니 선택 핸들러
   const handlePouchSelect = async (
-    domain: string,
-    questionCustomId: number | null
+      domain: string,
+      questionCustomId: number | null
   ) => {
-    setDomain(domain);
-    setQuestionId(questionCustomId);
-    setStep(1);
+    try {
+      // Zustand 상태 초기화
+      resetFunnel();
 
-    if (questionCustomId !== null) {
-      // 이미 채워져 있는 경우
-      await router.push(`/result?questionCustomId=${questionCustomId}`);
-      // 결과지 페이지로 이동
-    } else {
-      // 비어 있는 경우
-      await router.push("/pockets/select");
+      // 초기화 이후 새로운 상태 설정
+      setDomain(domain);
+      setQuestionId(questionCustomId);
+      setStep(1);
+
+      if (questionCustomId !== null) {
+        // 이미 채워져 있는 경우 -> 결과 페이지로 이동
+        await router.push(`/result?questionCustomId=${questionCustomId}`);
+      } else {
+        // 비어 있는 경우 -> 문제 설정 페이지로 이동
+        await router.push("/pockets/select");
+      }
+    } catch (error) {
+      console.error("복주머니 선택 중 오류 발생:", error);
+      alert("복주머니를 선택하는 중 오류가 발생했습니다.");
     }
   };
+
 
   return (
     <div>
