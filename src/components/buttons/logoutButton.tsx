@@ -9,9 +9,13 @@ export default function LogoutButton() {
   const setAccessToken = useAccessTokenStore((state) => state.setAccessToken);
 
   const handleClick = async () => {
-    await authApiClient.post("/logout");
-    setAccessToken("");
-    router.push("/");
+    try {
+      await authApiClient.post("/logout", {}, { withCredentials: true });
+    } catch (err) {
+    } finally {
+      setAccessToken("");
+      router.push("/");
+    }
   };
 
   return (
