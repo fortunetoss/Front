@@ -85,32 +85,33 @@ const Letter = () => {
     setCard(selectedCard); // 선택된 카드 이름 저장
 
     try {
-      // if (isModified && !questionCustomId) {
-      //   const response = await postEdit(
-      //     title,
-      //     answers,
-      //     correctAnswer,
-      //     card,
-      //     domain,
-      //     content
-      //   );
-      //   console.log(response);
-      //   alert("문제 수정 완료!");
-      // } else {
-      const response = await submitCustomQuestion(
-        title,
-        answers,
-        correctAnswer,
-        card,
-        domain,
-        content
-      );
-
-      console.log("POST 성공:", response);
+      if (isModified && questionCustomId) {
+        // 수정 상태 && questionCustomId 존재 시 postEdit 호출
+        const response = await postEdit(
+            title,
+            answers,
+            correctAnswer,
+            card,
+            domain,
+            content
+        );
+        console.log("문제 수정 완료:", response);
+        alert("복주머니가 수정되었습니다!");
+      } else {
+        // 새 문제 등록 시 submitCustomQuestion 호출
+        const response = await submitCustomQuestion(
+            title,
+            answers,
+            correctAnswer,
+            card,
+            domain,
+            content
+        );
+        console.log("POST 성공:", response);
+      }
 
       setStep(4);
       router.push(`/pockets/complete?questionId=${questionCustomId}`);
-      // }
     } catch (error) {
       console.error("POST 요청 실패:", error);
       alert("복주머니를 만드는 중 문제가 발생했습니다. 다시 시도해주세요.");
