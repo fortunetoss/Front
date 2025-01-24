@@ -152,7 +152,7 @@ const Form = () => {
             />
             {editingIndex === index ? (
               <button
-                className="text-red-500"
+                className="text-white"
                 onClick={() => handleSaveEdit(index)}
               >
                 저장
