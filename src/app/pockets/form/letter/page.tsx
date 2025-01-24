@@ -131,7 +131,7 @@ const Letter = () => {
           }}
         />
       </Header>
-      <div className="p-4 bg-white">
+      <div className="p-4 bg-white px-8">
         <Notice text="새해 덕담을 작성해주세요!" />
 
         {/* 카드 리스트 */}
@@ -147,7 +147,7 @@ const Letter = () => {
           <textarea
             value={content || ""}
             onChange={handleContentChange}
-            className="w-full h-20 p-2 border rounded"
+            className="w-full h-full border-none outline-none text-[15px] ml-2"
             placeholder="덕담을 입력하세요"
             style={textareaStyle}
           />
@@ -156,7 +156,7 @@ const Letter = () => {
         {/* 다음 버튼 */}
         <div className="flex justify-end mt-6">
           <button
-            className="text-blue text-2xl px-4 py-2 rounded-lg"
+            className="text-blue text-lg px-4 py-2 rounded-lg"
             onClick={handleNextClick}
           >
             완료

@@ -61,7 +61,7 @@ export default function FlippingCard({
           role="button"
           tabIndex={0}
         />
-        <p className="absolute top-[80px] w-full px-7">{children}</p>
+        <p className="absolute top-[84px] w-full px-7">{children}</p>
         {inputTextLength !== undefined && (
           <div className="absolute bottom-3 font-medium text-[13px] text-[#848588]">
             {inputTextLength}/150
