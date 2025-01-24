@@ -28,6 +28,7 @@ const SolversList:React.FC<SolversListProps> =({solvers,loading,activeTab})=> {
                     <span
                         className={`py-1 px-2 rounded-full text-white text-sm ${
                             activeTab === "correct" ? "bg-blue" : "bg-yellow-500"
+                            
                         }`}
                     >
                         {solver.answer}
