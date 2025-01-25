@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import useAccessTokenStore from "../store/accessToken";
+import { redirect } from "next/navigation";
 //import { reissueAccessToken } from "../api/auth";
 
 export const apiClient = axios.create({
@@ -25,11 +26,19 @@ authApiClient.interceptors.response.use(
   async (error) => {
     // const originalRequest = error.config;
 
-    // if (error.code === 401 && !originalRequest._retry) {
-    //   await reissueAccessToken();
-    //   originalRequest._retry = true;
-    //   return authApiClient(originalRequest);
+    // if (error.code === 401) {
+    //   if (originalRequest._retry) {
+    //     redirect("/");
+    //   } else {
+    //     await reissueAccessToken();
+    //     originalRequest._retry = true;
+    //     return authApiClient(originalRequest);
+    //   }
     // }
+
+    if (error.code === 401) {
+      redirect("/");
+    }
 
     return Promise.reject(error);
   }
