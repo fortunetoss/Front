@@ -1,36 +1,42 @@
 "use client";
 
-import { reissueAccessToken } from "@/api/auth";
-//import useAccessTokenStore from "@/store/accessToken";
+//import { reissueAccessToken } from "@/api/auth";
+import useAccessTokenStore from "@/store/accessToken";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function CallbackPage() {
   const router = useRouter();
   const params = useSearchParams();
+  const setAccessToken = useAccessTokenStore.getState().setAccessToken;
 
-  // 개발 환경용 임시 로직
-  // const accessToken = params.get("access");
-  // const setAccessToken = useAccessTokenStore.getState().setAccessToken;
-  // setAccessToken(accessToken ?? "");
+  // 임시 로직
 
   useEffect(() => {
     if (!params) return;
 
     const getAccessToken = async () => {
+      const accessToken = params.get("access");
       const isNewUser = params.get("newUser");
 
-      await reissueAccessToken();
+      if (accessToken) {
+        setAccessToken(accessToken);
+      } else {
+        router.push("/");
+      }
+
+      //await reissueAccessToken();
 
       if (isNewUser === "true") {
         router.push("/nickname");
-      } else {
+      } else if (isNewUser === "false") {
         router.push("/pockets");
+      } else {
+        router.push("/");
       }
     };
-    setTimeout(async () => {
-      await getAccessToken();
-    }, 5000);
+
+    getAccessToken();
   }, [params]);
 
   return null;
