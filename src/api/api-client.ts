@@ -23,15 +23,13 @@ authApiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    // 배포 전까지 주석 처리
+    const originalRequest = error.config;
 
-    // const originalRequest = error.config;
-
-    // if (error.code === 401 && !originalRequest._retry) {
-    //   await reissueAccessToken();
-    //   originalRequest._retry = true;
-    //   authApiClient(originalRequest);
-    // }
+    if (error.code === 401 && !originalRequest._retry) {
+      await reissueAccessToken();
+      originalRequest._retry = true;
+      return authApiClient(originalRequest);
+    }
 
     return Promise.reject(error);
   }
