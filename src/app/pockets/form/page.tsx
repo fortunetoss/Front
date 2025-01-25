@@ -62,7 +62,9 @@ const Form = () => {
       }
     };
 
-    fetchQuestion();
+    if (title === "" && answers.every((el) => el === "")) {
+      fetchQuestion();
+    }
   }, [setTitle, setAnswers]);
 
   // 질문 입력 핸들러
