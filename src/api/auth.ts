@@ -24,7 +24,6 @@ const requestAccessTokenReissue = async () => {
 export const reissueAccessToken = async () => {
   try {
     const response = await requestAccessTokenReissue();
-    console.log(response);
 
     if (response.status === 200) {
       const accessToken = response.headers["authorization"];
