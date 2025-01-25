@@ -112,12 +112,17 @@ const Result = () => {
           }}
         />
       </Header>
-      <div className="container mx-auto p-2 bg-white">
+      <div className="container mx-auto px-2 bg-white">
         {/* 정답 */}
         <div className="p-4 rounded-md mb-10 text-center">
-          <p className="text-3xl mb-10 mt-10">{resultData?.questionTitle}</p>
+          <p className="text-[22px] font-medium mb-10 mt-10">
+            {resultData?.questionTitle}
+          </p>
           <div className="rounded-3xl inline-block bg-blue px-4 py-2">
-            <p className="text-white text-xl font-semibold">정답: {resultData?.answer}</p>
+            <p className="text-white text-sm">
+              <span className="font-medium">정답:</span>{" "}
+              <span className="font-bold">{resultData?.answer}</span>
+            </p>
           </div>
         </div>
 
@@ -128,7 +133,7 @@ const Result = () => {
         >
           {/* 선택지 1 */}
           <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-            <p className="text-gray-700 text-xl w-16">
+            <p className="text-gray-700 text-lg font-medium w-16 text-center">
               {resultData?.select1 || "선택지 1"}
             </p>
             <div className="relative flex-1 bg-gray-200 rounded-full h-6">
@@ -143,18 +148,18 @@ const Result = () => {
                   transition: "width 1s ease-in-out",
                 }}
               ></div>
-              <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+              <span className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 font-medium text-white">
                 {resultData?.select1per || 0}%
               </span>
             </div>
-            <p className="text-gray-700 text-xl w-12">
+            <p className="text-gray-700 font-medium w-12">
               {resultData?.select1cnt || 0}명
             </p>
           </div>
 
           {/* 선택지 2 */}
           <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-            <p className="text-gray-700 text-xl w-16">
+            <p className="text-gray-700 text-lg font-medium w-16 text-center">
               {resultData?.select2 || "선택지 2"}
             </p>
             <div className="relative flex-1 bg-gray-200 rounded-full h-6">
@@ -173,14 +178,14 @@ const Result = () => {
                 {resultData?.select2per || 0}%
               </span>
             </div>
-            <p className="text-gray-700 text-xl w-12">
+            <p className="text-gray-700 font-medium w-12">
               {resultData?.select2cnt || 0}명
             </p>
           </div>
 
           {/* 선택지 3 */}
           <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-            <p className="text-gray-700 text-xl w-16">
+            <p className="text-gray-700 text-lg font-medium w-16 text-center">
               {resultData?.select3 || "선택지 3"}
             </p>
             <div className="relative flex-1 bg-gray-200 rounded-full h-6">
@@ -199,14 +204,14 @@ const Result = () => {
                 {resultData?.select3per || 0}%
               </span>
             </div>
-            <p className="text-gray-700 text-xl w-12">
+            <p className="text-gray-700 font-medium w-12">
               {resultData?.select3cnt || 0}명
             </p>
           </div>
 
           {/* 선택지 4 */}
           <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-            <p className="text-gray-700 text-xl w-16">
+            <p className="text-gray-700 text-lg font-medium w-16 text-center">
               {resultData?.select4 || "선택지 4"}
             </p>
             <div className="relative flex-1 bg-gray-200 rounded-full h-6">
@@ -225,7 +230,7 @@ const Result = () => {
                 {resultData?.select4per || 0}%
               </span>
             </div>
-            <p className="text-gray-700 text-xl w-12">
+            <p className="text-gray-700 font-medium w-12">
               {resultData?.select4cnt || 0}명
             </p>
           </div>
