@@ -28,8 +28,9 @@ export default function CallbackPage() {
         router.push("/pockets");
       }
     };
-
-    getAccessToken();
+    setTimeout(async () => {
+      await getAccessToken();
+    }, 5000);
   }, [params]);
 
   return null;
