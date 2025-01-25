@@ -36,6 +36,6 @@ export const reissueAccessToken = async () => {
       redirect("/");
     }
   } catch (err) {
-    console.log(err);
+    redirect("/");
   }
 };
