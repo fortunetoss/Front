@@ -29,9 +29,7 @@ export default function CallbackPage() {
       }
     };
 
-    setTimeout(() => {
-      getAccessToken();
-    }, 1000);
+    getAccessToken();
   }, [params]);
 
   return null;

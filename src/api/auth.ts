@@ -2,10 +2,10 @@ import axios from "axios";
 import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { redirect } from "next/navigation";
-import { apiClient } from "./api-client";
+import { apiClient, authApiClient } from "./api-client";
 
 const requestAccessTokenReissue = async () => {
-  const response = await apiClient.post<ResponseData>(
+  const response = await authApiClient.post<ResponseData>(
     "/reissue",
     {},
     {
