@@ -1,4 +1,3 @@
-import axios from "axios";
 import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { redirect } from "next/navigation";
@@ -24,7 +23,6 @@ const requestAccessTokenReissue = async () => {
 export const reissueAccessToken = async () => {
   try {
     const response = await requestAccessTokenReissue();
-    console.log(response);
 
     if (response.status === 200) {
       const accessToken = response.headers["authorization"];
@@ -37,6 +35,6 @@ export const reissueAccessToken = async () => {
       redirect("/");
     }
   } catch (err) {
-    console.log(err);
+    redirect("/");
   }
 };

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 import useAccessTokenStore from "../store/accessToken";
-import { reissueAccessToken } from "../api/auth";
+import { redirect } from "next/navigation";
+//import { reissueAccessToken } from "../api/auth";
 
 export const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -23,16 +24,23 @@ authApiClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    // 배포 전까지 주석 처리
-
     // const originalRequest = error.config;
 
-    // if (error.code === 401 && !originalRequest._retry) {
-    //   await reissueAccessToken();
-    //   originalRequest._retry = true;
-    //   authApiClient(originalRequest);
+    // if (error.code === 401) {
+    //   if (originalRequest._retry) {
+    //     redirect("/");
+    //   } else {
+    //     await reissueAccessToken();
+    //     originalRequest._retry = true;
+    //     return authApiClient(originalRequest);
+    //   }
     // }
 
-    return Promise.reject(error);
+    if (error.status === 401) {
+      alert("로그인이 필요합니다.");
+      window.location.href = "/";
+    } else {
+      return Promise.reject(error);
+    }
   }
 );

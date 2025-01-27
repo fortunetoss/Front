@@ -4,23 +4,27 @@
 import { authApiClient } from "../api/api-client";
 
 // Result 데이터 인터페이스 정의
-export interface ResultData {
+export type ResultData = {
     questionTitle: string;
     answer: string;
     total: number;
-    select1: string;
-    select1cnt: number;
-    select1per: number;
-    select2: string;
-    select2cnt: number;
-    select2per: number;
-    select3: string;
-    select3cnt: number;
-    select3per: number;
-    select4: string;
-    select4cnt: number;
-    select4per: number;
-}
+    select1?: string;
+    select2?: string;
+    select3?: string;
+    select4?: string;
+    select1per?: number;
+    select2per?: number;
+    select3per?: number;
+    select4per?: number;
+    select1cnt?: number;
+    select2cnt?: number;
+    select3cnt?: number;
+    select4cnt?: number;
+    [key: `select${number}`]: string | undefined;
+    [key: `select${number}per`]: number | undefined;
+    [key: `select${number}cnt`]: number | undefined;
+};
+
 
 // API 요청 함수 정의
 export const fetchResultData = async (questionCustomId: string): Promise<ResultData> => {
@@ -37,3 +41,4 @@ export const fetchResultData = async (questionCustomId: string): Promise<ResultD
         throw new Error("결과 데이터를 가져오는 중 오류가 발생했습니다.");
     }
 };
+
