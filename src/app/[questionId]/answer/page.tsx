@@ -6,6 +6,7 @@ import useAnswererStore from "@/store/answerer";
 import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
+import {useDecryptedId} from "@/hooks/useDecrypteId";
 
 export default function AnswerPage() {
   const {
@@ -19,11 +20,13 @@ export default function AnswerPage() {
   } = useAnswererStore();
   const router = useRouter();
   const { questionId } = useParams();
+  const { encryptedId, decryptedId } = useDecryptedId();
+
 
   const handleClick = async (text: string) => {
     setAnswer(text);
 
-    const response = await apiClient.post(`/api/answer/${questionId}`, {
+    const response = await apiClient.post(`/api/answer/${decryptedId}`, {
       answer: text,
       solver: name,
     });
@@ -31,7 +34,7 @@ export default function AnswerPage() {
     setAnswererResult(correct, answer, content, card, answerId);
 
     if (questionId) {
-      router.push(`/${questionId}/answer/result`);
+      router.push(`/${encryptedId}/answer/result`);
     }
   };
 
