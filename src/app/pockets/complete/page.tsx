@@ -65,29 +65,27 @@ const Complete = () => {
           }}
         />
       </Header>
-      <div className="container mx-auto p-4 bg-white">
-        <div className="mt-6 mb-20 text-gray-700">
-          <h1 className="font-semibold text-xl mt-1">
-            복주머니가 완성되었어요!
-          </h1>
-          <p className="text-gray-500">
+      <div className="flex flex-col gap-[60px] container mx-auto p-4 bg-white">
+        <div className="mt-6">
+          <h1 className="font-bold text-xl mt-1">복주머니가 완성되었어요!</h1>
+          <p className="font-medium text-[#848588]">
             복 나누미가 되어 친구에게 공유해보세요.
           </p>
         </div>
 
         {selectedPouch ? (
-          <div className="mx-auto mb-24">
+          <div className="mx-auto">
             <img
               src={selectedPouch.pocketsImage}
               alt={`복주머니 ${selectedPouch.name}`}
-              className="mx-auto w-80 h-80 opacity-80"
+              className="mx-auto w-60 h-60"
             />
           </div>
         ) : (
           <p className="text-red-500">복주머니를 선택하지 않았습니다.</p>
         )}
 
-        <div className="flex w-full space-x-4 mt-8">
+        <div className="flex w-full space-x-4">
           <button
             onClick={() => {
               if (questionCustomId) {
@@ -97,13 +95,13 @@ const Complete = () => {
                 history.back();
               }
             }}
-            className="flex-1 py-3 text-lg font-medium text-gray-700 border-2 border-gray-400 rounded-lg hover:bg-gray-100 transition"
+            className="flex-1 py-3 font-medium border-[1.2px] border-disable rounded-lg hover:bg-gray-100 transition"
           >
             이전
           </button>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="flex-1 py-3 text-lg font-medium text-white bg-blue rounded-lg hover:bg-red-600 transition"
+            className="flex-1 py-3 font-medium text-white bg-blue rounded-lg hover:bg-red-600 transition"
           >
             공유하기
           </button>
