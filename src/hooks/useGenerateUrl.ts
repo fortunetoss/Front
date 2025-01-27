@@ -10,7 +10,7 @@ if (!SECRET_KEY) {
 }
 
 // questionCustomId를 기반으로 URL 생성
-export function useGenerateUrl(questionId: number | null) {
+export function useGenerateUrl(questionId: string | null) {
     const [shareableUrl, setShareableUrl] = useState<string | null>(null);
 
     useEffect(() => {
