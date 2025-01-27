@@ -36,10 +36,11 @@ authApiClient.interceptors.response.use(
     //   }
     // }
 
-    if (error.code === 401) {
-      redirect("/");
+    if (error.status === 401) {
+      alert("로그인이 필요합니다.");
+      window.location.href = "/";
+    } else {
+      return Promise.reject(error);
     }
-
-    return Promise.reject(error);
   }
 );
