@@ -10,16 +10,19 @@ import { pocketsImageData } from "@/utils/images/cardNames";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import { buttonBackClick } from "@/components/edit/buttonBackClick";
+import {useGenerateUrl} from "@/hooks/useGenerateUrl";
 
 const Complete = () => {
-  const [shareableUrl, setShareableUrl] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const questionCustomId = usePocketStore((state) => state.questionId);
   const { domain, content } = usePocketStore();
 
   const selectedPouch = pocketsImageData.find((pouch) => pouch.name === domain);
+  // @ts-ignore
+  const shareableUrl = useGenerateUrl(questionCustomId); // URL 생성 훅 호출
 
+/*
   useEffect(() => {
     const url = generateUrl(questionCustomId);
     if (url) {
@@ -30,6 +33,8 @@ const Complete = () => {
     }
   }, []);
 
+ */
+
   const handleKakaoShare = () => {
     if (shareableUrl) {
       kakaotalkShare(shareableUrl, { hasMessage: content !== null });
@@ -38,6 +43,8 @@ const Complete = () => {
     }
     router.push("/pockets/shared");
   };
+
+
 
   const handleCopyUrl = () => {
     if (shareableUrl) {

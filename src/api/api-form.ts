@@ -78,7 +78,7 @@ export const submitCustomQuestion = async (
       setQuestionId(questionId);
       // 응답할때 questionCustomId 받아오면 이걸 zustand 에 일단 저장해놓음
       // -> url 만들 때 쓸거니까
-      console.log("POST 성공:  quesitonCustomId:", questionId);
+      console.log("POST 성공:  questionId:", questionId);
       return { questionId };
     } else {
       throw new Error(" 제대로 받아오지 못함");

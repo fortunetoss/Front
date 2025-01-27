@@ -2,18 +2,20 @@ import { useState, useEffect } from "react";
 import { generateUrl } from "@/utils/url/urlGenerator";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 
-const useShareHandlers = (questionCustomId: string | null) => {
+const useShareHandlers = (questionId: string | null) => {
   const [shareableUrl, setShareableUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!questionCustomId) return;
-    const url = generateUrl(Number(questionCustomId));
+    if (!questionId) return;
+
+
+    const url = generateUrl(Number(questionId));
     if (url) {
       setShareableUrl(url);
     } else {
       console.error("URL 생성 실패");
     }
-  }, [questionCustomId]);
+  }, [questionId]);
 
   const handleCopyUrl = () => {
     if (shareableUrl) {

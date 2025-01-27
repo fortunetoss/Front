@@ -10,6 +10,8 @@ import ResponseData from "@/models/response-data";
 import useAnswererStore from "@/store/answerer";
 import Logo from "@/components/header/logo";
 import { getPouch } from "@/utils/images/domain";
+import {decrypt} from "@/hooks/crypto";
+import {useDecryptedId} from "@/hooks/useDecrypteId";
 
 interface IntroResponse {
   title: string;
@@ -22,37 +24,63 @@ interface IntroResponse {
   publisher: string;
 }
 
-export default function IntroPage() {
-  const { publisherName, pouchType, setInitialData } = useAnswererStore();
+const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY!;
 
-  const { questionId } = useParams();
+
+export default function IntroPage() {
+  const { encryptedId, decryptedId } = useDecryptedId();
+  const [questionId, setQuestionId] = useState<string | null>(null);
+  const { publisherName, pouchType, setInitialData } = useAnswererStore();
+//  const { questionId } = useParams();
   const [hasMessage, setHasMessage] = useState<null | boolean>(null);
 
   useEffect(() => {
+    if (!decryptedId) return;
     (async () => {
-      const response = await apiClient.get<ResponseData>(
-        `/api/answer/${questionId}`
-      );
+      try {
+        // 복호화된 ID를 API 호출에 사용
+        const response = await apiClient.get(`/api/answer/${decryptedId}`);
+        const {
+          title,
+          select1,
+          select2,
+          select3,
+          select4,
+          content,
+          domain,
+          publisher,
+        }: IntroResponse = response.data.data;
 
-      const {
-        title,
-        select1,
-        select2,
-        select3,
-        select4,
-        content,
-        domain,
-        publisher,
-      }: IntroResponse = response.data.data;
-      setInitialData(
-        title,
-        [select1, select2, select3, select4],
-        publisher,
-        domain
-      );
-      setHasMessage(content !== null);
+        setInitialData(title, [select1, select2, select3, select4], publisher, domain);
+        setHasMessage(content !== null);
+      } catch (error) {
+        console.error("API 요청 중 오류:", error);
+      }
     })();
-  }, []);
+  }, [decryptedId, setInitialData]);
+  // API 호출
+  useEffect(() => {
+    if (!questionId) return;
+
+    (async () => {
+      try {
+        const response = await apiClient.get(`/api/answer/${questionId}`);
+        const { title, select1, select2, select3, select4, content, domain, publisher } = response.data.data;
+
+        // 상태 업데이트
+        setInitialData(
+            title,
+            [select1, select2, select3, select4],
+            publisher,
+            domain
+        );
+        setHasMessage(content !== null);
+      } catch (error) {
+        console.error("API 요청 중 오류:", error);
+      }
+    })();
+  }, [questionId]);
+
 
   const pouchImg = getPouch(pouchType);
 
@@ -87,7 +115,7 @@ export default function IntroPage() {
           />
         )}
         <Link
-          href={`/${questionId}/nickname`}
+            href={`/${encryptedId}/nickname`}
           className="block mx-auto w-full bg-blue text-white font-bold px-3 py-4 rounded-lg text-center"
         >
           문제 풀기
