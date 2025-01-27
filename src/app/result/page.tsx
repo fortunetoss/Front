@@ -17,7 +17,6 @@ import useShareHandlers from "@/utils/url/useShare";
 import ShareModal from "@/components/modal/share-modal";
 import { useGenerateUrl } from "@/hooks/useGenerateUrl";
 import { generateUrl } from "@/utils/url/urlGenerator";
-import { encrypt } from "@/hooks/crypto";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 
 const SECRET_KEY = process.env.NEXT_PUBLIC_SECRET_KEY as string;
