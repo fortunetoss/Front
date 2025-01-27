@@ -152,19 +152,15 @@ const Result = () => {
                 >
                     {/* 선택지 1 */}
                     <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                        <p
-                            className="text-gray-700 text-xl w-16 transition-transform duration-1000 ease-in-out"
-                            style={{
-                                transform: `scale(${resultData?.select1 ? 1 : 0.8})`,
-                                opacity: resultData?.select1 ? 1 : 0.5,
-                            }}
-                        >
-                            {resultData?.select1 || "선택지 1"}
+                        <p className="text-gray-700 text-xl w-16">
+                            {resultData?.select1 || "선택지 3"}
                         </p>
                         <div className="relative flex-1 bg-gray-200 rounded-full h-6">
                             <div
                                 className={`absolute h-6 rounded-full ${
-                                    resultData?.select1 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                    resultData?.select1 === resultData?.answer
+                                        ? "bg-blue"
+                                        : "bg-yellow-400"
                                 }`}
                                 style={{
                                     width: `${resultData?.select1per || 0}%`,
@@ -172,48 +168,27 @@ const Result = () => {
                                 }}
                             ></div>
                             <span
-                                className="absolute top-1/2 transform -translate-y-1/2 text-sm font-medium text-white transition-all duration-1000 ease-in-out"
-                                style={{
-                                    left:
-                                        (resultData?.select1per || 0) === 100
-                                            ? "50%"
-                                            : `${resultData?.select1per || 0}%`,
-                                    transform:
-                                        (resultData?.select1per || 0) === 100
-                                            ? "translate(-50%, -50%)"
-                                            : "translate(-10%, -50%)",
-                                    opacity: resultData?.select1per ? 1 : 0,
-                                }}
-                            >
-                {resultData?.select1per || 0}%
-              </span>
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                                {resultData?.select1per || 0}%
+                            </span>
                         </div>
-                        <p
-                            className="text-gray-700 text-xl w-12 transition-transform duration-1000 ease-in-out"
-                            style={{
-                                transform: `scale(${resultData?.select1cnt ? 1 : 0.8})`,
-                                opacity: resultData?.select1cnt ? 1 : 0.5,
-                            }}
-                        >
+                        <p className="text-gray-700 text-xl w-12">
                             {resultData?.select1cnt || 0}명
                         </p>
                     </div>
 
+
                     {/* 선택지 2 */}
                     <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
-                        <p
-                            className="text-gray-700 text-xl w-16 transition-transform duration-1000 ease-in-out"
-                            style={{
-                                transform: `scale(${resultData?.select2 ? 1 : 0.8})`,
-                                opacity: resultData?.select2 ? 1 : 0.5,
-                            }}
-                        >
-                            {resultData?.select2 || "선택지 2"}
+                        <p className="text-gray-700 text-xl w-16">
+                            {resultData?.select2 || "선택지 3"}
                         </p>
                         <div className="relative flex-1 bg-gray-200 rounded-full h-6">
                             <div
                                 className={`absolute h-6 rounded-full ${
-                                    resultData?.select2 === resultData?.answer ? "bg-blue" : "bg-yellow-400"
+                                    resultData?.select2 === resultData?.answer
+                                        ? "bg-blue"
+                                        : "bg-yellow-400"
                                 }`}
                                 style={{
                                     width: `${resultData?.select2per || 0}%`,
@@ -221,57 +196,40 @@ const Result = () => {
                                 }}
                             ></div>
                             <span
-                                className="absolute top-1/2 transform -translate-y-1/2 text-sm font-medium text-white transition-all duration-1000 ease-in-out"
-                                style={{
-                                    left:
-                                        (resultData?.select2per || 0) === 100
-                                            ? "50%"
-                                            : `${resultData?.select2per || 0}%`,
-                                    transform:
-                                        (resultData?.select2per || 0) === 100
-                                            ? "translate(-50%, -50%)"
-                                            : "translate(-10%, -50%)",
-                                    opacity: resultData?.select2per ? 1 : 0,
-                                }}
-                            >
-                {resultData?.select2per || 0}%
-              </span>
+                                className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
+                                {resultData?.select2per || 0}%
+                            </span>
                         </div>
-                        <p
-                            className="text-gray-700 text-xl w-12 transition-transform duration-1000 ease-in-out"
-                            style={{
-                                transform: `scale(${resultData?.select1cnt ? 1 : 0.8})`,
-                                opacity: resultData?.select1cnt ? 1 : 0.5,
-                            }}
-                        >
-                            {resultData?.select1cnt || 0}명
+                        <p className="text-gray-700 text-xl w-12">
+                            {resultData?.select2cnt || 0}명
                         </p>
                     </div>
+
 
                     {/* 선택지 3 */}
                     <div className="p-4 rounded-md flex items-center space-x-4 mb-4">
                         <p className="text-gray-700 text-xl w-16">
-                            {resultData?.select3 || "선택지 3"}
+                            {resultData?.select2 || "선택지 3"}
                         </p>
                         <div className="relative flex-1 bg-gray-200 rounded-full h-6">
                             <div
                                 className={`absolute h-6 rounded-full ${
-                                    resultData?.select3 === resultData?.answer
+                                    resultData?.select2 === resultData?.answer
                                         ? "bg-blue"
                                         : "bg-yellow-400"
                                 }`}
                                 style={{
-                                    width: `${resultData?.select3per || 0}%`,
+                                    width: `${resultData?.select2per || 0}%`,
                                     transition: "width 1s ease-in-out",
                                 }}
                             ></div>
                             <span
                                 className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
-                {resultData?.select3per || 0}%
-              </span>
+                                {resultData?.select2per || 0}%
+                            </span>
                         </div>
                         <p className="text-gray-700 text-xl w-12">
-                            {resultData?.select3cnt || 0}명
+                            {resultData?.select2cnt || 0}명
                         </p>
                     </div>
 
@@ -294,8 +252,8 @@ const Result = () => {
                             ></div>
                             <span
                                 className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 text-sm font-medium text-white">
-                {resultData?.select4per || 0}%
-              </span>
+                                {resultData?.select4per || 0}%
+                            </span>
                         </div>
                         <p className="text-gray-700 text-xl w-12">
                             {resultData?.select4cnt || 0}명
