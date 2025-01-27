@@ -2,12 +2,12 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { fetchResultData, ResultData } from "../../api/api-result";
+import React, {useEffect, useState} from "react";
+import {useRouter, useSearchParams} from "next/navigation";
+import {fetchResultData, ResultData} from "../../api/api-result";
 import ResultModal from "../../components/result/resultModal";
 //import {ValidateResult} from "@/components/result/resultValidation";
-import { fetchRightAnswers, fetchWrongAnswers } from "@/api/api-result-data";
+import {fetchRightAnswers, fetchWrongAnswers} from "@/api/api-result-data";
 import useResultStore from "@/app/store/useResultStore";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
@@ -29,7 +29,7 @@ const Result = () => {
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const searchParams = useSearchParams();
     const [isOverlay, setIsOverlay] = useState(false);
-    const { setRightSolvers, setWrongSolvers, rightSolvers, wrongSolvers } = useResultStore();
+    const {setRightSolvers, setWrongSolvers, rightSolvers, wrongSolvers} = useResultStore();
     const router = useRouter();
 
     const questionId = searchParams.get("questionCustomId");
@@ -82,8 +82,6 @@ const Result = () => {
     };
 
 
-
-
     const handleOpenModal = () => {
         setIsModalOpen(true);
     };
@@ -110,12 +108,14 @@ const Result = () => {
                                 onClick={() => setIsOverlay(false)}
                             >
                                 <div className="relative w-full max-w-screen-lg mt-4 flex justify-center">
-                                    <div className="absolute top-16 left-1/2 bg-white rounded-lg sm:max-w-sm md:max-w-md lg:max-w-lg shadow-lg px-7 py-3">
+                                    <div
+                                        className="absolute top-16 left-1/2 bg-white rounded-lg sm:max-w-sm md:max-w-md lg:max-w-lg shadow-lg px-7 py-3">
                                         <p className="text-gray-800 text-sm md:text-base lg:text-lg text-center">
-                                            아직 문제를 푼 사람이 없어요! <br /> 공유하기로 문제를
+                                            아직 문제를 푼 사람이 없어요! <br/> 공유하기로 문제를
                                             보내보세요
                                         </p>
-                                        <div className="absolute -top-2 right-9 transform -translate-x-1/3 w-4 h-4 bg-white rotate-45"></div>
+                                        <div
+                                            className="absolute -top-2 right-9 transform -translate-x-1/3 w-4 h-4 bg-white rotate-45"></div>
                                     </div>
                                 </div>
                             </div>
