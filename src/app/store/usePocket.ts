@@ -65,7 +65,7 @@ const usePocketStore = create<PocketState>()(
         set({ domain });
       },
       setQuestionId: (questionId: number | null) => {
-        console.log("setQuestionCustomId:", questionId);
+        console.log("setQuestionId:", questionId);
         set({ questionId });
       },
       setCard: (card) => {
