@@ -54,8 +54,7 @@ const Result = () => {
         setWrongSolvers(wrongSolversData);
         setRightSolvers(rightSolversData);
       } catch (error) {
-        alert("로그인이 필요합니다.");
-        router.push("/");
+        console.error(error);
       }
     };
     fetchResult();
