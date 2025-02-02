@@ -107,8 +107,11 @@ const usePocketStore = create<PocketState>()(
           step: 0, // 초기 단계로 되돌림
         }),
     }),
-    { name: "pocket-storage", storage: createJSONStorage(() => sessionStorage) }
-  )
+    {
+      name: "pocket-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
 );
 
 export default usePocketStore;

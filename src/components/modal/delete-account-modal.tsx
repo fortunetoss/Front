@@ -17,7 +17,7 @@ export default function DeleteAccountModal({
       await authApiClient.post(
         "/api/users/delete",
         {},
-        { withCredentials: true }
+        { withCredentials: true },
       );
       setAccessToken("");
       sessionStorage.setItem("hasDeleted", "true");

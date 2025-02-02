@@ -114,12 +114,12 @@ const Form = () => {
       // 수정 여부에 따라 API 호출
       if (isModified && questionId) {
         await postEdit(
-            title,
-            answers,
-            answers[selectedAnswer],
-            null,
-            domain,
-            null
+          title,
+          answers,
+          answers[selectedAnswer],
+          null,
+          domain,
+          null,
         );
         alert("복주머니가 수정되었습니다!");
       } else {
@@ -129,7 +129,7 @@ const Form = () => {
           answers[selectedAnswer],
           null,
           domain,
-          null
+          null,
         );
       }
 

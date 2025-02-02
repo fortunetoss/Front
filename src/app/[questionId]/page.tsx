@@ -31,7 +31,7 @@ export default function IntroPage() {
   useEffect(() => {
     (async () => {
       const response = await apiClient.get<ResponseData>(
-        `/api/answer/${questionId}`
+        `/api/answer/${questionId}`,
       );
 
       const {
@@ -48,7 +48,7 @@ export default function IntroPage() {
         title,
         [select1, select2, select3, select4],
         publisher,
-        domain
+        domain,
       );
       setHasMessage(content !== null);
     })();

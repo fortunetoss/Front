@@ -9,7 +9,7 @@ const requestAccessTokenReissue = async () => {
     {},
     {
       withCredentials: true,
-    }
+    },
   );
 
   // const response = fetch("https://fortunetoss.store/reissue", {

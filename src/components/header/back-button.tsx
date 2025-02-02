@@ -4,7 +4,7 @@ import backBtnImg from "@/assets/icons/header/back.svg";
 import Image from "next/image";
 
 interface BackButtonProps {
-  onClick?:()=>void;
+  onClick?: () => void;
 }
 
 export default function BackButton({ onClick }: BackButtonProps) {
