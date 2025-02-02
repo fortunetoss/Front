@@ -32,7 +32,7 @@ const Letter = () => {
   } = usePocketStore();
 
   const [selectedCard, setSelectedCard] =
-      useState<keyof typeof cardDataMap>("A");
+    useState<keyof typeof cardDataMap>("A");
 
   //수정사항
   const { isModified, setModified } = useModifiedStore();
@@ -46,15 +46,21 @@ const Letter = () => {
   };
 
   // cardData 배열을 객체로 변환
-  const cardDataMap = cardData.reduce((acc, card) => {
-    acc[card.name] = {
-      frontImage: card.frontImage,
-      backImage: card.backImage,
-      width: card.width,
-      height: card.height,
-    };
-    return acc;
-  }, {} as Record<string, { frontImage: string; backImage: string; width: number; height: number }>);
+  const cardDataMap = cardData.reduce(
+    (acc, card) => {
+      acc[card.name] = {
+        frontImage: card.frontImage,
+        backImage: card.backImage,
+        width: card.width,
+        height: card.height,
+      };
+      return acc;
+    },
+    {} as Record<
+      string,
+      { frontImage: string; backImage: string; width: number; height: number }
+    >,
+  );
 
   const cardSize = cardDataMap[selectedCard] || { width: 500, height: 1200 };
   const textareaStyle = {
@@ -93,7 +99,7 @@ const Letter = () => {
           correctAnswer,
           card,
           domain,
-          content
+          content,
         );
         console.log("문제 수정 완료:", response);
         alert("복주머니가 수정되었습니다!");
@@ -105,7 +111,7 @@ const Letter = () => {
           correctAnswer,
           card,
           domain,
-          content
+          content,
         );
         console.log("POST 성공:", response);
       }
@@ -119,52 +125,49 @@ const Letter = () => {
   };
 
   return (
-      <div>
-        <Header>
-          <BackButton
-              onClick={async () => {
-                if (questionCustomId) {
-                  buttonBackClick(questionCustomId); // 데이터 가져오기 및 상태 업데이트
-                  history.back();
-                } else {
-                  history.back(); // 단순 뒤로 가기
-                }
-              }}
-          />
-        </Header>
-        <div className="p-4 bg-white px-8">
-          <Notice text="새해 덕담을 작성해주세요!" />
+    <div>
+      <Header>
+        <BackButton
+          onClick={async () => {
+            if (questionCustomId) {
+              buttonBackClick(questionCustomId); // 데이터 가져오기 및 상태 업데이트
+              history.back();
+            } else {
+              history.back(); // 단순 뒤로 가기
+            }
+          }}
+        />
+      </Header>
+      <div className="p-4 bg-white px-8">
+        <Notice text="새해 덕담을 작성해주세요!" />
 
-          {/* 카드 리스트 */}
-          <CardList selectedCard={selectedCard} onSelect={handleSelectedCard} />
+        {/* 카드 리스트 */}
+        <CardList selectedCard={selectedCard} onSelect={handleSelectedCard} />
 
-          {/* 카드 디스플레이 */}
-          <FlippingCard
-              frontImg={cardDataMap[selectedCard]?.frontImage}
-              backImg={cardDataMap[selectedCard]?.backImage}
-              frontButtonText="덕담 입력하기"
-              inputTextLength={content?.length || 0}
-          >
+        {/* 카드 디스플레이 */}
+        <FlippingCard
+          frontImg={cardDataMap[selectedCard]?.frontImage}
+          backImg={cardDataMap[selectedCard]?.backImage}
+          frontButtonText="덕담 입력하기"
+          inputTextLength={content?.length || 0}
+        >
           <textarea
-              value={content || ""}
-              onChange={handleContentChange}
-              className="w-full h-full border-none outline-none text-[15px] ml-2"
-              placeholder="덕담을 입력하세요"
-              style={textareaStyle}
+            value={content || ""}
+            onChange={handleContentChange}
+            className="w-full h-full border-none outline-none text-[15px] ml-2"
+            placeholder="덕담을 입력하세요"
+            style={textareaStyle}
           />
-          </FlippingCard>
+        </FlippingCard>
 
-          {/* 다음 버튼 */}
-          <div className="flex justify-end mt-6">
-            <button
-                className="next-btn"
-                onClick={handleNextClick}
-            >
-              완료
-            </button>
-          </div>
+        {/* 다음 버튼 */}
+        <div className="flex justify-end mt-6">
+          <button className="next-btn" onClick={handleNextClick}>
+            완료
+          </button>
         </div>
       </div>
+    </div>
   );
 };
 

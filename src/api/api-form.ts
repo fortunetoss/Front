@@ -41,7 +41,7 @@ export const submitCustomQuestion = async (
   correctAnswer: string | null,
   card: string | null,
   domain: string | null,
-  content: string | null
+  content: string | null,
   //paper: string | null
 ): Promise<{ questionId: any }> => {
   console.log({

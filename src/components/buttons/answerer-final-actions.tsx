@@ -31,7 +31,7 @@ export default function AnswererFinalActions() {
     if (answerId) {
       kakaotalkShare(
         `${process.env.NEXT_PUBLIC_URL}/result-share/${answerId}`,
-        { isAnswerer: true, pouchType }
+        { isAnswerer: true, pouchType },
       );
     }
   };

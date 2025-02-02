@@ -4,7 +4,7 @@ import { Solver } from "@/api/api-result-data";
 
 export const validateResult = (
   solvers: Solver[],
-  correctAnswer: string // 정답을 나타내는 매개변수 이름 수정
+  correctAnswer: string, // 정답을 나타내는 매개변수 이름 수정
 ): { rightSolvers: Solver[]; wrongSolvers: Solver[] } => {
   // 정답자와 오답자를 분리
   const rightSolvers: Solver[] = []; // 내부 변수 이름 유지

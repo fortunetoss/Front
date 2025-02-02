@@ -10,7 +10,7 @@ interface ResultModalProps {
 
 const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<"correct" | "incorrect">(
-    "correct"
+    "correct",
   );
   const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
   const [error, setError] = useState<string | null>(null); // 에러 상태

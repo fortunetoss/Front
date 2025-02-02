@@ -42,5 +42,5 @@ authApiClient.interceptors.response.use(
     } else {
       return Promise.reject(error);
     }
-  }
+  },
 );

@@ -2,7 +2,7 @@ import { getPouch } from "../images/domain";
 
 export const kakaotalkShare = (
   targetUrl: string,
-  { isAnswerer = false, hasMessage = false, pouchType = "A" }
+  { isAnswerer = false, hasMessage = false, pouchType = "A" },
 ) => {
   if (!window.Kakao || !window.Kakao.isInitialized()) {
     console.error("Kakao SDK가 초기화되지 않았습니다.");
