@@ -55,8 +55,12 @@ export default function NicknameForm() {
       setAnswererName(enteredName);
       router.push(`/${questionId}/answer`);
     } else {
-      await postName(enteredName);
-      router.push("/pockets");
+      try {
+        await postName(enteredName);
+        router.push("/pockets");
+      } catch (err) {
+        alert("닉네임 설정에 실패하였습니다.");
+      }
     }
   };
 
@@ -97,7 +101,7 @@ export default function NicknameForm() {
         )}
       </div>
       <div className="flex justify-end">
-        <button type="submit" disabled={false} className="next-btn">
+        <button type="submit" disabled={!isValidName} className="next-btn">
           다음
         </button>
       </div>
