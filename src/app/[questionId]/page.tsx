@@ -4,23 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
-import ResponseData from "@/models/response-data";
 import useAnswererStore from "@/store/answerer";
 import Logo from "@/components/header/logo";
 import { getPouch } from "@/utils/images/domain";
-
-interface IntroResponse {
-  title: string;
-  select1: string;
-  select2: string;
-  select3: string;
-  select4: string;
-  content: string | null;
-  domain: "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H";
-  publisher: string;
-}
+import { getAnswererIntroData } from "@/api/answerer";
 
 export default function IntroPage() {
   const { publisherName, pouchType, setInitialData } = useAnswererStore();
@@ -30,9 +18,7 @@ export default function IntroPage() {
 
   useEffect(() => {
     (async () => {
-      const response = await apiClient.get<ResponseData>(
-        `/api/answer/${questionId}`,
-      );
+      if (typeof questionId !== "string") return;
 
       const {
         title,
@@ -43,7 +29,8 @@ export default function IntroPage() {
         content,
         domain,
         publisher,
-      }: IntroResponse = response.data.data;
+      } = await getAnswererIntroData(questionId);
+
       setInitialData(
         title,
         [select1, select2, select3, select4],
