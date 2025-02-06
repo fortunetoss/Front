@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import useAnswererStore from "@/store/answerer";
-import { apiClient, authApiClient } from "@/api/api-client";
+import { getDefaultName, postName, validateName } from "@/api/nickname";
 
 export default function NicknameForm() {
   const [enteredName, setEnteredName] = useState<string>("");
@@ -28,35 +28,35 @@ export default function NicknameForm() {
   }, [isValidName]);
 
   useEffect(() => {
-    const getDefaultName = async () => {
-      const response = await authApiClient.get("/api/name");
-      const defaultName = response.data.data.name;
-      setEnteredName(defaultName);
-      setIsValidName(true);
-    };
-
     if (!questionId) {
-      getDefaultName();
+      (async () => {
+        const { name: defaultName } = await getDefaultName();
+        setEnteredName(defaultName);
+        setIsValidName(true);
+      })();
     }
   }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    let isValid = true;
 
     try {
-      await apiClient.post("/api/users/validate", {
-        nickname: enteredName,
-      });
-
-      if (questionId) {
-        setAnswererName(enteredName);
-        router.push(`/${questionId}/answer`);
-      } else {
-        await authApiClient.post("/api/name", { name: enteredName });
-        router.push("/pockets");
-      }
+      await validateName(enteredName);
     } catch (err) {
       alert("유효하지 않은 이름입니다.");
+      setIsValidName(false);
+      isValid = false;
+    }
+
+    if (!isValidName) return;
+
+    if (questionId) {
+      setAnswererName(enteredName);
+      router.push(`/${questionId}/answer`);
+    } else {
+      await postName(enteredName);
+      router.push("/pockets");
     }
   };
 
@@ -64,9 +64,7 @@ export default function NicknameForm() {
     setEnteredName(event.currentTarget.value);
 
     try {
-      await apiClient.post("/api/users/validate", {
-        nickname: event.currentTarget.value,
-      });
+      await validateName(event.currentTarget.value);
       setIsValidName(true);
     } catch (err) {
       setIsValidName(false);
@@ -99,7 +97,7 @@ export default function NicknameForm() {
         )}
       </div>
       <div className="flex justify-end">
-        <button type="submit" disabled={!isValidName} className="next-btn">
+        <button type="submit" disabled={false} className="next-btn">
           다음
         </button>
       </div>
