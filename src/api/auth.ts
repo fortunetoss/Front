@@ -1,7 +1,7 @@
 import ResponseData from "@/models/response-data";
 import useAccessTokenStore from "@/store/accessToken";
 import { redirect } from "next/navigation";
-import { apiClient } from "./api-client";
+import { apiClient, authApiClient } from "./api-client";
 
 const requestAccessTokenReissue = async () => {
   const response = await apiClient.post<ResponseData>(
@@ -11,11 +11,6 @@ const requestAccessTokenReissue = async () => {
       withCredentials: true,
     },
   );
-
-  // const response = fetch("https://fortunetoss.store/reissue", {
-  //   method: "POST",
-  //   credentials: "include",
-  // });
 
   return response;
 };
@@ -37,4 +32,12 @@ export const reissueAccessToken = async () => {
   } catch (err) {
     redirect("/");
   }
+};
+
+export const logout = async () => {
+  await authApiClient.post("/logout", {}, { withCredentials: true });
+};
+
+export const deleteAccount = async () => {
+  await authApiClient.post("/api/users/delete", {}, { withCredentials: true });
 };
