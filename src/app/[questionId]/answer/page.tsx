@@ -23,14 +23,18 @@ export default function AnswerPage() {
   const handleClick = async (text: string) => {
     if (typeof questionId !== "string") return;
 
-    setAnswer(text);
+    try {
+      const { correct, answer, content, card, answerId } =
+        await postAnswererSelection(questionId, text, name);
 
-    const { correct, answer, content, card, answerId } =
-      await postAnswererSelection(questionId, text, name);
-    setAnswererResult(correct, answer, content, card, answerId);
+      setAnswer(text);
+      setAnswererResult(correct, answer, content, card, answerId);
 
-    if (questionId) {
-      router.push(`/${questionId}/answer/result`);
+      if (questionId) {
+        router.push(`/${questionId}/answer/result`);
+      }
+    } catch (err) {
+      alert("제출에 실패하였습니다.");
     }
   };
 

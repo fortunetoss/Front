@@ -11,7 +11,8 @@ import { getPouch } from "@/utils/images/domain";
 import { getAnswererIntroData } from "@/api/answerer";
 
 export default function IntroPage() {
-  const { publisherName, pouchType, setInitialData } = useAnswererStore();
+  const { publisherName, pouchType, setInitialData, question } =
+    useAnswererStore();
 
   const { questionId } = useParams();
   const [hasMessage, setHasMessage] = useState<null | boolean>(null);
@@ -19,25 +20,28 @@ export default function IntroPage() {
   useEffect(() => {
     (async () => {
       if (typeof questionId !== "string") return;
+      try {
+        const {
+          title,
+          select1,
+          select2,
+          select3,
+          select4,
+          content,
+          domain,
+          publisher,
+        } = await getAnswererIntroData(questionId);
 
-      const {
-        title,
-        select1,
-        select2,
-        select3,
-        select4,
-        content,
-        domain,
-        publisher,
-      } = await getAnswererIntroData(questionId);
-
-      setInitialData(
-        title,
-        [select1, select2, select3, select4],
-        publisher,
-        domain,
-      );
-      setHasMessage(content !== null);
+        setInitialData(
+          title,
+          [select1, select2, select3, select4],
+          publisher,
+          domain,
+        );
+        setHasMessage(content !== null);
+      } catch (err) {
+        alert("복주머니 데이터를 불러오는데 실패하였습니다.");
+      }
     })();
   }, []);
 
@@ -73,12 +77,14 @@ export default function IntroPage() {
             className="mx-auto"
           />
         )}
-        <Link
-          href={`/${questionId}/nickname`}
-          className="block mx-auto w-full bg-blue text-white font-bold px-3 py-4 rounded-lg text-center"
-        >
-          문제 풀기
-        </Link>
+        {question && (
+          <Link
+            href={`/${questionId}/nickname`}
+            className="block mx-auto w-full bg-blue text-white font-bold px-3 py-4 rounded-lg text-center"
+          >
+            문제 풀기
+          </Link>
+        )}
       </main>
     </>
   );
