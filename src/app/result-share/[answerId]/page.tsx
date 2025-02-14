@@ -1,60 +1,32 @@
-"use client";
-
 import { apiClient } from "@/api/api-client";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import AnswererShareResult from "@/components/result-share/answerer-share-result";
 
-export default function ResultSharePage() {
-  const { answerId } = useParams();
-  const router = useRouter();
-  const [answerer, setAnswerer] = useState<string | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const questionIdRef = useRef<number | null>(null);
+export default async function ResultSharePage({
+  params,
+}: {
+  params: Promise<{ answerId: string }>;
+}) {
+  const { answerId } = await params;
 
-  useEffect(() => {
-    (async () => {
-      const response = await apiClient.get(`/api/answer/result/${answerId}`);
-      const { correct, answerNickname, questionCustomId } = response.data.data;
+  try {
+    const response = await apiClient.get(`/api/answer/result/${answerId}`);
+    const { correct, answerNickname, questionCustomId } = response.data.data;
 
-      questionIdRef.current = questionCustomId;
-      setAnswerer(answerNickname);
-      setIsCorrect(correct);
-    })();
-  }, []);
-
-  const goToHome = () => {
-    router.push("/pockets");
-  };
-
-  const goToQuestion = () => {
-    if (questionIdRef.current) {
-      router.push(`/result?questionCustomId=${questionIdRef.current}`);
-    } else {
-      router.push("/pockets");
-    }
-  };
-
-  return (
-    <main className="flex flex-col h-full justify-center gap-16 px-5 py-8 bg-white">
-      {answerer !== null && isCorrect !== null && (
-        <section className="flex flex-col gap-4">
-          <div className="text-8xl text-center">{isCorrect ? "🥳" : "😓"}</div>
-          <h1 className="font-bold text-[40px] text-center">
-            <div>{answerer ?? "응답자"}님이</div>
-            <div>
-              {isCorrect ? "문제를 맞췄어요!" : "문제를 틀리고 말았어요."}
-            </div>
-          </h1>
-        </section>
-      )}
-      <section className="flex flex-col gap-[14px]">
-        <button className="broad-btn" onClick={goToQuestion}>
-          푼 문제 확인하기
-        </button>
-        <button className="broad-btn" onClick={goToHome}>
-          홈으로 이동
-        </button>
-      </section>
-    </main>
-  );
+    return (
+      <AnswererShareResult
+        isCorrect={correct}
+        answerer={answerNickname}
+        questionId={questionCustomId}
+      />
+    );
+  } catch (error) {
+    console.error("데이터 로드 실패:", error);
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <p className="-mt-6 px-3 text-center">
+          결과를 불러오는 중 오류가 발생했습니다.
+        </p>
+      </div>
+    );
+  }
 }
