@@ -1,6 +1,6 @@
 "use client";
 
-import { authApiClient } from "@/api/api-client";
+import { deleteAccount } from "@/api/auth";
 import useAccessTokenStore from "@/store/accessToken";
 import { useRouter } from "next/navigation";
 
@@ -14,15 +14,13 @@ export default function DeleteAccountModal({
 
   const handleDeleteAccount = async () => {
     try {
-      await authApiClient.post(
-        "/api/users/delete",
-        {},
-        { withCredentials: true },
-      );
+      await deleteAccount();
       setAccessToken("");
       sessionStorage.setItem("hasDeleted", "true");
       router.push("/");
-    } catch (err) {}
+    } catch (err) {
+      alert("계정 삭제에 실패하였습니다.");
+    }
   };
 
   return (

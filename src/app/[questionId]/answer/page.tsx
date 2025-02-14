@@ -3,9 +3,9 @@
 import { useParams, useRouter } from "next/navigation";
 import Option from "@/components/buttons/option";
 import useAnswererStore from "@/store/answerer";
-import { apiClient } from "@/api/api-client";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
+import { postAnswererSelection } from "@/api/answerer";
 
 export default function AnswerPage() {
   const {
@@ -21,17 +21,20 @@ export default function AnswerPage() {
   const { questionId } = useParams();
 
   const handleClick = async (text: string) => {
-    setAnswer(text);
+    if (typeof questionId !== "string") return;
 
-    const response = await apiClient.post(`/api/answer/${questionId}`, {
-      answer: text,
-      solver: name,
-    });
-    const { correct, answer, content, card, answerId } = response.data.data;
-    setAnswererResult(correct, answer, content, card, answerId);
+    try {
+      const { correct, answer, content, card, answerId } =
+        await postAnswererSelection(questionId, text, name);
 
-    if (questionId) {
-      router.push(`/${questionId}/answer/result`);
+      setAnswer(text);
+      setAnswererResult(correct, answer, content, card, answerId);
+
+      if (questionId) {
+        router.push(`/${questionId}/answer/result`);
+      }
+    } catch (err) {
+      alert("제출에 실패하였습니다.");
     }
   };
 

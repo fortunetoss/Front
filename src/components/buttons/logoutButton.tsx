@@ -1,6 +1,6 @@
 "use client";
 
-import { authApiClient } from "@/api/api-client";
+import { logout } from "@/api/auth";
 import useAccessTokenStore from "@/store/accessToken";
 import { useRouter } from "next/navigation";
 
@@ -10,8 +10,7 @@ export default function LogoutButton() {
 
   const handleClick = async () => {
     try {
-      await authApiClient.post("/logout", {}, { withCredentials: true });
-    } catch (err) {
+      await logout();
     } finally {
       setAccessToken("");
       router.push("/");
