@@ -1,7 +1,7 @@
 import ResponseData from "@/models/response-data";
 import { apiClient } from "./api-client";
 
-interface IntroResponseData {
+export interface IntroResponseData {
   title: string;
   select1: string;
   select2: string;
@@ -28,7 +28,7 @@ interface AnswererResult {
   answerId: number;
 }
 
-export const postAnswererSelection = async (
+export const postAnswerSelection = async (
   questionId: string,
   answer: string,
   solver: string,
