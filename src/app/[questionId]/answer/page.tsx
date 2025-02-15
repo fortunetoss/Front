@@ -1,66 +1,20 @@
-"use client";
-
-import { useParams, useRouter } from "next/navigation";
-import Option from "@/components/buttons/option";
-import useAnswererStore from "@/store/answerer";
-import Header from "@/components/header/header";
+import AnswerSelction from "@/components/answerer/answer-selection";
 import BackButton from "@/components/header/back-button";
-import { postAnswererSelection } from "@/api/answerer";
+import Header from "@/components/header/header";
 
-export default function AnswerPage() {
-  const {
-    question,
-    options,
-    name,
-    answer,
-    publisherName,
-    setAnswer,
-    setAnswererResult,
-  } = useAnswererStore();
-  const router = useRouter();
-  const { questionId } = useParams();
-
-  const handleClick = async (text: string) => {
-    if (typeof questionId !== "string") return;
-
-    try {
-      const { correct, answer, content, card, answerId } =
-        await postAnswererSelection(questionId, text, name);
-
-      setAnswer(text);
-      setAnswererResult(correct, answer, content, card, answerId);
-
-      if (questionId) {
-        router.push(`/${questionId}/answer/result`);
-      }
-    } catch (err) {
-      alert("제출에 실패하였습니다.");
-    }
-  };
+export default async function AnswerPage({
+  params,
+}: {
+  params: Promise<{ questionId: string }>;
+}) {
+  const { questionId } = await params;
 
   return (
     <>
       <Header>
         <BackButton />
       </Header>
-      <main className="flex flex-col gap-16 px-5 py-8 bg-white">
-        <section className="flex flex-col gap-[32px] py-[42px]">
-          <h1 className="text-[22px] font-medium text-center mx-10">
-            {publisherName}님이 {question}
-          </h1>
-          <ul className="flex flex-col gap-[14px]">
-            {options.map((option, idx) => (
-              <li key={idx}>
-                <Option
-                  text={option}
-                  isSelected={option === answer}
-                  onClick={handleClick}
-                />
-              </li>
-            ))}
-          </ul>
-        </section>
-      </main>
+      <AnswerSelction questionId={questionId} />
     </>
   );
 }

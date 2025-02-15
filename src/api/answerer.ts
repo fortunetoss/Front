@@ -28,7 +28,7 @@ interface AnswererResult {
   answerId: number;
 }
 
-export const postAnswererSelection = async (
+export const postAnswerSelection = async (
   questionId: string,
   answer: string,
   solver: string,
