@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Notice from "@/components/modal/notice";
 import usePocketStore from "@/store/pocket";
-import CardList from "@/utils/images/cardList";
+import CardList from "@/components/card/cardList";
 import { cardData } from "@/data/card-names";
 import { submitCustomQuestion } from "@/api/api-form";
 import Header from "@/components/header/header";
