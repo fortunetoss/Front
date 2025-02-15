@@ -1,6 +1,6 @@
 // url 생성로직
 
-export var generateUrl = (questionCustomId: number | null): string | null => {
+export const generateUrl = (questionCustomId: number | null): string | null => {
   if (!questionCustomId) {
     console.error("questionCustomId가 설정되지 않았습니다.");
     return null;

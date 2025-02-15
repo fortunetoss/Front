@@ -5,14 +5,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { fetchResultData, ResultData } from "../../api/api-result";
-import ResultModal from "../../components/result/resultModal";
+import ResultModal from "@/components/modal/result-modal";
 //import {ValidateResult} from "@/components/result/resultValidation";
 import { fetchRightAnswers, fetchWrongAnswers } from "@/api/api-result-data";
 import useResultStore from "@/app/store/useResultStore";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import ShareButton from "@/components/header/share-button";
-import Overlay from "@/components/result/Overlay";
 import useShareHandlers from "@/utils/url/useShare";
 import ShareModal from "@/components/modal/share-modal";
 

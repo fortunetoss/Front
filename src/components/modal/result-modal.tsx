@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import useResultStore from "@/app/store/useResultStore";
 import SolverList from "@/components/result/SolverList";
 
@@ -12,8 +11,6 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState<"correct" | "incorrect">(
     "correct",
   );
-  const [loading, setLoading] = useState<boolean>(false); // 로딩 상태
-  const [error, setError] = useState<string | null>(null); // 에러 상태
   const { rightSolvers, wrongSolvers } = useResultStore();
 
   if (!isOpen) return null;
