@@ -1,15 +1,13 @@
 "use client";
 
 import React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import usePocketStore from "../../store/usePocket";
-import Notice from "../../../components/notice";
+import { useRouter } from "next/navigation";
+import usePocketStore from "@/app/store/usePocket";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 
 const Select = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { setSelectOption, setStep } = usePocketStore();
 
   const handleOption = (option: string) => {

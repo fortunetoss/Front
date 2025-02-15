@@ -2,9 +2,8 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Notice from "../../../components/notice";
+import Notice from "@/components/modal/notice";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 
