@@ -1,7 +1,7 @@
 import ResponseData from "@/models/response-data";
 import { apiClient } from "./api-client";
 
-interface IntroResponseData {
+export interface IntroResponseData {
   title: string;
   select1: string;
   select2: string;
