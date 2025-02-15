@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaPencilAlt } from "react-icons/fa";
 import usePocketStore from "@/store/pocket";
-import useModifiedStore from "@/store/modifiedStore";
+import useModifiedStore from "@/store/modified";
 import Notice from "@/components/modal/notice";
 import { fetchRandomQuestion, submitCustomQuestion } from "@/api/form";
 import { postEdit } from "@/api/edit";

@@ -1,6 +1,6 @@
 import { getEdit } from "@/api/edit";
 import usePocketStore from "@/store/pocket";
-import useModifiedStore from "@/store/modifiedStore";
+import useModifiedStore from "@/store/modified";
 
 export const buttonBackClick = async (questionCustomId: number) => {
   const { setTitle, setAnswers, setCorrectAnswer, setContent, setStep } =

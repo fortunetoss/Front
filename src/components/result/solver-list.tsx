@@ -1,7 +1,7 @@
 // 정답자 오답자 렌더링 함 . .
 
 import React from "react";
-import { Solver } from "@/api/api-result-data";
+import { Solver } from "@/api/result";
 
 interface SolversListProps {
   solvers: Solver[];
@@ -9,7 +9,7 @@ interface SolversListProps {
   activeTab: "correct" | "incorrect"; // 현재 탭 정보
 }
 
-const SolversList: React.FC<SolversListProps> = ({
+const SolverList: React.FC<SolversListProps> = ({
   solvers,
   loading,
   activeTab,
@@ -40,4 +40,4 @@ const SolversList: React.FC<SolversListProps> = ({
   );
 };
 
-export default SolversList;
+export default SolverList;

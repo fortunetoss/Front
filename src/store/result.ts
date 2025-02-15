@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Solver } from "@/api/api-result-data";
+import { Solver } from "@/api/result";
 
 // 상태 타입 정의
 interface ResultState {

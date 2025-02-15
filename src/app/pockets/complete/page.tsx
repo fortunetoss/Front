@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 import ShareModal from "@/components/modal/share-modal";
-import { generateUrl } from "@/utils/url/urlGenerator";
+import { generateUrl } from "@/utils/url/generate-url";
 import usePocketStore from "@/store/pocket";
 import { pocketsImageData } from "@/data/card-names";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import { buttonBackClick } from "@/utils/edit/buttonBackClick";
+import { buttonBackClick } from "@/utils/edit/button-back-click";
 
 const Complete = () => {
   const [shareableUrl, setShareableUrl] = useState<string | null>(null);

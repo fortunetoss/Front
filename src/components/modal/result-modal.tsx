@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useResultStore from "@/store/result";
-import SolverList from "@/components/result/SolverList";
+import SolverList from "@/components/result/solver-list";
 
 interface ResultModalProps {
   isOpen: boolean;

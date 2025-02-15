@@ -4,14 +4,14 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Notice from "@/components/modal/notice";
 import usePocketStore from "@/store/pocket";
-import CardList from "@/components/card/cardList";
+import CardList from "@/components/card/card-list";
 import { cardData } from "@/data/card-names";
 import { submitCustomQuestion } from "@/api/form";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import useModifiedStore from "@/store/modifiedStore";
+import useModifiedStore from "@/store/modified";
 import { postEdit } from "@/api/edit";
-import { buttonBackClick } from "@/utils/edit/buttonBackClick";
+import { buttonBackClick } from "@/utils/edit/button-back-click";
 import FlippingCard from "@/components/card/flipping-card";
 
 const Letter = () => {
