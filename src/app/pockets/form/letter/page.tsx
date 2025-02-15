@@ -6,11 +6,11 @@ import Notice from "@/components/modal/notice";
 import usePocketStore from "@/store/pocket";
 import CardList from "@/components/card/cardList";
 import { cardData } from "@/data/card-names";
-import { submitCustomQuestion } from "@/api/api-form";
+import { submitCustomQuestion } from "@/api/form";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import useModifiedStore from "@/store/modifiedStore";
-import { postEdit } from "@/api/api-postEdit";
+import { postEdit } from "@/api/edit";
 import { buttonBackClick } from "@/utils/edit/buttonBackClick";
 import FlippingCard from "@/components/card/flipping-card";
 
@@ -71,7 +71,6 @@ const Letter = () => {
   //덕담 입력
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    console.log(content);
     setModified(true);
     //덕담입력재수정-> 상태수정됨
   };
@@ -101,7 +100,6 @@ const Letter = () => {
           domain,
           content,
         );
-        console.log("문제 수정 완료:", response);
         alert("복주머니가 수정되었습니다!");
       } else {
         // 새 문제 등록 시 submitCustomQuestion 호출
@@ -113,7 +111,6 @@ const Letter = () => {
           domain,
           content,
         );
-        console.log("POST 성공:", response);
       }
 
       setStep(4);

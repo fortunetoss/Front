@@ -1,4 +1,4 @@
-import { getEdit } from "@/api/api-getEdit";
+import { getEdit } from "@/api/edit";
 import usePocketStore from "@/store/pocket";
 import useModifiedStore from "@/store/modifiedStore";
 

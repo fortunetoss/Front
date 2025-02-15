@@ -24,7 +24,6 @@ const Complete = () => {
     const url = generateUrl(questionCustomId);
     if (url) {
       setShareableUrl(url);
-      console.log(`URL 생성: ${url}`);
     } else {
       console.error("URL 생성 실패: API 오류");
     }

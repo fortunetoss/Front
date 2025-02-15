@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchLuckyPouches } from "@/api/api-form";
+import { fetchLuckyPouches } from "@/api/form";
 
 export const useInfiniteScroll = () => {
   const [pouches, setPouches] = useState<any[]>([]); // 전체 데이터

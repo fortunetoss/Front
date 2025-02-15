@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import usePocketStore from "@/store/pocket";
-import { fetchLuckyPouches } from "@/api/api-form";
+import { fetchLuckyPouches } from "@/api/form";
 import Notice from "@/components/modal/notice";
 import { validatePouches, Pouch } from "@/utils/validation/validate-pouches";
 import { getPouch } from "@/utils/images/domain";

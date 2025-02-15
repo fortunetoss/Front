@@ -4,10 +4,10 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { fetchResultData, ResultData } from "../../api/api-result";
+import { fetchResultData, ResultData } from "@/api/result";
 import ResultModal from "@/components/modal/result-modal";
 // import { validateResult } from "@/utils/validation/validate-result";
-import { fetchRightAnswers, fetchWrongAnswers } from "@/api/api-result-data";
+import { fetchRightAnswers, fetchWrongAnswers } from "@/api/result";
 import useResultStore from "@/store/result";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
