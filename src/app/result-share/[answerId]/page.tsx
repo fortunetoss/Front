@@ -1,5 +1,5 @@
 import { apiClient } from "@/api/api-client";
-import AnswererShareResult from "@/components/result-share/answerer-share-result";
+import AnswererShareResult from "@/components/answerer/answerer-share-result";
 
 export default async function ResultSharePage({
   params,
