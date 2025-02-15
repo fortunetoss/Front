@@ -9,7 +9,7 @@ import usePocketStore from "@/app/store/usePocket";
 import { pocketsImageData } from "@/utils/images/cardNames";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import { buttonBackClick } from "@/components/edit/buttonBackClick";
+import { buttonBackClick } from "@/utils/edit/buttonBackClick";
 
 const Complete = () => {
   const [shareableUrl, setShareableUrl] = useState<string | null>(null);

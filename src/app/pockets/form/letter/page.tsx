@@ -11,7 +11,7 @@ import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import useModifiedStore from "@/app/store/modifiedStore";
 import { postEdit } from "@/api/api-postEdit";
-import { buttonBackClick } from "@/components/edit/buttonBackClick";
+import { buttonBackClick } from "@/utils/edit/buttonBackClick";
 import FlippingCard from "@/components/card/flipping-card";
 
 const Letter = () => {
