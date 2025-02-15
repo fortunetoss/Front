@@ -1,7 +1,7 @@
 // 문제 수정 요청
 
 import { authApiClient } from "../api/api-client";
-import usePocketStore from "@/app/store/usePocket";
+import usePocketStore from "@/store/pocket";
 
 export const postEdit = async (
   title: string,

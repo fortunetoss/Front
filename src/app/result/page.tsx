@@ -8,7 +8,7 @@ import { fetchResultData, ResultData } from "../../api/api-result";
 import ResultModal from "@/components/modal/result-modal";
 //import {ValidateResult} from "@/components/result/resultValidation";
 import { fetchRightAnswers, fetchWrongAnswers } from "@/api/api-result-data";
-import useResultStore from "@/app/store/useResultStore";
+import useResultStore from "@/store/result";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import ShareButton from "@/components/header/share-button";

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 import ShareModal from "@/components/modal/share-modal";
 import { generateUrl } from "@/utils/url/urlGenerator";
-import usePocketStore from "@/app/store/usePocket";
+import usePocketStore from "@/store/pocket";
 import { pocketsImageData } from "@/utils/images/cardNames";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";

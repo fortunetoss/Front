@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useResultStore from "@/app/store/useResultStore";
+import useResultStore from "@/store/result";
 import SolverList from "@/components/result/SolverList";
 
 interface ResultModalProps {

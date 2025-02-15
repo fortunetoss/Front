@@ -3,13 +3,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Notice from "@/components/modal/notice";
-import usePocketStore from "@/app/store/usePocket";
+import usePocketStore from "@/store/pocket";
 import CardList from "@/utils/images/cardList";
 import { cardData } from "@/utils/images/cardNames";
 import { submitCustomQuestion } from "@/api/api-form";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import useModifiedStore from "@/app/store/modifiedStore";
+import useModifiedStore from "@/store/modifiedStore";
 import { postEdit } from "@/api/api-postEdit";
 import { buttonBackClick } from "@/utils/edit/buttonBackClick";
 import FlippingCard from "@/components/card/flipping-card";

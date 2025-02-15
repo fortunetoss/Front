@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import usePocketStore from "@/app/store/usePocket";
+import usePocketStore from "@/store/pocket";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 

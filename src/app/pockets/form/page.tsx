@@ -3,8 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaPencilAlt } from "react-icons/fa";
-import usePocketStore from "@/app/store/usePocket";
-import useModifiedStore from "@/app/store/modifiedStore";
+import usePocketStore from "@/store/pocket";
+import useModifiedStore from "@/store/modifiedStore";
 import Notice from "@/components/modal/notice";
 import { fetchRandomQuestion, submitCustomQuestion } from "@/api/api-form";
 import { postEdit } from "@/api/api-postEdit";

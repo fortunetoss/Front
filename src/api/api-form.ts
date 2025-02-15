@@ -1,7 +1,7 @@
 // 폼작성과 관련된 api 코드
 
-import { authApiClient } from "../api/api-client";
-import usePocketStore from "@/app/store/usePocket";
+import { authApiClient } from "@/api/api-client";
+import usePocketStore from "@/store/pocket";
 
 // 사용자가 처음 로그인했을 때 복주머니 가져오기 - GET
 export const fetchLuckyPouches = async (page: number = 0): Promise<any> => {
