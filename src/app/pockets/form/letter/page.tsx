@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Notice from "@/components/modal/notice";
 import usePocketStore from "@/store/pocket";
 import CardList from "@/utils/images/cardList";
-import { cardData } from "@/utils/images/cardNames";
+import { cardData } from "@/data/card-names";
 import { submitCustomQuestion } from "@/api/api-form";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
