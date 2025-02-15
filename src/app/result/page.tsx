@@ -12,7 +12,7 @@ import useResultStore from "@/app/store/useResultStore";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
 import ShareButton from "@/components/header/share-button";
-import useShareHandlers from "@/utils/url/useShare";
+import useShareHandlers from "@/hooks/useShare";
 import ShareModal from "@/components/modal/share-modal";
 
 const Result = () => {
