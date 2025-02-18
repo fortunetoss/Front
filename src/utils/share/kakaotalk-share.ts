@@ -24,7 +24,7 @@ export const kakaotalkShare = (
     buttonText = "응답 결과 확인하기";
     imageSrc = getPouch(pouchType);
   } else {
-    imageSrc = "/sharingImg.png";
+    imageSrc = "/sharing_img.png";
   }
 
   window.Kakao.Share.sendDefault({

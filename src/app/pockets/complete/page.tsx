@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 import ShareModal from "@/components/modal/share-modal";
-import { generateUrl } from "@/utils/url/urlGenerator";
-import usePocketStore from "@/app/store/usePocket";
-import { pocketsImageData } from "@/utils/images/cardNames";
+import { generateUrl } from "@/utils/url/generate-url";
+import usePocketStore from "@/store/pocket";
+import { pocketsImageData } from "@/data/card-names";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import { buttonBackClick } from "@/components/edit/buttonBackClick";
+import { buttonBackClick } from "@/utils/edit/button-back-click";
 
 const Complete = () => {
   const [shareableUrl, setShareableUrl] = useState<string | null>(null);
@@ -24,7 +24,6 @@ const Complete = () => {
     const url = generateUrl(questionCustomId);
     if (url) {
       setShareableUrl(url);
-      console.log(`URL 생성: ${url}`);
     } else {
       console.error("URL 생성 실패: API 오류");
     }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { generateUrl } from "@/utils/url/urlGenerator";
+import { generateUrl } from "@/utils/url/generate-url";
 import { kakaotalkShare } from "@/utils/share/kakaotalk-share";
 
 const useShareHandlers = (questionCustomId: string | null) => {

@@ -1,6 +1,6 @@
 // 맞았는지 틀렸는지 검증로직
 
-import { Solver } from "@/api/api-result-data";
+import { Solver } from "@/api/result";
 
 export const validateResult = (
   solvers: Solver[],

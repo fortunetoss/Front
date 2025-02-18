@@ -3,7 +3,7 @@
 import Image from "next/image";
 import KakaoLoginButton from "@/components/kakao/kakao-login-button";
 import logoImg from "@/assets/icons/logo.svg";
-import pouchImg from "@/assets/onbarding/onboarding-pouch.webp";
+import pouchImg from "@/assets/onboarding-pouch.webp";
 import { useEffect, useState } from "react";
 
 export default function Home() {

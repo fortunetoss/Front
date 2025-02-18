@@ -1,6 +1,47 @@
-// 결과지 세부사항 보기
-
 import { authApiClient } from "@/api/api-client";
+
+// 결과페이지
+
+export type ResultData = {
+  questionTitle: string;
+  answer: string;
+  total: number;
+  select1?: string;
+  select2?: string;
+  select3?: string;
+  select4?: string;
+  select1per?: number;
+  select2per?: number;
+  select3per?: number;
+  select4per?: number;
+  select1cnt?: number;
+  select2cnt?: number;
+  select3cnt?: number;
+  select4cnt?: number;
+  [key: `select${number}`]: string | undefined;
+  [key: `select${number}per`]: number | undefined;
+  [key: `select${number}cnt`]: number | undefined;
+};
+
+export const fetchResultData = async (
+  questionCustomId: string,
+): Promise<ResultData> => {
+  try {
+    const response = await authApiClient.get(`/api/result/${questionCustomId}`);
+    if (response.data.status === "success") {
+      return response.data.data;
+    } else {
+      throw new Error(
+        response.data.message || "결과 데이터를 불러오지 못했습니다.",
+      );
+    }
+  } catch (error) {
+    console.error("API 요청 중 오류:", error);
+    throw new Error("결과 데이터를 가져오는 중 오류가 발생했습니다.");
+  }
+};
+
+// 결과지 세부사항 보기
 
 export interface Solver {
   answer: string;
@@ -22,7 +63,6 @@ export const fetchRightAnswers = async (
       },
     );
     if (response.data.status === "success") {
-      console.log("정답자 데이터 요청 성공:", response.data);
       return response.data.data.content; // 정답자 리스트 반환
     } else {
       throw new Error(response.data.message);
@@ -47,7 +87,6 @@ export const fetchWrongAnswers = async (
       },
     );
     if (response.data.status === "success") {
-      console.log("오답자 데이터 요청 성공:", response.data);
       return response.data.data.content; //  리스트 반환
     } else {
       throw new Error(response.data.message);

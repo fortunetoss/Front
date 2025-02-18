@@ -2,7 +2,7 @@
 // 상단 카드 목록 관리
 
 import React from "react";
-import { cardData } from "../images/cardNames";
+import { cardData } from "@/data/card-names";
 
 interface CardListProps {
   selectedCard: string; // 선택된 카드 이름

@@ -3,17 +3,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaPencilAlt } from "react-icons/fa";
-import usePocketStore from "../../store/usePocket";
-import useModifiedStore from "../../../app/store/modifiedStore";
-import Notice from "../../../components/notice";
-import {
-  fetchRandomQuestion,
-  submitCustomQuestion,
-} from "../../../api/api-form";
-import { postEdit } from "../../../api/api-postEdit";
+import usePocketStore from "@/store/pocket";
+import useModifiedStore from "@/store/modified";
+import Notice from "@/components/modal/notice";
+import { fetchRandomQuestion, submitCustomQuestion } from "@/api/form";
+import { postEdit } from "@/api/edit";
 import Header from "@/components/header/header";
 import BackButton from "@/components/header/back-button";
-import { useInputLimit } from "@/hooks/useInputLimit";
+// import { useInputLimit } from "@/hooks/useInputLimit";
 
 const MAX_TITLE_LENGTH = 30;
 const MAX_ANSWER_LENGTH = 25;

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { Pouch } from "@/utils/validation/validationPouch";
+import { Pouch } from "@/utils/validation/validate-pouches";
 
 export interface PocketState {
   pouches: Pouch[];
@@ -11,7 +11,6 @@ export interface PocketState {
   domain: string | null; // 복주머니 도메인
   questionId: number | null; // 선택된 복주머니의 questionCustomId
   card: string | null; // 선택한 카드 (A~E)
-  //paper: string | null; // 선택한 카드 뒷면
   selectOption: string | null; // "problem" 또는 "together"
   step: number; // 현재 단계
 
@@ -23,7 +22,6 @@ export interface PocketState {
   setDomain: (domain: string) => void;
   setQuestionId: (questionId: number | null) => void;
   setCard: (card: string) => void;
-  //setPaper: (paper: string) => void;
   setStep: (step: number) => void;
   resetFunnel: () => void; // 퍼널 초기화
   setPouches: (pouches: Pouch[]) => void;
@@ -40,50 +38,33 @@ const usePocketStore = create<PocketState>()(
       questionId: null,
       card: null,
       selectOption: null,
-      //paper: null,
       step: 0,
       pouches: [],
 
       setTitle: (title) => {
-        console.log("setTitle:", title);
         set({ title });
       },
       setAnswers: (answers) => {
-        console.log("setAnswers:", answers);
         set({ answers });
       },
       setCorrectAnswer: (answer) => {
-        console.log("setCorrectAnswer:", answer);
         set({ correctAnswer: answer });
       },
       setContent: (content) => {
-        // console.log("setContent:", content);
         set({ content });
       },
       setDomain: (domain) => {
-        console.log("setDomain:", domain);
         set({ domain });
       },
       setQuestionId: (questionId: number | null) => {
-        console.log("setQuestionCustomId:", questionId);
         set({ questionId });
       },
       setCard: (card) => {
-        console.log("setCard:", card);
         set({ card });
       },
       setSelectOption: (option) => {
-        console.log("setSelectOption:", option);
         set({ selectOption: option });
       },
-      /*
-            setPaper: (paper) => {
-                console.log("setPaper:", paper);
-                set({ paper })
-
-            },
-
-             */
       setPouches: (pouches: Pouch[]) => ({
         pouches,
       }),

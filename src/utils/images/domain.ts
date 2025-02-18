@@ -1,6 +1,6 @@
 // 백엔드에서 도메인 가져다주면 프론트에서 이미지 가져오기
 
-import { pocketsImageData } from "@/utils/images/cardNames";
+import { pocketsImageData } from "@/data/card-names";
 
 export const getPouch = (domain: string) => {
   const card = pocketsImageData.find((item) => item.name === domain);
