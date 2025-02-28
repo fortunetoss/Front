@@ -14,7 +14,7 @@ export default function useIntersectionObserver(callback: () => void) {
             }
           });
         },
-        { threshold: 1 }
+        { threshold: 1 },
       );
     }
 

@@ -21,14 +21,14 @@ interface AnswererStore {
     question: string,
     options: string[],
     publisherName: string,
-    pouchType: string
+    pouchType: string,
   ) => void;
   setAnswererResult: (
     isCorrect: boolean | null,
     correctAnswer: string,
     message: string | null,
     cardType: string,
-    answerId: number
+    answerId: number,
   ) => void;
   setName: (name: string) => void;
   setAnswer: (answer: string) => void;
@@ -72,7 +72,7 @@ const useAnswererStore = create(
         correctAnswer,
         message,
         cardType,
-        answerId
+        answerId,
       ) =>
         set((prev) => ({
           ...prev,
@@ -86,8 +86,11 @@ const useAnswererStore = create(
       setName: (name) => set((prev) => ({ ...prev, name })),
       setAnswer: (answer) => set((prev) => ({ ...prev, answer })),
     }),
-    { name: "answerer-store", storage: createJSONStorage(() => sessionStorage) }
-  )
+    {
+      name: "answerer-store",
+      storage: createJSONStorage(() => sessionStorage),
+    },
+  ),
 );
 
 export default useAnswererStore;

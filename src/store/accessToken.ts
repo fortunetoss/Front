@@ -12,8 +12,8 @@ const useAccessTokenStore = create(
       accessToken: "",
       setAccessToken: (token) => set({ accessToken: token }),
     }),
-    { name: "access-token-store" }
-  )
+    { name: "access-token-store" },
+  ),
 );
 
 export default useAccessTokenStore;

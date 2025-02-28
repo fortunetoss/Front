@@ -5,7 +5,7 @@ import Header from "@/components/header/header";
 import useAnswererStore from "@/store/answerer";
 import FlippingCard from "@/components/card/flipping-card";
 import AnswererFinalActions from "@/components/buttons/answerer-final-actions";
-import { cardData } from "@/utils/images/cardNames";
+import { cardData } from "@/data/card-names";
 
 export default function MessagePage() {
   const {
